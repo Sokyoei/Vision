@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "Vision"
+version = "0.0.1"
+authors = [{ name = "Sokyoei" }]
+license = { text = "MIT" }
+dependencies = ["numpy"]
+
+[project.optional-dependencies]
+dev = ["isort", "ruff", "autopep8"]
+test = ["pytest"]
+
+[tool.isort]
+line_length = 120
+multi_line_output = 0
+
+[tool.autopep8]
+max_line_length = 120
+
+[tool.ruff]
+line-length = 120
+select = [
+    "F",   # pyflakes
+    "E",   # pycodestyle error
+    "W",   # pycodestyle warning
+    "C90", # mccabe
+    "I",   # isort
+    # "N",   # pep8-naming
+    # "D",   # pydocstyle
+    "PD",  # pandas-vet
+    "NPY", # numpy specific rules
+    "RUF", # ruff specific rules
+]
+ignore = [
+    "E501",   # line too long
+    "RUF003", # ambiguous-unicode-character-comment
+    "RUF012", # mutable-class-default
+]
+ignore-init-module-imports = true
+
+[tool.ruff.isort]
+
+[tool.ruff.pydocstyle]
+convention = "google"
