@@ -1,2 +1,12 @@
 {
+    "files.associations": {
+        "*.m": "matlab",
+        ".editorconfig": "editorconfig",
+        "*.cppm": "cpp",
+        "*.cuf": "FortranFreeForm",
+        ".clang-format": "yaml",
+        ".clang-tidy": "yaml",
+        "iostream": "cpp"
+    },
+    "python.analysis.autoImportCompletions": true
 }

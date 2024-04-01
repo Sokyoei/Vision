@@ -2,11 +2,14 @@
 /temp/
 /Sokyoei/
 
-# ignore module file
+# ignore model file
 /models/
 *.pt
 *.onnx
 *.engine
+
+# ignore image file
+/images/
 
 ########################################################################################################################
 # Python
