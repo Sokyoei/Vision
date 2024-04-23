@@ -42,7 +42,7 @@ class YOLOv5ONNX(object):
         img = cv2.imread(img_path)
         img = cv2.resize(img, [640, 640])
         # BGR -> RGB, HWC -> CHW
-        cv2.cvtColor(img, cv2.COLOR_BGR2RGB).transpose(2, 0, 1)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB).transpose(2, 0, 1)
         img = img.astype(np.float32)
         img /= 255.0
         img = np.expand_dims(img, axis=0)
@@ -54,6 +54,7 @@ if __name__ == "__main__":
     yolov5 = YOLOv5ONNX("../models/yolov5s.onnx")
     pred, img = yolov5.inference("../images/bus.jpg")
     print(pred)
-    cv2.imwrite(img)
-    cv2.imshow()
-    cv2.waitKey()
+    img = img.squeeze().transpose(1, 2, 0)
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+    cv2.imshow("img", img)
+    cv2.waitKey(0)
