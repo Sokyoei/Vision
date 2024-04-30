@@ -1,0 +1,17 @@
+site_name: Vision
+site_author: Sokyoei
+copyright: Sokyoei &copy 2024
+
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.top
+    - search.suggest
+    - toc.integrate
+  palette:
+    primary: pink
+    accent: purple
+
+extra_css:
+  - stylesheets/extra.css
