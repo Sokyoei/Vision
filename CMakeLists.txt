@@ -9,7 +9,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 
 option(ONNXRuntime "enable ONNXRuntime" ON)
 
-include(${PROJECT_SOURCE_DIR}/cmake/config.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/compiler.cmake)
 
 set(ROOT ${PROJECT_SOURCE_DIR})
 

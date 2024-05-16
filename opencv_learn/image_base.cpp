@@ -5,11 +5,12 @@
 #include "config.h"
 
 int main(int argc, char const* argv[]) {
-    std::string img_path = (std::filesystem::path(ROOT) / "data/Ahri/Popstar Ahri.jpg").u8string();
-
-    cv::namedWindow("Popstar Ahri", cv::WINDOW_FREERATIO);
+    // auto img_path = (std::filesystem::path(ROOT) / "data/Ahri/Popstar Ahri.jpg").string();
+    /// @warning CJK 路径，不建议这么做，尽量使用 ASCII 路径
+    auto img_path = (std::filesystem::path(ROOT) / "data/Ahri/星之守护者 永绽盛芒 阿狸.jpg").string();
+    cv::namedWindow("Ahri", cv::WINDOW_FREERATIO);
     cv::Mat src = cv::imread(img_path, cv::IMREAD_COLOR);
-    cv::imshow("Popstar Ahri", src);
+    cv::imshow("Ahri", src);
     cv::waitKey();
     cv::destroyAllWindows();
     return 0;

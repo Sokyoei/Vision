@@ -1,3 +1,1 @@
-# YOLO
-
-[ultralytics/yolov5](https://github.com/ultralytics/yolov5)
+--8<-- "YOLO/README.md"

@@ -14,8 +14,12 @@
 # ignore onnxruntime profile
 onnxruntime_profile__*.json
 
-# generate config.h
+# ignore generate config.h
 config.h
+
+# ignore PyTorch datasets
+cifar*
+MNIST
 
 ########################################################################################################################
 # Python
