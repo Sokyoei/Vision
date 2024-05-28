@@ -1,9 +1,11 @@
 import torch
 from torch import Tensor, nn
-from torch.utils.data import DataLoader
-from torchvision import datasets, transforms
+from torchvision import datasets
 
-EPOCH = 10
+from Vision.utils import vision_dataset
+
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+EPOCHS = 10
 
 
 class LeNet5(nn.Module):
@@ -46,34 +48,19 @@ class LeNet5(nn.Module):
         return x7
 
 
-def dataset():
-    transform = transforms.Compose(
-        [
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.5], std=[0.5]),
-        ]
-    )
-
-    train_images = datasets.MNIST("./", True, transform, download=True)
-    train_images = datasets.MNIST("./", False, transform, download=True)
-
-    train_data = DataLoader(train_images, 64, True, num_workers=1)
-    test_data = DataLoader(train_images, 64, num_workers=1)
-    return train_data, test_data
-
-
 def train():
-    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-    train_data, test_data = dataset()
-    net = LeNet5(10).to(device)
+    train_data, test_data = vision_dataset(datasets.MNIST)
+    net = LeNet5(10).to(DEVICE)
     losser = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9, weight_decay=0.005)
 
-    for i in range(EPOCH):
+    for i in range(EPOCHS):
         sum_loss = 0
         for X_train, y_train in train_data:
-            X_train = X_train.to(device)
-            y_train = y_train.to(device)
+            X_train: Tensor
+            y_train: Tensor
+            X_train = X_train.to(DEVICE)
+            y_train = y_train.to(DEVICE)
             optimizer.zero_grad()
             y_pred = net(X_train)
             loss: Tensor = losser(y_pred, y_train)
@@ -86,9 +73,11 @@ def train():
         total = 0
         correct = 0
         for X_test, y_test in test_data:
-            X_test = X_test.to(device)
-            y_test = y_test.to(device)
-            y_pred = net(X_test)
+            X_test: Tensor
+            y_test: Tensor
+            X_test = X_test.to(DEVICE)
+            y_test = y_test.to(DEVICE)
+            y_pred: Tensor = net(X_test)
             _, predict = torch.max(y_pred.data, 1)
             total += y_test.size(0)
             correct += (predict == y_test).sum()
