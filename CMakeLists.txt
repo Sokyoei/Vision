@@ -21,6 +21,7 @@ configure_file(
 )
 
 if(ONNXRuntime)
+    # WARNING: if default, the onnxruntime.dll first well load in C:\Windows\System32\onnxruntime.dll
     find_package(ONNXRuntime MODULE REQUIRED)
 endif(ONNXRuntime)
 
