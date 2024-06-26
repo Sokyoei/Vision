@@ -6,7 +6,11 @@
 #   features: []
 #   all-features: false
 #   with-sources: false
+#   generate-hashes: false
 
 -e file:.
-numpy==1.26.4
+numpy==2.0.0
+    # via opencv-python
+    # via vision
+opencv-python==4.10.0.84
     # via vision

@@ -3,3 +3,4 @@ torch
 torchvision
 albumentations
 opencv-contrib-python
+open3d

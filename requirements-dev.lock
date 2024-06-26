@@ -6,13 +6,17 @@
 #   features: []
 #   all-features: false
 #   with-sources: false
+#   generate-hashes: false
 
 -e file:.
 colorama==0.4.6
     # via pytest
 iniconfig==2.0.0
     # via pytest
-numpy==1.26.4
+numpy==2.0.0
+    # via opencv-python
+    # via vision
+opencv-python==4.10.0.84
     # via vision
 packaging==24.0
     # via pytest
