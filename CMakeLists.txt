@@ -2,12 +2,15 @@ cmake_minimum_required(VERSION 3.20.0)
 
 project(Vision)
 
+enable_language(CUDA)
+
 set(CMAKE_CXX_STANDARD 20)
 
 # project FindXXX.cmake PATH
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 
 option(ONNXRuntime "enable ONNXRuntime" ON)
+option(TensorRT "enable TensorRT" OFF)
 
 include(${PROJECT_SOURCE_DIR}/cmake/compiler.cmake)
 
@@ -27,5 +30,10 @@ endif(ONNXRuntime)
 
 find_package(OpenCV CONFIG REQUIRED)
 add_subdirectory(opencv_learn)
+
+if(TensorRT)
+    find_package(TensorRT MODULE REQUIRED)
+    add_subdirectory(tensorrt_learn)
+endif(TensorRT)
 
 add_subdirectory(YOLO)

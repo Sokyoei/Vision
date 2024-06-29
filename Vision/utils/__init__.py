@@ -7,12 +7,13 @@ Dataset bbox:
 """
 
 import numpy as np
+from numpy.typing import NDArray
 
 from .nms import nms
-from .torchvision_datasets import vision_dataset
+from .torch_utils import vision_dataset
 
 
-def convert(x):
+def convert(x) -> NDArray:
     """(x,y,w,h) -> (x1,y1,x2,y2)
 
     Args:

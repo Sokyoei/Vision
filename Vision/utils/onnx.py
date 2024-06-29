@@ -27,9 +27,7 @@ class AbstractONNXLoader(ABC):
 
         self.options = ort.SessionOptions()
         self.options.enable_profiling = True
-        self.ort_session = ort.InferenceSession(
-            self.onnx_path, self.options, providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
-        )
+        self.ort_session = ort.InferenceSession(self.onnx_path, self.options, providers=ort.get_available_providers())
         self.input_name = self.ort_session.get_inputs()[0].name
         self.output_name = self.ort_session.get_outputs()[0].name
 

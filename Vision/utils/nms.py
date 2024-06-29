@@ -15,7 +15,7 @@ def nms(dets: ndarray, thresh: float):
     x2 = dets[:, 2]
     y2 = dets[:, 3]
 
-    areas = (y2 - y2 + 1) * (x2 - x1 + 1)
+    areas = (y2 - y1 + 1) * (x2 - x1 + 1)
     scores = dets[:, 4]
     keep = []
     index = scores.argsort()[::-1]
