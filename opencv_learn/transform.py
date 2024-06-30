@@ -1,0 +1,50 @@
+"""
+几何变换
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import cv2
+import numpy as np
+from numpy.typing import NDArray
+
+from opencv_learn.cv2_utils import img_show
+
+ROOT = Path(".").resolve().parent
+
+
+@img_show("warpAffine")
+def affine(img: NDArray) -> cv2.Mat | NDArray:
+    """仿射变换"""
+    height, width, _ = img.shape
+    M = cv2.getAffineTransform(
+        np.float32([[0, 0], [0, height], [width, 0]]), np.float32([[0, 0], [width / 2, height], [width, 0]])
+    )
+    dst = cv2.warpAffine(img, M, (width, height))
+    return dst
+
+
+@img_show("warpPerspective")
+def perspective(img: NDArray) -> cv2.Mat | NDArray:
+    """透视变换"""
+    height, width, _ = img.shape
+    M = cv2.getPerspectiveTransform(
+        np.float32([[0, 0], [0, height], [width, 0], [width, height]]),
+        np.float32([[width / 2, 0], [0, height], [width, 0], [width / 2, height]]),
+    )
+    dst = cv2.warpPerspective(img, M, (width, height))
+    return dst
+
+
+def main():
+    img_path = ROOT / "data/Ahri/Popstar Ahri.jpg"
+    img = cv2.imread(str(img_path))
+    img = cv2.resize(img, (0, 0), None, 0.2, 0.2)
+    affine(img)
+    perspective(img)
+
+
+if __name__ == "__main__":
+    main()

@@ -3,5 +3,5 @@
 ## .onnx 转换 .engine
 
 ```shell
-trtexec --onnx=onnx_file --saveEngine=engine_rile
+trtexec --onnx=onnx_file --saveEngine=engine_file
 ```

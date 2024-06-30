@@ -32,6 +32,12 @@ multi_line_output = 0
 [tool.autopep8]
 max_line_length = 120
 
+[tool.black]
+line-length = 120
+preview = true
+skip-string-normalization = true
+skip-magic-trailing-comma = true
+
 [tool.ruff]
 line-length = 120
 select = [

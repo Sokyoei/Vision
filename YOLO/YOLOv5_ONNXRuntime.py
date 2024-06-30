@@ -10,8 +10,6 @@ python export.py --weights model_path --include=onnx
 ```
 """
 
-from pathlib import Path
-
 import cv2
 import numpy as np
 import onnx
@@ -32,9 +30,7 @@ class YOLOv5ONNX(object):
 
         self.options = ort.SessionOptions()
         self.options.enable_profiling = True
-        self.ort_session = ort.InferenceSession(
-            onnx_path, self.options, providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
-        )
+        self.ort_session = ort.InferenceSession(onnx_path, self.options, ort.get_available_providers())
         self.input_name = self.ort_session.get_inputs()[0].name
         self.output_name = self.ort_session.get_outputs()[0].name
 

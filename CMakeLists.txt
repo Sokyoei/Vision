@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(Vision)
+project(Vision VERSION 0.0.1)
 
-enable_language(CUDA)
+include(CheckLanguage)
+check_language(CUDA)
+if(CMAKE_CUDA_COMPILER)
+    enable_language(CUDA)
+endif()
 
 set(CMAKE_CXX_STANDARD 20)
 

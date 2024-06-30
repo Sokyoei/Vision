@@ -21,8 +21,12 @@ config.h
 cifar*
 MNIST
 
-# CLion CMake build dir
+# ignore CLion CMake build dir
 cmake-build-*/
+
+# ignore point cloud data
+*.ply
+*.pcd
 
 ########################################################################################################################
 # Python
