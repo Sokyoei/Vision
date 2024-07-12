@@ -45,6 +45,7 @@ def read_write_pcl():
     pcd.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(0.01, 30))
 
     o3d.visualization.draw_geometries([pcd])
+
     # o3d.io.write_point_cloud()
 
 
