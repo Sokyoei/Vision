@@ -10,10 +10,13 @@ python export.py --weights model_path --include=onnx
 ```
 """
 
+from typing import List
+
 import cv2
 import numpy as np
 import onnx
 import onnxruntime as ort
+from numpy.typing import NDArray
 
 CLASSES = []
 
@@ -42,14 +45,21 @@ class YOLOv5ONNX(object):
         img = img.astype(np.float32)
         img /= 255.0
         img = np.expand_dims(img, axis=0)
-        pred = self.ort_session.run(None, {self.input_name: img})
-        return pred, img
+        preds: List[NDArray] = self.ort_session.run([self.output_name], {self.input_name: img})
+        return preds, img
+
+    def postprocess(self, preds: List[NDArray]):
+        """"""
+        num_classes = preds[0].shape[1]
+        for pred in preds:
+            for each in pred.squeeze():
+                print()
 
 
 if __name__ == "__main__":
     yolov5 = YOLOv5ONNX("../models/yolov5s.onnx")
-    pred, img = yolov5.inference("../images/bus.jpg")
-    print(pred)
+    preds, img = yolov5.inference("../images/bus.jpg")
+    yolov5.postprocess(preds)
     img = img.squeeze().transpose(1, 2, 0)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     cv2.imshow("img", img)

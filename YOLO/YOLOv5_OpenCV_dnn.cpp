@@ -1,24 +1,23 @@
+#include <filesystem>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include <opencv2/opencv.hpp>
 
+#include "yolo.hpp"
+
 namespace Ahri {
-struct YOLOResult {
-    int class_id;
-    float score;
-    cv::Rect box;
-};
-
-class YOLOv5Detector {
+class YOLOv5 {
 public:
-    YOLOv5Detector(std::string onnx_path, int height, int width, float threshold_score)
-        : _height(height), _width(width), _threshold_score(threshold_score) {
-        _net = cv::dnn::readNetFromONNX(onnx_path);
+    YOLOv5(std::filesystem::path onnx_path, int height, int width, float threshold_score)
+        : _onnx_path(onnx_path), _height(height), _width(width), _threshold_score(threshold_score) {
+        _net = cv::dnn::readNetFromONNX(_onnx_path.string());
     }
-    ~YOLOv5Detector() {}
+    ~YOLOv5() {}
 
-    void detect(cv::Mat& frame, std::vector<YOLOResult>& results) {
+    void preprocess() {}
+    std::vector<YOLOResult> inference(cv::Mat& frame, std::vector<YOLOResult>& results) {
         int width = frame.cols;
         int height = frame.rows;
         int max_ = std::max(width, height);
@@ -34,8 +33,10 @@ public:
         _net.setInput(blob);
         cv::Mat pred = _net.forward();
     }
+    void postprocess() {}
 
 private:
+    std::filesystem::path _onnx_path;
     cv::dnn::Net _net;
     float _threshold_score;
     int _height;

@@ -20,24 +20,34 @@ include(${PROJECT_SOURCE_DIR}/cmake/compiler.cmake)
 
 set(ROOT ${PROJECT_SOURCE_DIR})
 
-# config.h settings
 include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include)
-configure_file(
-    ${PROJECT_SOURCE_DIR}/config.h.cmake
-    ${PROJECT_SOURCE_DIR}/config.h
-)
 
 if(ONNXRuntime)
     # WARNING: if default, the onnxruntime.dll first well load in C:\Windows\System32\onnxruntime.dll
     find_package(ONNXRuntime MODULE REQUIRED)
+    if(ONNXRuntime_FOUND)
+        set(USE_ONNXRUNTIME true)
+    endif()
 endif(ONNXRuntime)
 
 find_package(OpenCV CONFIG REQUIRED)
-add_subdirectory(opencv_learn)
+if(OpenCV_FOUND)
+    set(USE_OPENCV true)
+    add_subdirectory(opencv_learn)
+endif()
 
 if(TensorRT)
     find_package(TensorRT MODULE REQUIRED)
-    add_subdirectory(tensorrt_learn)
+    if(TensorRT_FOUND)
+        set(USE_TENSORRT true)
+        add_subdirectory(tensorrt_learn)
+    endif()
 endif(TensorRT)
 
 add_subdirectory(YOLO)
+
+# config.h settings
+configure_file(
+    ${PROJECT_SOURCE_DIR}/config.h.cmake
+    ${PROJECT_SOURCE_DIR}/config.h
+)

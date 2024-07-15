@@ -1,8 +1,8 @@
 import numpy as np
-from numpy import ndarray
+from numpy.typing import NDArray
 
 
-def nms(dets: ndarray, thresh: float):
+def nms(dets: NDArray, thresh: float):
     """
     NMS(Non-Max Supperssion) 非极大值抑制
 

@@ -35,9 +35,6 @@ data
             ├───images.bin
             ├───points3D.bin
             └───project.ini
-
-
-│
 ```
 
 下载 [colmap](https://github.com/colmap/colmap)，用于特征提取和重建稀疏点云
