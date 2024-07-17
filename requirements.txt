@@ -3,4 +3,7 @@ torch
 torchvision
 albumentations
 opencv-contrib-python
+
+# Vision3D
 open3d
+plyfile

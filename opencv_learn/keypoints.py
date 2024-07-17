@@ -1,23 +1,35 @@
+"""
+keypoints 关键点检测
+"""
+
+from pathlib import Path
+from typing import Literal
+
 import cv2
 
-USE_SIFT = 1
-USE_ORB = 0
+from opencv_learn.cv2_utils import img_show
 
-if cv2.__version__ >= "4.5.5":
-    img = cv2.imread(r"../data/Ahri/Popstar Ahri.jpg")
+ROOT = Path(".").resolve().parent
+
+KeyPointsType = Literal["sift", "orb"]
+
+
+@img_show("keypoints", cv2.WINDOW_FREERATIO)
+def keypoints(keypoints_type: KeyPointsType):
+    img_path = ROOT / "data/Ahri/Popstar Ahri.jpg"
+    img = cv2.imread(str(img_path))
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    if USE_SIFT:
-        model = cv2.SIFT_create()
-    elif USE_ORB:
-        model = cv2.ORB_create(20000)
-    else:
-        raise NotImplementedError("please use SIFT or ORB")
-
+    model = {"sift": cv2.SIFT_create, "orb": cv2.ORB_create}.get(keypoints_type)(20000)
     keypoints = model.detect(gray, None)
     cv2.drawKeypoints(img, keypoints, img, (0, 255, 0))
+    return img
 
-    cv2.namedWindow("keypoints", cv2.WINDOW_FREERATIO)
-    cv2.imshow("keypoints", img)
-    cv2.waitKey()
-    cv2.destroyAllWindows()
+
+def main():
+    keypoints("sift")
+    keypoints("orb")
+
+
+if __name__ == '__main__':
+    main()

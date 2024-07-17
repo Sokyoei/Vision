@@ -3,3 +3,9 @@ target_link_libraries(image_base PRIVATE opencv_core opencv_imgproc opencv_highg
 
 add_executable(camera camera.cpp)
 target_link_libraries(camera PRIVATE opencv_core opencv_imgproc opencv_highgui)
+
+add_executable(keypoints keypoints.cpp)
+target_link_libraries(keypoints PRIVATE opencv_core opencv_imgproc opencv_highgui opencv_features2d)
+
+add_executable(morphological morphological.cpp)
+target_link_libraries(morphological PRIVATE opencv_core opencv_imgproc opencv_highgui)
