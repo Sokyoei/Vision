@@ -2,9 +2,8 @@ import torch
 from torch import Tensor, nn
 from torchvision import datasets
 
-from Vision.utils import vision_dataset
+from Vision.utils import DEVICE, vision_dataset
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 EPOCHS = 10
 
 

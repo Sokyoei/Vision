@@ -1,16 +1,14 @@
 from typing import Optional
 
+import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 def vision_dataset(dataset: datasets.VisionDataset, batch_size: Optional[int] = 64, num_workers: Optional[int] = 1):
-    transform = transforms.Compose(
-        [
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.5], std=[0.5]),
-        ]
-    )
+    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])])
 
     train_images = dataset("./", True, transform, download=True)
     train_images = dataset("./", False, transform, download=True)

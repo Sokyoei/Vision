@@ -6,8 +6,10 @@ from functools import wraps
 
 import cv2
 
+from Vision import VISION_ROOT
 
-def img_show(winname: str, flags=cv2.WINDOW_AUTOSIZE):
+
+def img_show(winname: str, flags=cv2.WINDOW_FREERATIO):
     def wrapper(func):
         @wraps(func)
         def inner(*args, **kwargs):
@@ -20,3 +22,6 @@ def img_show(winname: str, flags=cv2.WINDOW_AUTOSIZE):
         return inner
 
     return wrapper
+
+
+PopstarAhri = cv2.imread(str(VISION_ROOT / "data/Ahri/Popstar Ahri.jpg"))

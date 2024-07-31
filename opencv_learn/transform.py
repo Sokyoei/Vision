@@ -2,21 +2,15 @@
 几何变换
 """
 
-from __future__ import annotations
-
-from pathlib import Path
-
 import cv2
 import numpy as np
-from numpy.typing import NDArray
+from cv2.typing import MatLike
 
-from opencv_learn.cv2_utils import img_show
-
-ROOT = Path(".").resolve().parent
+from opencv_learn.cv2_utils import PopstarAhri, img_show
 
 
 @img_show("warpAffine")
-def affine(img: NDArray) -> cv2.Mat | NDArray:
+def affine(img: MatLike) -> MatLike:
     """仿射变换"""
     height, width, _ = img.shape
     M = cv2.getAffineTransform(
@@ -27,7 +21,7 @@ def affine(img: NDArray) -> cv2.Mat | NDArray:
 
 
 @img_show("warpPerspective")
-def perspective(img: NDArray) -> cv2.Mat | NDArray:
+def perspective(img: MatLike) -> MatLike:
     """透视变换"""
     height, width, _ = img.shape
     M = cv2.getPerspectiveTransform(
@@ -39,9 +33,7 @@ def perspective(img: NDArray) -> cv2.Mat | NDArray:
 
 
 def main():
-    img_path = ROOT / "data/Ahri/Popstar Ahri.jpg"
-    img = cv2.imread(str(img_path))
-    img = cv2.resize(img, (0, 0), None, 0.2, 0.2)
+    img = cv2.resize(PopstarAhri, (0, 0), None, 0.2, 0.2)
     affine(img)
     perspective(img)
 
