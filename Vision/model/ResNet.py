@@ -3,7 +3,6 @@ from torch import nn
 from torchvision import datasets, models
 from torchvision.datasets import FashionMNIST
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 EPOCHS = 10
 
 

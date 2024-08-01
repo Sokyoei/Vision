@@ -1,18 +1,20 @@
-from typing import Optional
+from abc import abstractmethod
 
 import torch
-from torch.utils.data import DataLoader
-from torchvision import datasets, transforms
+from torch.utils.data import Dataset
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def vision_dataset(dataset: datasets.VisionDataset, batch_size: Optional[int] = 64, num_workers: Optional[int] = 1):
-    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])])
+class AbstractTorchDataset(Dataset):
 
-    train_images = dataset("./", True, transform, download=True)
-    train_images = dataset("./", False, transform, download=True)
+    def __init__(self) -> None:
+        super().__init__()
+        self.imgs = list()
 
-    train_data = DataLoader(train_images, batch_size, True, num_workers=num_workers)
-    test_data = DataLoader(train_images, batch_size, num_workers=num_workers)
-    return train_data, test_data
+    @abstractmethod
+    def __getitem__(self, item):
+        pass
+
+    def __len__(self):
+        return len(self.imgs)

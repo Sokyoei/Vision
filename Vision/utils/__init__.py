@@ -10,7 +10,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from .nms import nms
-from .torch_utils import DEVICE, vision_dataset
+from .torch_utils import DEVICE
 
 
 def convert(x) -> NDArray:
@@ -30,4 +30,4 @@ def convert(x) -> NDArray:
     return y
 
 
-__all__ = ["vision_dataset", "nms", "DEVICE"]
+__all__ = ["nms", "DEVICE"]

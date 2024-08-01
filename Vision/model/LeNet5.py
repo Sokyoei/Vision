@@ -1,10 +1,13 @@
 import torch
 from torch import Tensor, nn
-from torchvision import datasets
+from torch.utils.data import DataLoader
+from torchvision import datasets, transforms
 
-from Vision.utils import DEVICE, vision_dataset
+from Vision.utils import DEVICE
 
 EPOCHS = 10
+BATCH_SIZE = 64
+NUM_WORKERS = 1
 
 
 class LeNet5(nn.Module):
@@ -12,19 +15,11 @@ class LeNet5(nn.Module):
     def __init__(self, n_classes) -> None:
         super().__init__()
         # Nx1x32x32
-        self.conv1 = nn.Sequential(
-            nn.Conv2d(1, 6, 5, 1, 2),
-            nn.BatchNorm2d(6),
-            nn.ReLU(),
-        )
+        self.conv1 = nn.Sequential(nn.Conv2d(1, 6, 5, 1, 2), nn.BatchNorm2d(6), nn.ReLU())
         # Nx6x28x28
         self.pool1 = nn.MaxPool2d(2, 2, 0)
         # Nx6x14x14
-        self.conv2 = nn.Sequential(
-            nn.Conv2d(6, 16, 5, 1, 0),
-            nn.BatchNorm2d(16),
-            nn.ReLU(),
-        )
+        self.conv2 = nn.Sequential(nn.Conv2d(6, 16, 5, 1, 0), nn.BatchNorm2d(16), nn.ReLU())
         # Nx16x10x10
         self.pool2 = nn.MaxPool2d(2, 2, 0)
         # Nx16x5x5
@@ -47,8 +42,19 @@ class LeNet5(nn.Module):
         return x7
 
 
+def mnist():
+    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])])
+    train_images = datasets.MNIST("./", True, transform, download=True)
+    test_images = datasets.MNIST("./", False, transform, download=True)
+    train_data = DataLoader(train_images, BATCH_SIZE, True, num_workers=NUM_WORKERS)
+    test_data = DataLoader(test_images, BATCH_SIZE, num_workers=NUM_WORKERS)
+    return train_data, test_data
+
+
+train_data, test_data = mnist()
+
+
 def train():
-    train_data, test_data = vision_dataset(datasets.MNIST)
     net = LeNet5(10).to(DEVICE)
     losser = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9, weight_decay=0.005)
