@@ -15,6 +15,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 
 option(ONNXRuntime "enable ONNXRuntime" ON)
 option(TensorRT "enable TensorRT" OFF)
+option(IntelRealSense "enable Intel IntelRealSense" OFF)
 
 include(${PROJECT_SOURCE_DIR}/cmake/compiler.cmake)
 
@@ -43,6 +44,15 @@ if(TensorRT)
         add_subdirectory(tensorrt_learn)
     endif()
 endif(TensorRT)
+
+if(IntelRealSense)
+    find_package(realsense2 CONFIG REQUIRED)
+    # target_link_libraries(main PRIVATE realsense2::fw realsense2::rsutils realsense2::realsense2 realsense2::realsense-file)
+    if(realsense2_FOUND)
+        set(USE_REALSENSE2 true)
+        add_subdirectory(realsense_learn)
+    endif(realsense2_FOUND)
+endif(IntelRealSense)
 
 add_subdirectory(YOLO)
 
