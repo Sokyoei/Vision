@@ -10,10 +10,12 @@ import numpy as np
 from numpy.typing import NDArray
 
 from .nms import nms
-from .torch_utils import DEVICE
+from .onnx_utils import AbstractONNXLoader
+from .plots import plot_image
+from .torch_utils import DEVICE, AbstractTorchDataset
 
 
-def convert(x) -> NDArray:
+def xywh_to_xyxy(x) -> NDArray:
     """(x,y,w,h) -> (x1,y1,x2,y2)
 
     Args:
@@ -23,11 +25,11 @@ def convert(x) -> NDArray:
         _type_: _description_
     """
     y = np.copy(x)
-    y[:, 0] = x[:, 0] - x[:2] / 2
-    y[:, 1] = x[:, 1] - x[:3] / 2
-    y[:, 2] = x[:, 0] + x[:2] / 2
-    y[:, 3] = x[:, 1] + x[:3] / 2
+    y[:, 0] = x[:, 0] - x[:, 2] / 2
+    y[:, 1] = x[:, 1] - x[:, 3] / 2
+    y[:, 2] = x[:, 0] + x[:, 2] / 2
+    y[:, 3] = x[:, 1] + x[:, 3] / 2
     return y
 
 
-__all__ = ["nms", "DEVICE"]
+__all__ = ["AbstractONNXLoader", "AbstractTorchDataset", "nms", "DEVICE", "xywh_to_xyxy", "plot_image"]

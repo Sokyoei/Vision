@@ -33,7 +33,7 @@ def nms(dets: NDArray, thresh: float):
 
         overlaps = w * h
 
-        ious = overlaps / (areas[i] + areas[index[1:] - overlaps])
+        ious = overlaps / (areas[i] + areas[index[1:]] - overlaps)
         idx = np.where(ious <= thresh)[0]
         index = index[idx + 1]
     return keep
