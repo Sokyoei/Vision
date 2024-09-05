@@ -1,0 +1,3 @@
+mediapipe
+mediapipe-model-maker
+# google-colab@git+https://github.com/googlecolab/colabtools

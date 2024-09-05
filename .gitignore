@@ -5,6 +5,7 @@
 # ignore model file
 /models/
 *.pt
+*.pth
 *.onnx
 *.engine
 

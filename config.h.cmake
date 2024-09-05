@@ -8,5 +8,6 @@
 #cmakedefine USE_ONNXRUNTIME
 #cmakedefine USE_TENSORRT
 #cmakedefine USE_REALSENSE2
+#cmakedefine USE_FFMPEG
 
 #endif  // !CONFIG_H
