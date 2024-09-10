@@ -43,6 +43,7 @@ find_package(FFMPEG REQUIRED)
 # target_link_libraries(main PRIVATE ${FFMPEG_LIBRARIES})
 if(FFMPEG_FOUND)
     set(USE_FFMPEG true)
+    add_subdirectory(ffmpeg_learn)
 endif(FFMPEG_FOUND)
 
 if(TensorRT)

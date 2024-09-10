@@ -41,7 +41,8 @@ data
 
 ## tools
 
-[SIBR_viewer](https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/binaries/viewers.zip)
+- [SIBR_viewer](https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/binaries/viewers.zip)
+- [SuperSplat](https://playcanvas.com/supersplat/editor/)
 
 运行 SIBR_viewer
 
