@@ -6,6 +6,10 @@
  *
  */
 
+#pragma once
+#ifndef OPENCV_UTILS_HPP
+#define OPENCV_UTILS_HPP
+
 #include <opencv2/opencv.hpp>
 
 namespace Ahri {
@@ -15,3 +19,5 @@ namespace Ahri {
     cv::waitKey();                   \
     cv::destroyWindow(winname);
 }  // namespace Ahri
+
+#endif  // !OPENCV_UTILS_HPP

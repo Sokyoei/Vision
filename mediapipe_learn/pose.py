@@ -13,7 +13,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
 
-def inference_img(image_files: List[str]):
+def inference_images(image_files: List[str]):
     # For static images:
     BG_COLOR = (192, 192, 192)  # gray
     with mp_pose.Pose(
@@ -87,7 +87,7 @@ def inference_camera():
 
 
 def main():
-    # inference_img([r"D:\Download\7Q18l-dtisZ21T3cS1kw-16o.jpg"])
+    # inference_images([r"D:\Download\7Q18l-dtisZ21T3cS1kw-16o.jpg"])
     inference_camera()
 
 

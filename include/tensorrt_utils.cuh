@@ -6,10 +6,15 @@
  *
  */
 
+#pragma once
+#ifndef TENSORRT_UTILS_CUH
+#define TENSORRT_UTILS_CUH
+
 #include <fstream>
 #include <iostream>
 #include <string>
 
+#ifdef __NVCC__
 #include <NvInfer.h>
 #include <NvOnnxParser.h>
 
@@ -88,3 +93,7 @@ void load_engine(const std::string& engine_path,
 }
 }  // namespace TRT
 }  // namespace Ahri
+
+#endif  // __NVCC__
+
+#endif  // !TENSORRT_UTILS_CUH

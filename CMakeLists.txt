@@ -23,6 +23,14 @@ set(ROOT ${PROJECT_SOURCE_DIR})
 
 include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include)
 
+# thrid libraries
+find_package(fmt CONFIG REQUIRED)
+# target_link_libraries(main PRIVATE fmt::fmt)
+# target_link_libraries(main PRIVATE fmt::fmt-header-only)
+if(fmt_FOUND)
+    set(USE_FMT true)
+endif(fmt_FOUND)
+
 if(ONNXRuntime)
     # WARNING: if default, the onnxruntime.dll first well load in C:\Windows\System32\onnxruntime.dll
     find_package(ONNXRuntime MODULE REQUIRED)

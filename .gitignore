@@ -8,6 +8,8 @@
 *.pth
 *.onnx
 *.engine
+*.trtmodel
+*.tflite
 
 # ignore image file
 /images/

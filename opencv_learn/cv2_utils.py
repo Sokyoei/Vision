@@ -9,6 +9,21 @@ import cv2
 
 from Vision import VISION_ROOT
 
+# colors for OpenCV
+RED = [0, 0, 255]
+GREEN = [0, 255, 0]
+BLUE = [255, 0, 0]
+BLACK = [0, 0, 0]
+WHITE = [255, 255, 255]
+YELLOW = [0, 255, 255]
+VIOLET = [238, 130, 238]
+PINK = [203, 192, 255]
+DEEPPINK = [147, 20, 255]
+PURPLE = [128, 0, 128]
+SKYBLUE = [230, 216, 173]
+GOLD = [10, 215, 255]
+DARKGRAY = [169, 169, 169]
+
 
 def img_show(winname: str, flags=cv2.WINDOW_FREERATIO):
     def wrapper(func):

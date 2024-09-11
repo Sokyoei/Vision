@@ -6,6 +6,10 @@
  *
  */
 
+#pragma once
+#ifndef ONNX_UTILS_HPP
+#define ONNX_UTILS_HPP
+
 #include <filesystem>
 #include <iostream>
 #include <ranges>
@@ -46,3 +50,5 @@ private:
     Ort::SessionOptions _session_options;
 };
 }  // namespace Ahri
+
+#endif // !ONNX_UTILS_HPP
