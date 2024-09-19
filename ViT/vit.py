@@ -5,8 +5,31 @@ Vision Transformer
 import torch
 from torch import Tensor, nn
 from torch.nn import functional as F
+from torch.utils.data import DataLoader
+from torchvision import datasets, models, transforms
 
 from Vision.utils import DEVICE
+
+
+class PreNorm(nn.Module):
+    def __init__(self, dim, fn):
+        super().__init__()
+        self.norm = nn.LayerNorm(dim)
+        self.fn = fn
+
+    def forward(self, x, **kwargs):
+        return self.fn(self.norm(x), **kwargs)
+
+
+class FeedForward(nn.Module):
+    def __init__(self, dim, hidden_dim, dropout=0.0):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(dim, hidden_dim), nn.GELU(), nn.Dropout(dropout), nn.Linear(hidden_dim, dim), nn.Dropout(dropout)
+        )
+
+    def forward(self, x):
+        return self.net(x)
 
 
 class PatchEmbedding(nn.Module):
@@ -46,7 +69,24 @@ class Vit(nn.Module):
         return x
 
 
+def torch_vit():
+    test = datasets.CIFAR10(
+        "./", False, transforms.Compose([transforms.ToTensor(), transforms.Resize(224)]), download=True
+    )
+    test_data = DataLoader(test, 64)
+
+    vit = models.vit_b_16(weights=models.ViT_B_16_Weights.DEFAULT)
+    vit.eval()
+
+    for x_test, y_test in test_data:
+        x_test = x_test.to(DEVICE)
+        y_test = y_test.to(DEVICE)
+        y_pred: Tensor = vit(x_test)
+    print()
+
+
 def main():
+    torch_vit()
     vit = Vit(224, 16, 128, 20, True, 1, F.relu, 4, 10).to(DEVICE)
     x = torch.randn(1, 3, 224, 224).to(DEVICE)
     out: Tensor = vit(x)

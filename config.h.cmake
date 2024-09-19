@@ -10,5 +10,7 @@
 #cmakedefine USE_TENSORRT
 #cmakedefine USE_REALSENSE2
 #cmakedefine USE_FFMPEG
+#cmakedefine USE_GLAD
+#cmakedefine USE_GLFW3
 
 #endif  // !CONFIG_H
