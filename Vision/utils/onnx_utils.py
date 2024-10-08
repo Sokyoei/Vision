@@ -7,7 +7,7 @@ import onnx
 import onnxruntime as ort
 
 
-class AbstractONNXLoader(ABC):
+class AbstractONNXRuntimeInference(ABC):
 
     def __init__(self, onnx_path: str | os.PathLike) -> None:
         """ONNX 模型加载器
@@ -28,12 +28,19 @@ class AbstractONNXLoader(ABC):
             raise f"{onnx_path} model error"
 
         self.options = ort.SessionOptions()
-        self.options.enable_profiling = True
+        # self.options.enable_profiling = True
         self.ort_session = ort.InferenceSession(self.onnx_path, self.options, providers=ort.get_available_providers())
         self.input_name = self.ort_session.get_inputs()[0].name
         self.output_name = self.ort_session.get_outputs()[0].name
 
+    def interface(self, image):
+        pred = self.ort_session.run([self.output_name], {self.input_name: image})
+        return pred
+
     @abstractmethod
-    def interface(self):
-        """推理接口函数"""
+    def preprocess(self):
+        pass
+
+    @abstractmethod
+    def postprocess(self):
         pass

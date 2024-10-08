@@ -10,7 +10,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from .nms import nms
-from .onnx_utils import AbstractONNXLoader
+from .onnx_utils import AbstractONNXRuntimeInference
 from .plots import plot_image
 from .torch_utils import DEVICE, AbstractTorchDataset
 
@@ -32,4 +32,4 @@ def xywh_to_xyxy(x) -> NDArray:
     return y
 
 
-__all__ = ["AbstractONNXLoader", "AbstractTorchDataset", "nms", "DEVICE", "xywh_to_xyxy", "plot_image"]
+__all__ = ["AbstractONNXRuntimeInference", "AbstractTorchDataset", "nms", "DEVICE", "xywh_to_xyxy", "plot_image"]
