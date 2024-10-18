@@ -9,8 +9,11 @@ from numpy.typing import NDArray
 
 class AbstractTensorRTInference(ABC):
 
-    def __init__(self, model_path: str):
+    def __init__(self, model_path: str, in_thread: bool = False):
         """初始化并加载 TensorRT 模型"""
+        self.in_thread = in_thread
+        if self.in_thread:
+            self.cfx = cuda.Device(0).make_context()  # set is for inference in thread
         self.logger = trt.Logger(trt.Logger.WARNING)
         self.runtime = trt.Runtime(self.logger)
         self.engine = self.load_engine(model_path)
@@ -41,6 +44,9 @@ class AbstractTensorRTInference(ABC):
             self.input_shape
         ), f"输入数据的形状应为 {self.input_shape}, 但得到 {input_data.shape}"
 
+        if self.in_thread:
+            self.cfx.push()
+
         self.context.set_binding_shape(0, (1, 3, input_data.shape[2], input_data.shape[3]))
 
         # 将输入数据传输到 GPU
@@ -55,6 +61,9 @@ class AbstractTensorRTInference(ABC):
 
         # 同步 CUDA 流
         self.stream.synchronize()
+
+        if self.in_thread:
+            self.cfx.pop()
 
         return output_data
 

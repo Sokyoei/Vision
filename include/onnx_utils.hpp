@@ -16,11 +16,13 @@
 #include <string>
 
 #include <onnxruntime_cxx_api.h>
+#include <opencv2/opencv.hpp>
 
 namespace Ahri {
-class AbstractONNXLoader {
+namespace ONNX {
+class AbstractONNXRuntimeInference {
 public:
-    AbstractONNXLoader(std::filesystem::path onnx_path) : _onnx_path(onnx_path) {
+    AbstractONNXRuntimeInference(std::filesystem::path onnx_path) : _onnx_path(onnx_path) {
         _env = Ort::Env{ORT_LOGGING_LEVEL_WARNING, "default"};
         _session_options.SetIntraOpNumThreads(1);
         _session_options.SetGraphOptimizationLevel(ORT_ENABLE_ALL);
@@ -40,7 +42,7 @@ public:
             std::cout << i << '\n';
         }
     }
-    virtual ~AbstractONNXLoader() {}
+    virtual ~AbstractONNXRuntimeInference() {}
     virtual void inference() = 0;
 
 private:
@@ -49,6 +51,7 @@ private:
     Ort::Session _session{nullptr};
     Ort::SessionOptions _session_options;
 };
+}  // namespace ONNX
 }  // namespace Ahri
 
-#endif // !ONNX_UTILS_HPP
+#endif  // !ONNX_UTILS_HPP
