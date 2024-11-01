@@ -13,7 +13,7 @@ std::vector<torch::Tensor> test_backward_cpu(const torch::Tensor& c) {
     return {a_grad, b_grad};
 }
 
-PYBIND11_MODULE(TORCH_EXTNSION_NAME, m) {
+PYBIND11_MODULE(cpp_extension_learn, m) {
     m.def("forward", &test_forward_cpu, "test forward");
     m.def("backward", &test_backward_cpu, "test backward");
 }

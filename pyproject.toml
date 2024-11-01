@@ -7,13 +7,17 @@ name = "Vision"
 version = "0.0.1"
 authors = [{ name = "Sokyoei" }]
 license = { text = "MIT" }
-dependencies = ["numpy", "opencv-python", "ploygraphy"]
+dependencies = ["numpy", "opencv-python"]
 
 [project.optional-dependencies]
-dev = ["isort", "ruff", "autopep8"]
+dev = ["isort", "ruff", "black"]
 test = ["pytest"]
-tensorrt = ["tensorrt", "cuda-python"]
+tensorrt = ["tensorrt", "cuda-python", "pycuda", "ploygraphy"]
 onnx = ["onnx", "onnx-surgeon", "onnxruntime-gpu"]
+mediapipe = ["mediapipe"]
+tracking = ["boxmot"]
+opencv = ["imutils"]
+pose = ["rtmlib"]
 
 [tool.rye]
 dev-dependencies = ["pytest>=8.2.1"]
