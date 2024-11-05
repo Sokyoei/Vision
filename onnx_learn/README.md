@@ -8,17 +8,17 @@ ONNX(Open Neural Network Exchange)
 
 ## onnx 模型格式
 
-[onnx.proto](https://github.com/onnx/onnx/blob/main/onnx/onnx.proto)
+onnx 中的各类型 proto 定义 [onnx.in.proto](https://github.com/onnx/onnx/blob/main/onnx/onnx.in.proto)
 
 ```text
-ModelProto
-│
-└───GraphProto
-    ├───node(NodeProto) 模型计算节点
-    ├───input(ValueInfoProto) 模型输入节点
-    ├───output(ValueInfoProto) 模型输出节点
-    └───initializer(TensorProto) 模型权重参数
+ModelProto                              整个模型的信息
+└───GraphProto                          整个网络的信息
+    ├───NodeProto(node)                 各个计算节点的信息，如 Conv, Linear
+    ├───ValueInfoProto(input/output)    模型输入输出节点的信息
+    └───TensorProto(initializer)        模型权重的信息
 ```
+
+onnx 中的各类型算子支持的版本(或修改) [Operators.md](https://github.com/onnx/onnx/blob/main/docs/Operators.md)
 
 ## ONNXRuntime
 
