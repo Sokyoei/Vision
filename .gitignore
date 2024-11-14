@@ -32,10 +32,16 @@ cmake-build-*/
 *.pcd
 
 # ignore video file
-/video/
+/videos/
 *.mp4
 *.mkv
 *.avi
+
+# ignore image file
+*.jpg
+*.jpeg
+*.png
+*.gif
 
 # ignore wandb dir
 wandb/

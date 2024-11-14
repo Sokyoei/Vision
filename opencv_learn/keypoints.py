@@ -7,7 +7,7 @@ from typing import Literal
 import cv2
 from cv2.typing import MatLike
 
-from opencv_learn.cv2_utils import PopstarAhri, img_show
+from Vision.utils.cv2_utils import PopstarAhri, img_show
 
 KeyPointsType = Literal["sift", "orb"]
 

@@ -12,8 +12,15 @@ dependencies = ["numpy", "opencv-python"]
 [project.optional-dependencies]
 dev = ["isort", "ruff", "black"]
 test = ["pytest"]
+pytorch = ["timm"]
 tensorrt = ["tensorrt", "cuda-python", "pycuda", "ploygraphy"]
-onnx = ["onnx", "onnx-surgeon", "onnxruntime-gpu"]
+onnx = [
+    "onnx",
+    "onnx-graphsurgeon",
+    "onnxruntime-gpu",   # or onnxruntime(cpu ver.)
+    "onnx-simplifier",
+]
+vit = ["vit-pytorch"]
 mediapipe = ["mediapipe"]
 tracking = ["boxmot"]
 opencv = ["imutils"]
