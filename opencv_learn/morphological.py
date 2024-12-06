@@ -11,6 +11,7 @@ from Vision.utils.cv2_utils import PopstarAhri, img_show
 
 @img_show("erode")
 def erode(img: MatLike) -> MatLike:
+    """腐蚀"""
     kernel = np.ones(shape=(5, 5), dtype=np.uint8)
     dst = cv2.erode(img, kernel)
     return dst
@@ -18,6 +19,7 @@ def erode(img: MatLike) -> MatLike:
 
 @img_show("dilate")
 def dilate(img: MatLike) -> MatLike:
+    """膨胀"""
     kernel = np.ones(shape=(5, 5), dtype=np.uint8)
     dst = cv2.dilate(img, kernel)
     return dst
@@ -25,6 +27,7 @@ def dilate(img: MatLike) -> MatLike:
 
 @img_show("open")
 def open_(img: MatLike) -> MatLike:
+    """开运算：先腐蚀后膨胀，用来移除由图像噪音形成的斑点"""
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
     dst = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
     return dst
@@ -32,6 +35,7 @@ def open_(img: MatLike) -> MatLike:
 
 @img_show("close")
 def close(img: MatLike) -> MatLike:
+    """闭运算：先膨胀后腐蚀，用来连接被误分为许多小块的对象"""
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
     dst = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
     return dst
@@ -39,6 +43,7 @@ def close(img: MatLike) -> MatLike:
 
 @img_show("gradient")
 def gradient(img: MatLike) -> MatLike:
+    """形态学梯度"""
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
     dst = cv2.morphologyEx(img, cv2.MORPH_GRADIENT, kernel)
     return dst
@@ -46,6 +51,11 @@ def gradient(img: MatLike) -> MatLike:
 
 @img_show("tophat")
 def tophat(img: MatLike) -> MatLike:
+    """
+    顶帽，又称礼帽
+
+    tophat = open - src
+    """
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
     dst = cv2.morphologyEx(img, cv2.MORPH_TOPHAT, kernel)
     return dst
@@ -53,6 +63,11 @@ def tophat(img: MatLike) -> MatLike:
 
 @img_show("blackhat")
 def blackhat(img: MatLike) -> MatLike:
+    """
+    黑帽
+
+    blackhat = close - src
+    """
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
     dst = cv2.morphologyEx(img, cv2.MORPH_BLACKHAT, kernel)
     return dst
