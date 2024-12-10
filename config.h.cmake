@@ -12,5 +12,6 @@
 #cmakedefine USE_FFMPEG
 #cmakedefine USE_GLAD
 #cmakedefine USE_GLFW3
+#cmakedefine USE_IMGUI
 
 #endif  // !CONFIG_H
