@@ -1,1 +1,0 @@
-# [FFmpeg](https://ffmpeg.org/)

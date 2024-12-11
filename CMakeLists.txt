@@ -17,7 +17,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 option(ONNXRuntime "enable ONNXRuntime" ON)
 option(TensorRT "enable TensorRT" OFF)
 option(IntelRealSense "enable Intel IntelRealSense" OFF)
-option(OpenGL_Glad "enable OpenGL Glad" OFF)
 option(Application "enable Application" OFF)
 
 include(${PROJECT_SOURCE_DIR}/cmake/compiler.cmake)
@@ -30,10 +29,6 @@ if(OpenCV_FOUND)
     add_subdirectory(opencv_learn)
 endif(OpenCV_FOUND)
 
-if(FFMPEG_FOUND)
-    add_subdirectory(ffmpeg_learn)
-endif(FFMPEG_FOUND)
-
 if(TensorRT AND TensorRT_FOUND)
     add_subdirectory(tensorrt_learn)
 endif(TensorRT AND TensorRT_FOUND)
@@ -43,16 +38,6 @@ if(IntelRealSense)
         add_subdirectory(realsense_learn)
     endif(realsense2_FOUND)
 endif(IntelRealSense)
-
-if(OpenGL_Glad)
-    if((glad_FOUND) AND (glfw3_FOUND))
-        add_subdirectory(opengl_learn)
-    endif((glad_FOUND) AND (glfw3_FOUND))
-endif(OpenGL_Glad)
-
-if(WIN32)
-    add_subdirectory(DirectX_learn)
-endif(WIN32)
 
 add_subdirectory(YOLO)
 
