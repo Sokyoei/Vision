@@ -25,6 +25,7 @@ mediapipe = ["mediapipe"]
 tracking = ["boxmot"]
 opencv = ["imutils"]
 pose = ["rtmlib"]
+ocr = ["pytesseract", "pyocr", "easyocr"]
 
 [tool.rye]
 dev-dependencies = ["pytest>=8.2.1"]
