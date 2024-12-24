@@ -58,3 +58,29 @@ def hex_to_bgr(hex_color: str) -> Tuple[int, int, int]:
     g = int(hex_color[2:4], 16)
     b = int(hex_color[4:6], 16)
     return (b, g, r)
+
+
+def opencv_to_pillow(img: MatLike) -> Image.Image:
+    return Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+
+
+def pillow_to_opencv(img: Image.Image) -> MatLike:
+    return cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
+
+
+def mouse_click(img: MatLike):
+    """鼠标点击"""
+
+    def mouse_callback(event, x, y, flags, userdata):
+        if event == cv2.EVENT_LBUTTONDOWN:  # 左键点击
+            print(f"({x}, {y})")
+            cv2.circle(img, (x, y), 3, (0, 255, 0), -1)  # 在图像上绘制一个红色圆点
+            cv2.putText(img, f'({x}, {y})', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)  # 在图像上显示坐标
+
+    cv2.namedWindow("mouse_click", cv2.WINDOW_FREERATIO)
+    cv2.setMouseCallback("mouse_click", mouse_callback)
+    while True:
+        cv2.imshow("mouse_click", img)
+        if cv2.waitKey(1) == 27:
+            break
+    cv2.destroyWindow("mouse_click")
