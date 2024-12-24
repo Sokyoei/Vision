@@ -1,0 +1,1 @@
+trtexec --onnx=onnx_file --memPoolSize=workspace:2048 --saveEngine=engine_file --verbose --profilingVerbosity=detailed --dumpOutput --dumpProfile --dumpLayerInfo --exportOutput=build_output.log --exportProfile=build_profile.log --exportLayerInfo=build_layer_info.log --iterations=50 --fp16
