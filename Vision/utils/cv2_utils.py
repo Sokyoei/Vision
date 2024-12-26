@@ -6,6 +6,9 @@ from functools import wraps
 from typing import Tuple
 
 import cv2
+import numpy as np
+from cv2.typing import MatLike
+from PIL import Image
 
 from Vision import VISION_ROOT
 
