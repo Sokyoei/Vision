@@ -6,6 +6,8 @@ from pprint import pprint
 from PIL import Image
 from PIL.ExifTags import TAGS
 
+from Vision import SOKYOEI_DATA_DIR
+
 
 class EXIF(object):
 
@@ -30,7 +32,7 @@ class EXIF(object):
 
 def main():
     parser = ArgumentParser()
-    parser.add_argument("-p", "--path", default="../data/Ahri/Popstar Ahri.jpg", type=str)
+    parser.add_argument("-p", "--path", default=SOKYOEI_DATA_DIR / "Ahri/Popstar Ahri.jpg", type=str)
     parser.add_argument("-o", "--output", default=".", type=str)
     parser.add_argument("-t", "--type", default="jpg", type=str)
     args = parser.parse_args()
