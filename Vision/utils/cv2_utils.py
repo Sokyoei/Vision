@@ -3,14 +3,16 @@ opencv-python utils
 """
 
 from functools import wraps
-from typing import Tuple
+from typing import Literal, Tuple
 
 import cv2
 import numpy as np
 from cv2.typing import MatLike
 from PIL import Image
 
-from Vision import VISION_ROOT
+from Vision import SOKYOEI_DATA_DIR
+
+ColorType = Literal["red", "green", "blue", "yellow"]
 
 # colors for OpenCV
 RED = [0, 0, 255]
@@ -28,7 +30,7 @@ GOLD = [10, 215, 255]
 DARKGRAY = [169, 169, 169]
 
 
-def img_show(winname: str, flags=cv2.WINDOW_FREERATIO):
+def img_show(winname: str, flags: int = cv2.WINDOW_FREERATIO):
     def wrapper(func):
         @wraps(func)
         def inner(*args, **kwargs):
@@ -43,7 +45,7 @@ def img_show(winname: str, flags=cv2.WINDOW_FREERATIO):
     return wrapper
 
 
-PopstarAhri = cv2.imread(str(VISION_ROOT / "data/Ahri/Popstar Ahri.jpg"))
+PopstarAhri = cv2.imread(str(SOKYOEI_DATA_DIR / "Ahri/Popstar Ahri.jpg"))
 
 
 def hex_to_bgr(hex_color: str) -> Tuple[int, int, int]:

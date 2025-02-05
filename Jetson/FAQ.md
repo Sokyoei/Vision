@@ -6,11 +6,14 @@
 
 ```shell
 # install jtop
-pip install jetson-stats
+sudo apt install python3-pip
+sudo pip install jetson-stats
 # or build from source
 git clone https://github.com/rbonghi/jetson_stats
 cd jetson_stats
 python setup.py install
+
+reboot
 
 sudo jtop
 ```

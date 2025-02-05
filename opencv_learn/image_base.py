@@ -1,13 +1,11 @@
-from pathlib import Path
-
 import cv2
 
-ROOT = Path(".").resolve().parent
+from Vision import SOKYOEI_DATA_DIR
 
 
 def main():
-    img_path = ROOT / "data/Ahri/Popstar Ahri.jpg"
-    # img_path = ROOT / "data/Ahri/星之守护者 永绽盛芒 阿狸.jpg"
+    img_path = SOKYOEI_DATA_DIR / "Ahri/Popstar Ahri.jpg"
+    # img_path = SOKYOEI_DATA_DIR / "Ahri/星之守护者 永绽盛芒 阿狸.jpg"
 
     img = cv2.imread(str(img_path))
     # HACK: CJK 路径，不建议这么做，尽量使用 ASCII 路径

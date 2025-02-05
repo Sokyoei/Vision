@@ -13,8 +13,8 @@
 #include <opencv2/features2d.hpp>
 #include <opencv2/opencv.hpp>
 
+#include "Vision.hpp"
 #include "color.hpp"
-#include "config.h"
 
 namespace Ahri {
 enum class KeyPointsType {
@@ -37,7 +37,7 @@ void keypoints(cv::Mat& img) {
 }  // namespace Ahri
 
 int main(int argc, char const* argv[]) {
-    auto img_path = std::filesystem::path(ROOT) / "data/Ahri/Popstar Ahri.jpg";
+    auto img_path = std::filesystem::path(SOKYOEI_DATA_DIR) / "Ahri/Popstar Ahri.jpg";
     auto img = cv::imread(img_path.string());
     Ahri::keypoints(img);
     return 0;

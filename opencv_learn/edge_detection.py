@@ -2,17 +2,16 @@
 Edge Detection 边缘检测
 """
 
-from pathlib import Path
-
 import cv2
+
+from Vision import SOKYOEI_DATA_DIR
 
 WIN_NAME = "Canny"
 
 min_threshold = 10
 max_threshold = 100
 
-ROOT = Path(".").resolve().parent
-img = cv2.imread(str(ROOT / "data/Ahri/Popstar Ahri.jpg"))
+img = cv2.imread(str(SOKYOEI_DATA_DIR / "Ahri/Popstar Ahri.jpg"))
 img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 img = cv2.GaussianBlur(img, (3, 3), 0.1)
 
