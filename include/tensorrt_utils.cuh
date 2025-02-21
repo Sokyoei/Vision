@@ -12,6 +12,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <string>
 
 #ifdef __NVCC__
@@ -91,6 +92,55 @@ void load_engine(const std::string& engine_path,
     engine.reset(runtime->deserializeCudaEngine(data.data(), data.size()));
     context.reset(engine->createExecutionContext());
 }
+
+class AbstructTensorRTInference {
+public:
+    /**
+     * @brief Constructor
+     * @param model_path onnx or engine model path
+     */
+    AbstructTensorRTInference(const std::string model_path) : _model_path(model_path) { cudaStreamCreate(&_stream); }
+
+    ~AbstructTensorRTInference() {
+        cudaStreamDestroy(_stream);
+        _context->destroy();
+    }
+
+    void inference() {
+        // _context->enqueueV2(buffers, _stream, nullptr);
+        cudaStreamSynchronize(_stream);
+    }
+
+    void load_engine() {
+        std::ifstream file{_model_path, std::ios::binary};
+        std::vector<char> data;
+
+        file.seekg(0, file.end);
+        const auto size = file.tellg();
+        file.seekg(0, file.beg);
+
+        data.resize(size);
+        file.read(data.data(), size);
+        file.close();
+
+        _runtime = std::make_unique<nvinfer1::IRuntime>(nvinfer1::createInferRuntime(logger));
+        _engine.reset(_runtime->deserializeCudaEngine(data.data(), data.size()));
+        _context.reset(_engine->createExecutionContext());
+    }
+
+    void save_engine() {
+        auto model_stream = std::make_unique<nvinfer1::IHostMemory>(_engine->serialize());
+        std::ofstream f(_model_path, std::ios::binary);
+        f.write(reinterpret_cast<const char*>(model_stream->data()), model_stream->size());
+    }
+
+private:
+    const std::string _model_path;
+    cudaStream_t _stream;
+    std::unique_ptr<nvinfer1::ICudaEngine> _engine;
+    std::unique_ptr<nvinfer1::IExecutionContext> _context;
+    std::unique_ptr<nvinfer1::IRuntime> _runtime;
+};
 }  // namespace TRT
 }  // namespace Ahri
 
