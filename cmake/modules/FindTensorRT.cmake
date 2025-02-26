@@ -36,17 +36,40 @@ endif()
 
 # library
 unset(TensorRT_LIBRARYS CACHE)
-find_library(nvinfer NAMES nvinfer PATHS ${TensorRT_ROOT_DIR}/lib/)
-find_library(nvinfer_dispatch NAMES nvinfer_dispatch PATHS ${TensorRT_ROOT_DIR}/lib/)
-find_library(nvinfer_lean NAMES nvinfer_lean PATHS ${TensorRT_ROOT_DIR}/lib/)
-find_library(nvinfer_plugin NAMES nvinfer_plugin PATHS ${TensorRT_ROOT_DIR}/lib/)
-find_library(nvinfer_vc_plugin NAMES nvinfer_vc_plugin PATHS ${TensorRT_ROOT_DIR}/lib/)
-find_library(nvonnxparser NAMES nvonnxparser PATHS ${TensorRT_ROOT_DIR}/lib/)
-find_library(nvparsers NAMES nvparsers PATHS ${TensorRT_ROOT_DIR}/lib/)
-set(
-    TensorRT_LIBRARYS
-    nvinfer;nvinfer_dispatch;nvinfer_lean;nvinfer_plugin;nvinfer_vc_plugin;nvonnxparser;nvparsers
-)
+if(TensorRT_MAJOR GREATER_EQUAL 10)
+    set(TensorRT_LIBRARYS nvinfer_10 nvinfer_dispatch_10 nvinfer_lean_10 nvinfer_plugin_10 nvinfer_vc_plugin_10 nvonnxparser_10)
+else()  # TensorRT version < 8.6.1.6
+    set(TensorRT_LIBRARYS nvinfer nvinfer_dispatch nvinfer_lean nvinfer_plugin nvinfer_vc_plugin nvonnxparser nvparsers)
+endif()
+
+foreach(lib ${TensorRT_LIBRARYS})
+    find_library(${lib} NAMES ${lib} PATHS ${TensorRT_ROOT_DIR}/lib/)
+endforeach(lib ${TensorRT_LIBRARYS})
+
+# if(TensorRT_MAJOR GREATER_EQUAL 10)
+#     find_library(nvinfer_10 NAMES nvinfer_10 PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     find_library(nvinfer_dispatch_10 NAMES nvinfer_dispatch_10 PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     find_library(nvinfer_lean_10 NAMES nvinfer_lean_10 PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     find_library(nvinfer_plugin_10 NAMES nvinfer_plugin_10 PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     find_library(nvinfer_vc_plugin_10 NAMES nvinfer_vc_plugin_10 PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     find_library(nvonnxparser_10 NAMES nvonnxparser_10 PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     set(
+#         TensorRT_LIBRARYS
+#         nvinfer_10;nvinfer_dispatch_10;nvinfer_lean_10;nvinfer_plugin_10;nvinfer_vc_plugin_10;nvonnxparser_10
+#     )
+# else()
+#     find_library(nvinfer NAMES nvinfer PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     find_library(nvinfer_dispatch NAMES nvinfer_dispatch PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     find_library(nvinfer_lean NAMES nvinfer_lean PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     find_library(nvinfer_plugin NAMES nvinfer_plugin PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     find_library(nvinfer_vc_plugin NAMES nvinfer_vc_plugin PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     find_library(nvonnxparser NAMES nvonnxparser PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     find_library(nvparsers NAMES nvparsers PATHS ${TensorRT_ROOT_DIR}/lib/)
+#     set(
+#         TensorRT_LIBRARYS
+#         nvinfer;nvinfer_dispatch;nvinfer_lean;nvinfer_plugin;nvinfer_vc_plugin;nvonnxparser;nvparsers
+#     )
+# endif()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(

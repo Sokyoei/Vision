@@ -93,15 +93,18 @@ void load_engine(const std::string& engine_path,
     context.reset(engine->createExecutionContext());
 }
 
-class AbstructTensorRTInference {
+class AbstractTensorRTInference {
 public:
     /**
      * @brief Constructor
      * @param model_path onnx or engine model path
      */
-    AbstructTensorRTInference(const std::string model_path) : _model_path(model_path) { cudaStreamCreate(&_stream); }
+    AbstractTensorRTInference(const std::string model_path) : _model_path(model_path) {
+        cudaStreamCreate(&_stream);
+        load_engine();
+    }
 
-    ~AbstructTensorRTInference() {
+    ~AbstractTensorRTInference() {
         cudaStreamDestroy(_stream);
         _context->destroy();
     }
