@@ -37,8 +37,12 @@ endif()
 # library
 unset(TensorRT_LIBRARYS CACHE)
 if(TensorRT_MAJOR GREATER_EQUAL 10)
-    set(TensorRT_LIBRARYS nvinfer_10 nvinfer_dispatch_10 nvinfer_lean_10 nvinfer_plugin_10 nvinfer_vc_plugin_10 nvonnxparser_10)
-else()  # TensorRT version < 8.6.1.6
+    if(WIN32)  # Windows TensorRT 10+ library names
+        set(TensorRT_LIBRARYS nvinfer_10 nvinfer_dispatch_10 nvinfer_lean_10 nvinfer_plugin_10 nvinfer_vc_plugin_10 nvonnxparser_10)
+    elseif(LINUX)  # Linux TensorRT 10 no nvparsers
+        set(TensorRT_LIBRARYS nvinfer nvinfer_dispatch nvinfer_lean nvinfer_plugin nvinfer_vc_plugin nvonnxparser)
+    endif(WIN32)
+else()  # TensorRT version <= 8.6.1.6
     set(TensorRT_LIBRARYS nvinfer nvinfer_dispatch nvinfer_lean nvinfer_plugin nvinfer_vc_plugin nvonnxparser nvparsers)
 endif()
 

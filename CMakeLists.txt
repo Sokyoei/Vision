@@ -23,7 +23,14 @@ include(${PROJECT_SOURCE_DIR}/cmake/compiler.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/library.cmake)
 
 set(ROOT ${PROJECT_SOURCE_DIR})
-include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include)
+
+include_directories(
+    ${PROJECT_SOURCE_DIR}
+    ${PROJECT_SOURCE_DIR}/include
+    # clone https://github.com/Sokyoei/Ceceilia in Vison same level directory
+    ${PROJECT_SOURCE_DIR}/../Ceceilia
+    ${PROJECT_SOURCE_DIR}/../Ceceilia/include
+)
 
 if(OpenCV_FOUND)
     add_subdirectory(opencv_learn)
@@ -33,11 +40,9 @@ if(TensorRT AND TensorRT_FOUND)
     add_subdirectory(tensorrt_learn)
 endif(TensorRT AND TensorRT_FOUND)
 
-if(IntelRealSense)
-    if(realsense2_FOUND)
-        add_subdirectory(realsense_learn)
-    endif(realsense2_FOUND)
-endif(IntelRealSense)
+if(IntelRealSense AND realsense2_FOUND)
+    add_subdirectory(realsense_learn)
+endif(IntelRealSense AND realsense2_FOUND)
 
 add_subdirectory(YOLO)
 
