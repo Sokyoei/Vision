@@ -16,9 +16,10 @@ pytorch = ["timm"]
 tensorrt = ["tensorrt", "cuda-python", "pycuda", "ploygraphy"]
 onnx = [
     "onnx",
-    "onnx-graphsurgeon",
-    "onnxruntime-gpu",   # or onnxruntime(cpu ver.)
+    "onnx-graphsurgeon",      # in TensorRT
+    "onnxruntime-gpu",        # or onnxruntime(cpu ver.)
     "onnx-simplifier",
+    "onnxruntime-extensions",
 ]
 vit = ["vit-pytorch"]
 mediapipe = ["mediapipe"]
