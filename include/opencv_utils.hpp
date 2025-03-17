@@ -17,7 +17,7 @@ namespace Ahri {
     cv::namedWindow(winname, flag);  \
     cv::imshow(winname, img);        \
     cv::waitKey();                   \
-    cv::destroyWindow(winname);
+    cv::destroyAllWindows();
 }  // namespace Ahri
 
 #endif  // !OPENCV_UTILS_HPP
