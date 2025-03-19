@@ -5,6 +5,13 @@ if(fmt_FOUND)
     set(USE_FMT true)
 endif(fmt_FOUND)
 
+find_package(spdlog CONFIG REQUIRED)
+# target_link_libraries(main PRIVATE spdlog::spdlog)
+# target_link_libraries(main PRIVATE spdlog::spdlog_header_only)
+if(spdlog_FOUND)
+    set(USE_SPDLOG true)
+endif(spdlog_FOUND)
+
 find_package(FFMPEG)
 # target_include_directories(main PRIVATE ${FFMPEG_INCLUDE_DIRS})
 # target_link_directories(main PRIVATE ${FFMPEG_LIBRARY_DIRS})
