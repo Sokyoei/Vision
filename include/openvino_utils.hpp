@@ -10,8 +10,7 @@
 #ifndef OPENVINO_UTILS_HPP
 #define OPENVINO_UTILS_HPP
 
-namespace Ahri {
-namespace OpenVINO {
+namespace Ahri::OpenVINO {
 class AbstractOpenVINOInference {
 private:
     /* data */
@@ -19,7 +18,16 @@ public:
     AbstractOpenVINOInference(/* args */) {}
     ~AbstractOpenVINOInference() {}
 };
-}  // namespace OpenVINO
-}  // namespace Ahri
+
+class OpenVINOModel {
+public:
+    OpenVINOModel() {}
+    ~OpenVINOModel() {}
+
+private:
+};
+
+using Model = OpenVINOModel;
+}  // namespace Ahri::OpenVINO
 
 #endif  // !OPENVINO_UTILS_HPP
