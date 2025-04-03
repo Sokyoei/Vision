@@ -16,13 +16,19 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 # options
 option(ONNXRuntime "enable ONNXRuntime" ON)
 option(TensorRT "enable TensorRT" OFF)
+option(OpenVINO "enable Intel OpenVINO" OFF)
 option(IntelRealSense "enable Intel IntelRealSense" OFF)
 option(Application "enable Application" OFF)
+
+# set OpenVINO cmake dir
+if(OpenVINO)
+    set(CMAKE_PREFIX_PATH ${OpenVINO_CMAKE_DIR} ${CMAKE_PREFIX_PATH})
+endif(OpenVINO)
 
 include(${PROJECT_SOURCE_DIR}/cmake/compiler.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/library.cmake)
 
-set(ROOT ${PROJECT_SOURCE_DIR})
+set(VISION_ROOT ${PROJECT_SOURCE_DIR})
 
 include_directories(
     ${PROJECT_SOURCE_DIR}
@@ -43,6 +49,10 @@ endif(TensorRT AND TensorRT_FOUND)
 if(IntelRealSense AND realsense2_FOUND)
     add_subdirectory(realsense_learn)
 endif(IntelRealSense AND realsense2_FOUND)
+
+if(OpenVINO AND OpenVINO_FOUND)
+    add_subdirectory(openvino_learn)
+endif(OpenVINO AND OpenVINO_FOUND)
 
 add_subdirectory(YOLO)
 

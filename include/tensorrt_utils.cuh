@@ -20,6 +20,7 @@
 
 #ifdef __NVCC__
 #include <NvInfer.h>
+#include <NvInferPlugin.h>
 #include <NvInferVersion.h>
 #include <NvOnnxParser.h>
 #include <fmt/core.h>
@@ -231,6 +232,14 @@ private:
     std::unique_ptr<nvinfer1::IRuntime> _runtime;
 };
 
+class Buffer {
+public:
+    Buffer() {}
+    ~Buffer() {}
+
+private:
+};
+
 class TensorRTModel {
 public:
     TensorRTModel(std::filesystem::path onnx_path) : _onnx_path(onnx_path) {
@@ -243,6 +252,8 @@ public:
     ~TensorRTModel() {}
 
     bool build() {
+        // initLibNvInferPlugins(&trtlogger, "samples");
+
         auto builder = std::unique_ptr<nvinfer1::IBuilder>(nvinfer1::createInferBuilder(trtlogger));
         constexpr auto explicit_batch =
             1U << static_cast<uint32_t>(nvinfer1::NetworkDefinitionCreationFlag::kEXPLICIT_BATCH);
@@ -510,26 +521,28 @@ void print_network(nvinfer1::INetworkDefinition& network, nvinfer1::ICudaEngine&
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Plugin
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#define PLUGIN_GET_TYPE_OR_NAME_NAMESPACE_VERSION(name, version, Type_or_Name)     \
-    nvinfer1::AsciiChar const* getPlugin##Type_or_Name() const noexcept override { \
-        return name;                                                               \
-    }                                                                              \
-    nvinfer1::AsciiChar const* getPluginNamespace() const noexcept override {      \
-        return _namespace.c_str();                                                 \
-    }                                                                              \
-    nvinfer1::AsciiChar const* getPluginVersion() const noexcept override {        \
-        return version;                                                            \
+#define PLUGIN_GET_TYPE_OR_NAME_NAMESPACE_VERSION(name, namespace, version, Type_or_Name) \
+    nvinfer1::AsciiChar const* getPlugin##Type_or_Name() const noexcept override {        \
+        return name;                                                                      \
+    }                                                                                     \
+    nvinfer1::AsciiChar const* getPluginNamespace() const noexcept override {             \
+        return namespace;                                                                 \
+    }                                                                                     \
+    nvinfer1::AsciiChar const* getPluginVersion() const noexcept override {               \
+        return version;                                                                   \
     }
 
 /**
- * @details for nvinfer1::IPluginV2DynamicExt
+ * @details for @c nvinfer1::IPluginV2DynamicExt
  */
-#define PLUGIN_GET_TYPE_NAMESPACE_VERSION(name, version) PLUGIN_GET_TYPE_OR_NAME_NAMESPACE_VERSION(name, version, Type)
+#define PLUGIN_GET_TYPE_NAMESPACE_VERSION(name, namespace, version) \
+    PLUGIN_GET_TYPE_OR_NAME_NAMESPACE_VERSION(name, namespace, version, Type)
 
 /**
- * @details for nvinfer1::IPluginCreator
+ * @details for @c nvinfer1::IPluginCreator
  */
-#define PLUGIN_GET_NAME_NAMESPACE_VERSION(name, version) PLUGIN_GET_TYPE_OR_NAME_NAMESPACE_VERSION(name, version, Name)
+#define PLUGIN_GET_NAME_NAMESPACE_VERSION(name, namespace, version) \
+    PLUGIN_GET_TYPE_OR_NAME_NAMESPACE_VERSION(name, namespace, version, Name)
 }  // namespace Ahri::TensorRT
 
 #ifdef BUILD_SAMPLES
@@ -538,11 +551,15 @@ void print_network(nvinfer1::INetworkDefinition& network, nvinfer1::ICudaEngine&
  */
 
 ///
-/// nvinfer1::IPluginV2Ext
-/// nvinfer1::IPluginV2IOExt
-/// nvinfer1::IPluginV2DynamicExt
+/// +-------------------------------+-----------------------------------+
+/// | ~nvinfer1::IPlugin~           |                                   |
+/// | nvinfer1::IPluginV2           | 单一 input/output                 |
+/// | nvinfer1::IPluginV2Ext        | 单一 input and mix output         |
+/// | nvinfer1::IPluginV2IOExt      | mix input/output implicit batch   |
+/// | nvinfer1::IPluginV2DynamicExt | mix input/output dynamic shape    |
+/// +-------------------------------+-----------------------------------+
 ///
-namespace samples {
+// namespace samples {
 #include <cuda_runtime.h>
 #include <cmath>
 
@@ -570,7 +587,9 @@ void custom_scalar(const float* inputs,
 }
 
 #define PLUGIN_NAME "Scalar"
-#define PLUGIN_VERSION "0.1"
+// #define PLUGIN_NAMESPACE "samples"
+#define PLUGIN_NAMESPACE ""
+#define PLUGIN_VERSION "1"
 
 class CustomScalarPlugin : public nvinfer1::IPluginV2DynamicExt {
 public:
@@ -593,7 +612,7 @@ public:
 
     ~CustomScalarPlugin() {}
 
-    PLUGIN_GET_TYPE_NAMESPACE_VERSION(PLUGIN_NAME, PLUGIN_VERSION)
+    PLUGIN_GET_TYPE_NAMESPACE_VERSION(PLUGIN_NAME, PLUGIN_NAMESPACE, PLUGIN_VERSION)
 
     int32_t getNbOutputs() const noexcept override { return 1; }
 
@@ -612,7 +631,7 @@ public:
         return input_types[0];
     }
 
-    void setPluginNamespace(char const* plugin_namespace) noexcept override {}
+    void setPluginNamespace(char const* plugin_namespace) noexcept override { _namespace = plugin_namespace; }
 
     size_t getWorkspaceSize(nvinfer1::PluginTensorDesc const* inputs,
                             int32_t nb_inputs,
@@ -715,6 +734,9 @@ public:
                 *params[fc->fields[i].name] = *reinterpret_cast<const float*>(fc->fields[i].data);
             }
         }
+
+        AHRI_LOGGER_INFO("Creating Scalar plugin with params: scalar={}, scale={}", scalar, scale);
+
         return new CustomScalarPlugin(name, scalar, scale);
     }
 
@@ -728,7 +750,7 @@ public:
 
     void setPluginNamespace(char const* plugin_namespace) noexcept override { _namespace = plugin_namespace; }
 
-    PLUGIN_GET_NAME_NAMESPACE_VERSION(PLUGIN_NAME, PLUGIN_VERSION)
+    PLUGIN_GET_NAME_NAMESPACE_VERSION(PLUGIN_NAME, PLUGIN_NAMESPACE, PLUGIN_VERSION)
 
 private:
     std::string _namespace;
@@ -740,27 +762,8 @@ private:
 };
 
 REGISTER_TENSORRT_PLUGIN(CustomScalarPluginCreator);
-}  // namespace samples
+// }  // namespace samples
 #endif  // BUILD_SAMPLES
-
-namespace Ahri {
-// Swish
-__global__ void ahri_swish_kernel() {}
-
-void ahri_swish() {}
-
-class AhriSwishPlugin : public nvinfer1::IPluginV2DynamicExt {
-public:
-private:
-};
-
-class AhriSwishPluginCreator : public nvinfer1::IPluginCreator {
-public:
-private:
-};
-
-REGISTER_TENSORRT_PLUGIN(AhriSwishPluginCreator);
-}  // namespace Ahri
 
 #endif  // __NVCC__
 #endif  // !TENSORRT_UTILS_CUH
