@@ -45,6 +45,7 @@ void print_network(nvinfer1::INetworkDefinition& network, nvinfer1::ICudaEngine&
 // Macros
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #define ENGINE_EXTENSION ".engine"
+#define AHRI_TENSORRT_API AHRI_API
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TensorRT Logger
@@ -729,7 +730,7 @@ public:
             { "scale",  &scale},
         };
 
-        for (id_t i = 0; i < fc->nbFields; i++) {
+        for (int i = 0; i < fc->nbFields; i++) {
             if (params.find(fc->fields[i].name) != params.end()) {
                 *params[fc->fields[i].name] = *reinterpret_cast<const float*>(fc->fields[i].data);
             }

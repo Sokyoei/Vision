@@ -255,7 +255,7 @@ private:
 }  // namespace V3
 
 inline namespace V2 {
-class AhriLeakyReLUPlugin : public nvinfer1::IPluginV2DynamicExt {
+class AHRI_TENSORRT_API AhriLeakyReLUPlugin : public nvinfer1::IPluginV2DynamicExt {
 public:
     AhriLeakyReLUPlugin() = delete;
 
@@ -368,7 +368,7 @@ private:
     } _params;
 };
 
-class AhriLeakyReLUPluginCreator : public nvinfer1::IPluginCreator {
+class AHRI_TENSORRT_API AhriLeakyReLUPluginCreator : public nvinfer1::IPluginCreator {
 public:
     AhriLeakyReLUPluginCreator() {
         _plugin_attributes.emplace_back(
@@ -385,7 +385,7 @@ public:
             {"alpha", &alpha},
         };
 
-        for (id_t i = 0; i < fc->nbFields; i++) {
+        for (int i = 0; i < fc->nbFields; i++) {
             if (params.find(fc->fields[i].name) != params.end()) {
                 *params[fc->fields[i].name] = *reinterpret_cast<const float*>(fc->fields[i].data);
             }
@@ -417,6 +417,8 @@ private:
     nvinfer1::PluginFieldCollection _fc{};
 };
 }  // namespace V2
+
+AHRI_REGISTER_TENSORRT_PLUGIN(AhriLeakyReLUPluginCreator);
 }  // namespace Ahri::TensorRT::Plugin
 
 #endif  // !AHRI_LEAKYRELU_TENSORRT_HPP

@@ -15,3 +15,8 @@ target_link_libraries(plugin PRIVATE fmt::fmt-header-only spdlog::spdlog_header_
 
 add_executable(inference inference.cu)
 target_link_libraries(inference PRIVATE TensorRT::TensorRT opencv_core opencv_imgproc)
+
+add_executable(tensorrt_main main.cu)
+target_link_libraries(tensorrt_main PRIVATE TensorRT::TensorRT opencv_core opencv_imgproc)
+target_link_libraries(tensorrt_main PRIVATE ahri_plugin_tensorrt)
+target_link_libraries(tensorrt_main PRIVATE fmt::fmt-header-only spdlog::spdlog_header_only)

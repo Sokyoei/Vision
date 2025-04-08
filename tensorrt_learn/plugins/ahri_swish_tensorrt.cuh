@@ -67,7 +67,7 @@ public:
         return nullptr;
     };
 
-    nvinfer1::IPluginV3* clone() noexcept override { return new AhriLeakyReLUPlugin(_nsample); }
+    nvinfer1::IPluginV3* clone() noexcept override { return new AhriSwishPlugin(_nsample); }
 
     // nvinfer1::IPluginV3OneBuildV2
     int32_t getAliasedInput(int32_t outputIndex) noexcept override { return -1; }
@@ -239,7 +239,7 @@ public:
         assert(fc->fields[0].type == nvinfer1::PluginFieldType::kINT32);
         fc->fields[0].name;
 
-        AhriLeakyReLUPlugin* plugin = new AhriLeakyReLUPlugin(*static_cast<int32_t const*>(fc->fields[0].data));
+        AhriSwishPlugin* plugin = new AhriSwishPlugin(*static_cast<int32_t const*>(fc->fields[0].data));
 
         return plugin;
     }
@@ -255,7 +255,7 @@ private:
 }  // namespace V3
 
 inline namespace V2 {
-class AhriSwishPlugin : public nvinfer1::IPluginV2DynamicExt {
+class AHRI_TENSORRT_API AhriSwishPlugin : public nvinfer1::IPluginV2DynamicExt {
 public:
     AhriSwishPlugin() = delete;
 
@@ -362,7 +362,7 @@ private:
     std::string _namespace;
 };
 
-class AhriSwishPluginCreater : public nvinfer1::IPluginCreator {
+class AHRI_TENSORRT_API AhriSwishPluginCreater : public nvinfer1::IPluginCreator {
 public:
     AhriSwishPluginCreater() {
         _fc.nbFields = _plugin_attributes.size();
@@ -379,7 +379,7 @@ public:
     nvinfer1::IPluginV2* deserializePlugin(char const* name,
                                            void const* serial_data,
                                            size_t serial_length) noexcept override {
-        return new AhriLeakyReLUPlugin(name, serial_data, serial_length);
+        return new AhriSwishPlugin(name, serial_data, serial_length);
     }
 
     nvinfer1::PluginFieldCollection* getFieldNames() noexcept override { return &_fc; }
@@ -397,6 +397,8 @@ private:
     nvinfer1::PluginFieldCollection _fc{};
 };
 }  // namespace V2
+
+AHRI_REGISTER_TENSORRT_PLUGIN(AhriSwishPluginCreater);
 }  // namespace Ahri::TensorRT::Plugin
 
 #endif  // !AHRI_SWISH_TENSORRT_HPP
