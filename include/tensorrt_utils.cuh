@@ -24,6 +24,7 @@
 #include <NvInferVersion.h>
 #include <NvOnnxParser.h>
 #include <fmt/core.h>
+#include <fmt/ranges.h>
 #include <fmt/std.h>
 
 #include "Ahri.cuh"
@@ -337,12 +338,21 @@ public:
             output_size *= output_dim_shapes.d[i];
         }
 
+        fmt::println("input_size: {}, output_size: {}", input_size, output_size);
+
         cudaStream_t stream;
         cudaStreamCreate(&stream);
 
         // alloc cpu and gpu memory
-        std::vector<float> input_host(input_size);
-        std::vector<float> output_host(output_size);
+        // std::vector<float> input_host(input_size, 1.0);
+        std::vector<float> input_host{
+            0.7576, 0.2793, 0.4031, 0.7347, 0.0293,  //
+            0.7999, 0.3971, 0.7544, 0.5695, 0.4388,  //
+            0.6387, 0.5247, 0.6826, 0.3051, 0.4635,  //
+            0.4550, 0.5725, 0.4980, 0.9371, 0.6556,  //
+            0.3138, 0.1980, 0.4162, 0.2843, 0.3398,  //
+        };
+        std::vector<float> output_host(output_size, 0.0);
         void* input_device;
         void* output_device;
         cudaMalloc(&input_device, input_size * sizeof(float));
@@ -351,26 +361,27 @@ public:
         context->setInputTensorAddress("input", input_device);
         context->setOutputTensorAddress("output", output_device);
 
-        for (size_t i = 0; i < input_size; ++i) {
-            input_host[i] = 1.0f;
-        }
+        fmt::println("Input: {}", input_host);
 
-        cudaMemcpyAsync(input_device, input_host.data(), input_size * sizeof(float), cudaMemcpyHostToDevice, stream);
+        CUDA_CHECK(cudaMemcpyAsync(input_device, input_host.data(), input_size * sizeof(float), cudaMemcpyHostToDevice,
+                                   stream));
 
         // void* bindings[] = {input_device, output_device};
         // context->enqueueV2(bindings, 0, nullptr);
         context->enqueueV3(stream);
+        // cudaStreamSynchronize(stream);
+
+        CUDA_CHECK(cudaMemcpyAsync(output_host.data(), output_device, output_size * sizeof(float),
+                                   cudaMemcpyDeviceToHost, stream));
         cudaStreamSynchronize(stream);
 
-        cudaMemcpyAsync(output_host.data(), output_device, output_size * sizeof(float), cudaMemcpyDeviceToHost, stream);
-
-        for (size_t i = 0; i < output_size; ++i) {
-            std::cout << "Output[" << i << "]: " << output_host[i] << std::endl;
-        }
+        fmt::println("Output: {}", output_host);
 
         cudaStreamDestroy(stream);
-        cudaFree(input_device);
-        cudaFree(output_device);
+        CUDA_CHECK(cudaFree(input_device));
+        CUDA_CHECK(cudaFree(output_device));
+        input_device = nullptr;
+        output_device = nullptr;
 
         return true;
     }
@@ -544,6 +555,14 @@ void print_network(nvinfer1::INetworkDefinition& network, nvinfer1::ICudaEngine&
  */
 #define PLUGIN_GET_NAME_NAMESPACE_VERSION(name, namespace, version) \
     PLUGIN_GET_TYPE_OR_NAME_NAMESPACE_VERSION(name, namespace, version, Name)
+
+/**
+ * @details register plugin for dynamic library
+ */
+#define AHRI_REGISTER_TENSORRT_PLUGIN(creator)                                 \
+    extern "C" AHRI_TENSORRT_API nvinfer1::IPluginCreator* create##creator() { \
+        return new creator();                                                  \
+    }
 }  // namespace Ahri::TensorRT
 
 #ifdef BUILD_SAMPLES
@@ -583,12 +602,11 @@ void custom_scalar(const float* inputs,
                    const int elements,
                    cudaStream_t stream) {
     dim3 block_size(256, 1, 1);
-    dim3 grid_size(std::ceil(float(elements / 256)), 1, 1);
+    dim3 grid_size(std::ceil(float(elements) / 256), 1, 1);
     custom_scalar_kernel<<<grid_size, block_size, 0, stream>>>(inputs, outputs, scalar, scale, elements);
 }
 
 #define PLUGIN_NAME "Scalar"
-// #define PLUGIN_NAMESPACE "samples"
 #define PLUGIN_NAMESPACE ""
 #define PLUGIN_VERSION "1"
 
@@ -656,8 +674,8 @@ public:
                     void* workspace,
                     cudaStream_t stream) noexcept override {
         int elements = 1;
-        for (int i = 0; i < input_desc[i].dims.nbDims; i++) {
-            elements *= input_desc[i].dims.d[i];
+        for (int i = 0; i < input_desc[0].dims.nbDims; i++) {
+            elements *= input_desc[0].dims.d[i];
         }
 
         custom_scalar(static_cast<const float*>(inputs[0]), static_cast<float*>(outputs[0]), _params.scalar,

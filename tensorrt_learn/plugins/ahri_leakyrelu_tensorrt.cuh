@@ -28,7 +28,7 @@ __global__ void leakyrelu_kernel(const float* inputs, float* outputs, const floa
 
 void leakyrelu(const float* inputs, float* outputs, const float alpha, const int elements, cudaStream_t stream) {
     dim3 block_size(256, 1, 1);
-    dim3 grid_size(std::ceil(float(elements / 256)), 1, 1);
+    dim3 grid_size(std::ceil(float(elements) / 256), 1, 1);
     leakyrelu_kernel<<<grid_size, block_size, 0, stream>>>(inputs, outputs, alpha, elements);
 }
 
@@ -316,8 +316,8 @@ public:
                     void* workspace,
                     cudaStream_t stream) noexcept override {
         int elements = 1;
-        for (int i = 0; i < input_desc[i].dims.nbDims; i++) {
-            elements *= input_desc[i].dims.d[i];
+        for (int i = 0; i < input_desc[0].dims.nbDims; i++) {
+            elements *= input_desc[0].dims.d[i];
         }
 
         leakyrelu(static_cast<const float*>(inputs[0]), static_cast<float*>(outputs[0]), _params.alpha, elements,
@@ -418,7 +418,8 @@ private:
 };
 }  // namespace V2
 
-AHRI_REGISTER_TENSORRT_PLUGIN(AhriLeakyReLUPluginCreator);
+// AHRI_REGISTER_TENSORRT_PLUGIN(AhriLeakyReLUPluginCreator);
+REGISTER_TENSORRT_PLUGIN(AhriLeakyReLUPluginCreator);
 }  // namespace Ahri::TensorRT::Plugin
 
 #endif  // !AHRI_LEAKYRELU_TENSORRT_HPP
