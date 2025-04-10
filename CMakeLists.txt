@@ -6,6 +6,7 @@ include(CheckLanguage)
 check_language(CUDA)
 if(CMAKE_CUDA_COMPILER)
     enable_language(CUDA)
+    set(CMAKE_CUDA_STANDARD 20)
 endif(CMAKE_CUDA_COMPILER)
 
 set(CMAKE_CXX_STANDARD 20)
