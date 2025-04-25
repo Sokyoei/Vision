@@ -4,7 +4,6 @@
 
 #include <openvino/core/extension.hpp>
 #include <openvino/core/visibility.hpp>
-#include <openvino/frontend/extension.hpp>
 #include <openvino/op/op.hpp>
 #include <openvino/openvino.hpp>
 #include <openvino/opsets/opset.hpp>
@@ -20,7 +19,7 @@ void leaky_relu_kernel(const T* input, T* output, size_t count, float alpha) {
 
 class OPENVINO_CORE_EXPORTS AhriLeakyReLU : public ov::op::Op {
 public:
-    OPENVINO_OP("AhriLeakyReLU", "1");
+    OPENVINO_OP("AhriLeakyReLU");
 
     AhriLeakyReLU() = default;
 
@@ -68,6 +67,14 @@ public:
         }
         return true;
     }
+
+    bool evaluate(ov::TensorVector& outputs,
+                  const ov::TensorVector& inputs,
+                  const ov::EvaluationContext& context) const override {
+        return evaluate(outputs, inputs);
+    }
+
+    std::string description() const override { return "AhriLeakyReLU"; }
 
     bool has_evaluate() const override { return true; }
 

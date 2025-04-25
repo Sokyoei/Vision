@@ -65,7 +65,7 @@ if(TensorRT)
 endif(TensorRT)
 
 if(OpenVINO)
-    find_package(OpenVINO)
+    find_package(OpenVINO COMPONENTS Runtime ONNX Threading)
     if(OpenVINO_FOUND)
         set(USE_OPENVINO true)
     endif(OpenVINO_FOUND)

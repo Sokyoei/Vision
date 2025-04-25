@@ -1,3 +1,8 @@
+#include <openvino/core/extension.hpp>
+#include <openvino/core/op_extension.hpp>
+#include <openvino/frontend/extension.hpp>
+#include <openvino/frontend/node_context.hpp>
+
 #include "ahri_leakyrelu_openvino.hpp"
 #include "ahri_swish_openvino.hpp"
 

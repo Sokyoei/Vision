@@ -16,6 +16,8 @@
 // #include "tensorrt_learn/plugins/ahri_swish_tensorrt.cuh"
 #include "tensorrt_utils.cuh"
 
+#include "Vision.h"
+
 int main(int argc, char const* argv[]) {
     initLibNvInferPlugins(&Ahri::TensorRT::trtlogger, "");
 
@@ -24,8 +26,7 @@ int main(int argc, char const* argv[]) {
     void* ahri_plugin_tensorrt = dlopen("libahri_plugin_tensorrt.so", RTLD_LAZY);
 #endif
 
-    auto model =
-        Ahri::TensorRT::TensorRTModel("/media/supervisor/windowsd/Code/github/Vision/tensorrt_learn/ahrinet.onnx");
+    auto model = Ahri::TensorRT::TensorRTModel(std::filesystem::path(VISION_ROOT) / "tensorrt_learn/ahrinet.onnx");
     model.build();
     model.infer();
 

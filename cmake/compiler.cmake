@@ -1,3 +1,6 @@
+# Global
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 # MSVC
 set(MSVC_BASE_FLAGS "/EHsc /source-charset:utf-8")
 set(MSVC_CC_FLAGS "${MSVC_BASE_FLAGS} /Zc:__STDC__")

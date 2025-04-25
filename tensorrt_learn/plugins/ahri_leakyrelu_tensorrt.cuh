@@ -14,9 +14,9 @@
 #include "tensorrt_utils.cuh"
 
 namespace Ahri::TensorRT::Plugin {
-static constexpr char* leakyrelu_plugin_name{"AhriLeakyReLU"};
-static constexpr char* leakyrelu_plugin_namespace{""};
-static constexpr char* leakyrelu_plugin_version{"1"};
+static constexpr const char* leakyrelu_plugin_name{"AhriLeakyReLU"};
+static constexpr const char* leakyrelu_plugin_namespace{""};
+static constexpr const char* leakyrelu_plugin_version{"1"};
 
 __global__ void leakyrelu_kernel(const float* inputs, float* outputs, const float alpha, const int elements) {
     const int index = blockIdx.x * blockDim.x + threadIdx.x;
@@ -33,19 +33,19 @@ void leakyrelu(const float* inputs, float* outputs, const float alpha, const int
 }
 
 namespace V3 {
-class AhriLeakyReLUPlugin : public nvinfer1::IPluginV3,
-                            public nvinfer1::IPluginV3OneBuildV2,
-                            public nvinfer1::IPluginV3OneCore,
-                            public nvinfer1::IPluginV3OneRuntime {
+class AHRI_TENSORRT_API AhriLeakyReLUPlugin : public nvinfer1::IPluginV3,
+                                              public nvinfer1::IPluginV3OneBuildV2,
+                                              public nvinfer1::IPluginV3OneCore,
+                                              public nvinfer1::IPluginV3OneRuntime {
 public:
-    AhriLeakyReLUPlugin(int32_t nsample) : _nsample(nsample) {
+    AhriLeakyReLUPlugin(int32_t alpha) {
+        _params.alpha = alpha;
+
         _plugin_attributes.clear();
-
-        nvinfer1::PluginField pf_nsample{"nsample", &_nsample, nvinfer1::PluginFieldType::kINT32, 1};
-        _plugin_attributes.emplace_back(pf_nsample);
-
-        _pfc.nbFields = static_cast<int32_t>(_plugin_attributes.size());
-        _pfc.fields = _plugin_attributes.data();
+        _plugin_attributes.emplace_back(
+            nvinfer1::PluginField("alpha", nullptr, nvinfer1::PluginFieldType::kFLOAT32, 1));
+        _fc.nbFields = static_cast<int32_t>(_plugin_attributes.size());
+        _fc.fields = _plugin_attributes.data();
     }
 
     ~AhriLeakyReLUPlugin() {}
@@ -61,116 +61,92 @@ public:
             }
             assert(type == nvinfer1::PluginCapabilityType::kCORE);
             return static_cast<IPluginV3OneCore*>(this);
-        } catch (...) {
-            // log error
+        } catch (std::exception const& e) {
+            AHRI_LOGGER_ERROR("{}", e.what());
         }
         return nullptr;
     };
 
-    nvinfer1::IPluginV3* clone() noexcept override { return new AhriLeakyReLUPlugin(_nsample); }
+    nvinfer1::IPluginV3* clone() noexcept override { return new AhriLeakyReLUPlugin(_params.alpha); }
 
     // nvinfer1::IPluginV3OneBuildV2
-    int32_t getAliasedInput(int32_t outputIndex) noexcept override { return -1; }
+    int32_t getAliasedInput(int32_t output_index) noexcept override { return -1; }
 
     int32_t configurePlugin(nvinfer1::DynamicPluginTensorDesc const* in,
-                            int32_t nbInputs,
+                            int32_t nb_inputs,
                             nvinfer1::DynamicPluginTensorDesc const* out,
-                            int32_t nbOutputs) noexcept override {
+                            int32_t nb_outputs) noexcept override {
         return 0;
     }
 
-    int32_t getOutputDataTypes(nvinfer1::DataType* outputTypes,
-                               int32_t nbOutputs,
-                               const nvinfer1::DataType* inputTypes,
-                               int32_t nbInputs) const noexcept override {  // 确保输入输出数量符合预期
-        assert(nbInputs == _in_n);
-        assert(nbOutputs == _out_n);
-
-        assert(inputTypes[0] == nvinfer1::DataType::kFLOAT);
-
-        // 设置输出类型为 int64
-        outputTypes[0] = nvinfer1::DataType::kINT64;
-
+    int32_t getOutputDataTypes(nvinfer1::DataType* output_types,
+                               int32_t nb_outputs,
+                               const nvinfer1::DataType* input_types,
+                               int32_t nb_inputs) const noexcept override {  // 确保输入输出数量符合预期
+        assert(input_types[0] == nvinfer1::DataType::kFLOAT);
+        output_types[0] = nvinfer1::DataType::kFLOAT;
         return 0;
     }
 
     int32_t getOutputShapes(nvinfer1::DimsExprs const* inputs,
-                            int32_t nbInputs,
-                            nvinfer1::DimsExprs const* shapeInputs,
-                            int32_t nbShapeInputs,
+                            int32_t nb_inputs,
+                            nvinfer1::DimsExprs const* shape_inputs,
+                            int32_t nb_shape_inputs,
                             nvinfer1::DimsExprs* outputs,
-                            int32_t nbOutputs,
-                            nvinfer1::IExprBuilder& exprBuilder) noexcept override {
-        // 确保输入输出数量符合预期
-        assert(nbInputs == _in_n);
-        assert(nbOutputs == _out_n);
-
-        // 输入张量的形状
-        const nvinfer1::DimsExprs& inputShape = inputs[0];
-
-        // 设置输出张量的形状，假设为 [BATCH, NUM_POINTS]
-        outputs[0].nbDims = 2;                             // 输出维度数为 2
-        outputs[0].d[0] = inputShape.d[0];                 // BATCH
-        outputs[0].d[1] = exprBuilder.constant(_nsample);  // NUM_POINTS
-
+                            int32_t nb_outputs,
+                            nvinfer1::IExprBuilder& expr_builder) noexcept override {
+        const nvinfer1::DimsExprs& input_shape = inputs[0];
+        outputs[0].nbDims = 2;
+        outputs[0].d[0] = input_shape.d[0];
         return 0;  // 返回 0 表示成功
     }
 
     bool supportsFormatCombination(int32_t pos,
-                                   nvinfer1::DynamicPluginTensorDesc const* inOut,
-                                   int32_t nbInputs,
-                                   int32_t nbOutputs) noexcept override {
-        // 确保 pos 在合法范围内
-        assert(pos < (nbInputs + nbOutputs));
-
-        // 检查输入
-        if (pos == 0) {
-            // 输入必须是 float 类型，且格式为线性
-            return inOut[pos].desc.type == nvinfer1::DataType::kFLOAT &&
-                   inOut[pos].desc.format == nvinfer1::TensorFormat::kLINEAR;
+                                   nvinfer1::DynamicPluginTensorDesc const* in_out,
+                                   int32_t nb_inputs,
+                                   int32_t nb_outputs) noexcept override {
+        switch (pos) {
+            case 0:
+                return in_out[0].desc.type == nvinfer1::DataType::kFLOAT &&
+                       in_out[0].desc.format == nvinfer1::TensorFormat::kLINEAR;
+            case 1:
+                return in_out[1].desc.type == nvinfer1::DataType::kFLOAT &&
+                       in_out[1].desc.format == nvinfer1::TensorFormat::kLINEAR;
+            default:
+                return false;
         }
-        // 检查输出
-        else if (pos == 1) {
-            // 输出必须是 int64 类型，且格式为线性
-            return inOut[pos].desc.type == nvinfer1::DataType::kINT64 &&
-                   inOut[pos].desc.format == nvinfer1::TensorFormat::kLINEAR;
-        }
-
-        return false;  // 其他情况不支持
+        return false;
     }
 
-    int32_t getNbOutputs() const noexcept override { return _out_n; }
+    int32_t getNbOutputs() const noexcept override { return 1; }
 
     size_t getWorkspaceSize(nvinfer1::DynamicPluginTensorDesc const* inputs,
-                            int32_t nbInputs,
+                            int32_t nb_inputs,
                             nvinfer1::DynamicPluginTensorDesc const* outputs,
-                            int32_t nbOutputs) const noexcept override {
-        const int64_t B = inputs[0].desc.dims.d[0];
-        const int64_t N = inputs[0].desc.dims.d[1];
-
-        return B * N * sizeof(float);
+                            int32_t nb_outputs) const noexcept override {
+        return sizeof(_params);
     }
 
-    int32_t getValidTactics(int32_t* tactics, int32_t nbTactics) noexcept override { return 0; }
+    // int32_t getValidTactics(int32_t* tactics, int32_t nbTactics) noexcept override { return 0; }
 
-    int32_t getNbTactics() noexcept override { return 0; }
+    // int32_t getNbTactics() noexcept override { return 0; }
 
-    char const* getTimingCacheID() noexcept override { return nullptr; }
+    // char const* getTimingCacheID() noexcept override { return nullptr; }
 
-    int32_t getFormatCombinationLimit() noexcept override { return kDEFAULT_FORMAT_COMBINATION_LIMIT; }
+    // int32_t getFormatCombinationLimit() noexcept override { return kDEFAULT_FORMAT_COMBINATION_LIMIT; }
 
-    char const* getMetadataString() noexcept override { return nullptr; }
+    // char const* getMetadataString() noexcept override { return nullptr; }
 
     // nvinfer1::IPluginV3OneCore
     PLUGIN_GET_NAME_NAMESPACE_VERSION(leakyrelu_plugin_name, leakyrelu_plugin_namespace, leakyrelu_plugin_version)
 
     // nvinfer1::IPluginV3OneRuntime
-    int32_t setTactic(int32_t tactic) noexcept override { return 0; }
+    // int32_t setTactic(int32_t tactic) noexcept override { return 0; }
 
     int32_t onShapeChange(nvinfer1::PluginTensorDesc const* in,
-                          int32_t nbInputs,
+                          int32_t nb_inputs,
                           nvinfer1::PluginTensorDesc const* out,
-                          int32_t nbOutputs) noexcept override {
+                          int32_t nb_outputs) noexcept override {
         return 0;
     }
 
@@ -208,48 +184,53 @@ public:
         return clone();
     }
 
-    nvinfer1::PluginFieldCollection const* getFieldsToSerialize() noexcept override { return &_pfc; }
+    nvinfer1::PluginFieldCollection const* getFieldsToSerialize() noexcept override { return &_fc; }
 
 private:
-    int32_t _nsample;
-    nvinfer1::PluginFieldCollection _pfc;
+    nvinfer1::PluginFieldCollection _fc;
     std::vector<nvinfer1::PluginField> _plugin_attributes;
-    int32_t _in_n = 1;
-    int32_t _out_n = 1;
+    struct {
+        float alpha;
+    } _params;
 };
 
-class AhriLeakyReLUPluginCreater : public nvinfer1::IPluginCreatorV3One {
+class AHRI_TENSORRT_API AhriLeakyReLUPluginCreator : public nvinfer1::IPluginCreatorV3One {
 public:
-    AhriLeakyReLUPluginCreater() {
+    AhriLeakyReLUPluginCreator() {
         _plugin_attributes.clear();
-
-        nvinfer1::PluginField pf_nsample = {"nsample", nullptr, nvinfer1::PluginFieldType::kINT32, 1};
-        _plugin_attributes.emplace_back(pf_nsample);
-
-        _pfc.nbFields = static_cast<int32_t>(_plugin_attributes.size());
-        _pfc.fields = _plugin_attributes.data();
+        _plugin_attributes.emplace_back(
+            nvinfer1::PluginField("alpha", nullptr, nvinfer1::PluginFieldType::kFLOAT32, 1));
+        _fc.nbFields = _plugin_attributes.size();
+        _fc.fields = _plugin_attributes.data();
     }
 
-    ~AhriLeakyReLUPluginCreater() {}
+    ~AhriLeakyReLUPluginCreator() {}
 
     nvinfer1::IPluginV3* createPlugin(nvinfer1::AsciiChar const* name,
                                       nvinfer1::PluginFieldCollection const* fc,
                                       nvinfer1::TensorRTPhase phase) noexcept override {
-        assert(fc->nbFields == 1);
-        assert(fc->fields[0].type == nvinfer1::PluginFieldType::kINT32);
-        fc->fields[0].name;
+        float alpha = 0;
+        std::map<std::string, float*> params{
+            {"alpha", &alpha},
+        };
 
-        AhriLeakyReLUPlugin* plugin = new AhriLeakyReLUPlugin(*static_cast<int32_t const*>(fc->fields[0].data));
+        for (int i = 0; i < fc->nbFields; i++) {
+            if (params.find(fc->fields[i].name) != params.end()) {
+                *params[fc->fields[i].name] = *reinterpret_cast<const float*>(fc->fields[i].data);
+            }
+        }
 
-        return plugin;
+        AHRI_LOGGER_INFO("Creating Scalar plugin with params: alpha={}", alpha);
+
+        return new AhriLeakyReLUPlugin(alpha);
     }
 
-    nvinfer1::PluginFieldCollection const* getFieldNames() noexcept override { return &_pfc; }
+    nvinfer1::PluginFieldCollection const* getFieldNames() noexcept override { return &_fc; }
 
     PLUGIN_GET_NAME_NAMESPACE_VERSION(leakyrelu_plugin_name, leakyrelu_plugin_namespace, leakyrelu_plugin_version)
 
 private:
-    nvinfer1::PluginFieldCollection _pfc;
+    nvinfer1::PluginFieldCollection _fc;
     std::vector<nvinfer1::PluginField> _plugin_attributes;
 };
 }  // namespace V3
