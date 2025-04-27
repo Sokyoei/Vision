@@ -62,7 +62,7 @@ def inference_camera():
 
 
 def main():
-    inference_img()
+    # inference_img()
     inference_camera()
 
 
