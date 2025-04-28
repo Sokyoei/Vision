@@ -14,7 +14,9 @@ set(CMAKE_CXX_STANDARD 20)
 # project FindXXX.cmake PATH
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 
+########################################################################################################################
 # options
+########################################################################################################################
 option(ONNXRuntime "enable ONNXRuntime" ON)
 option(TensorRT "enable TensorRT" OFF)
 option(OpenVINO "enable Intel OpenVINO" OFF)
@@ -28,6 +30,7 @@ endif(OpenVINO)
 
 include(${PROJECT_SOURCE_DIR}/cmake/compiler.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/library.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/install.cmake)
 
 set(VISION_ROOT ${PROJECT_SOURCE_DIR})
 
@@ -62,3 +65,5 @@ configure_file(
     ${PROJECT_SOURCE_DIR}/config.h.cmake
     ${PROJECT_SOURCE_DIR}/config.h
 )
+
+include(${PROJECT_SOURCE_DIR}/cmake/package.cmake)
