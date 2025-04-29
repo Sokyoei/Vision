@@ -1,15 +1,28 @@
+########################################################################################################################
+# other install
+########################################################################################################################
 if(TARGET ${PROJECT_NAME})
     install(DIRECTORY include/ DESTINATION include)
 
     install(
         EXPORT ${PROJECT_NAME}Targets
         FILE ${PROJECT_NAME}Targets.cmake
-        # NAMESPACE ${PROJECT_NAME}Targets::
+        # NAMESPACE ${PROJECT_NAME}::
         NAMESPACE Ahri::
         DESTINATION ${CMAKE_INSTALL_LIB_DIR}/cmake/${PROJECT_NAME}
     )
 endif()
 
+install(
+    RUNTIME_DEPENDENCY_SET runtime_deps
+    PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
+    POST_EXCLUDE_REGEXES ".*system32/.*\\.dll"
+    RUNTIME DESTINATION bin
+)
+
+########################################################################################################################
+# cpack
+########################################################################################################################
 if(WIN32)
     set(CPACK_GENERATOR "ZIP")
 else()

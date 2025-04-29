@@ -6,7 +6,7 @@
 #include <onnxruntime_cxx_api.h>
 #include <opencv2/opencv.hpp>
 
-#include "config.h"
+#include "Vision.hpp"
 #include "yolo.hpp"
 
 namespace Ahri {
@@ -50,6 +50,6 @@ private:
 }  // namespace Ahri
 
 int main(int argc, char const* argv[]) {
-    Ahri::YOLOv5 yolov5{std::filesystem::path(ROOT) / "models/yolov5s.onnx"};
+    Ahri::YOLOv5 yolov5{std::filesystem::path(VISION_ROOT) / "models/yolov5s.onnx"};
     return 0;
 }
