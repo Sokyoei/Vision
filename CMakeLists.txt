@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.20.0)
 
 project(Vision VERSION 0.0.1)
 
+########################################################################################################################
+# languages
+########################################################################################################################
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
+
 include(CheckLanguage)
 check_language(CUDA)
 if(CMAKE_CUDA_COMPILER)
@@ -9,25 +15,33 @@ if(CMAKE_CUDA_COMPILER)
     set(CMAKE_CUDA_STANDARD 20)
 endif(CMAKE_CUDA_COMPILER)
 
-set(CMAKE_CXX_STANDARD 20)
-
-# project FindXXX.cmake PATH
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
-
 ########################################################################################################################
 # options
 ########################################################################################################################
-option(ONNXRuntime "enable ONNXRuntime" ON)
+option(ONNXRuntime "enable ONNXRuntime" OFF)
 option(TensorRT "enable TensorRT" OFF)
 option(OpenVINO "enable Intel OpenVINO" OFF)
 option(IntelRealSense "enable Intel IntelRealSense" OFF)
 option(Application "enable Application" OFF)
+
+########################################################################################################################
+# CMAKE_PREFIX_PATH/CMAKE_MODULE_PATH set
+########################################################################################################################
+# set ONNXRuntime cmake dir
+if(ONNXRuntime)
+    set(CMAKE_PREFIX_PATH ${ONNXRuntime_CMAKE_DIR} ${CMAKE_PREFIX_PATH})
+endif(ONNXRuntime)
 
 # set OpenVINO cmake dir
 if(OpenVINO)
     set(CMAKE_PREFIX_PATH ${OpenVINO_CMAKE_DIR} ${CMAKE_PREFIX_PATH})
 endif(OpenVINO)
 
+message(STATUS "cmake prefix path: ${CMAKE_PREFIX_PATH}")
+# project FindXXX.cmake PATH
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+
+########################################################################################################################
 include(${PROJECT_SOURCE_DIR}/cmake/compiler.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/library.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/install.cmake)
