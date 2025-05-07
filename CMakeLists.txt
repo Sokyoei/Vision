@@ -60,6 +60,10 @@ if(OpenCV_FOUND)
     add_subdirectory(opencv_learn)
 endif(OpenCV_FOUND)
 
+if(ONNXRuntime AND ONNXRuntime_FOUND)
+    add_subdirectory(onnx_learn)
+endif(ONNXRuntime AND ONNXRuntime_FOUND)
+
 if(TensorRT AND TensorRT_FOUND)
     add_subdirectory(tensorrt_learn)
 endif(TensorRT AND TensorRT_FOUND)
