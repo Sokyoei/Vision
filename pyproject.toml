@@ -16,7 +16,7 @@ pytorch = ["timm"]
 tensorrt = ["tensorrt", "cuda-python", "pycuda", "ploygraphy"]
 onnx = [
     "onnx",
-    "onnx-graphsurgeon",      # in TensorRT
+    "onnx-graphsurgeon",      # in TensorRT or `pip install onnx_graphsurgeon --index-url https://pypi.ngc.nvidia.com`
     "onnxruntime-gpu",        # or onnxruntime(cpu ver.)
     "onnx-simplifier",
     "onnxruntime-extensions",
