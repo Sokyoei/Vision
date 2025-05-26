@@ -7,7 +7,7 @@ name = "Vision"
 version = "0.0.1"
 authors = [{ name = "Sokyoei" }]
 license = { text = "MIT" }
-dependencies = ["numpy", "opencv-python"]
+dependencies = ["numpy", "opencv-contrib-python"]
 
 [project.optional-dependencies]
 dev = ["isort", "ruff", "black"]
@@ -27,6 +27,9 @@ tracking = ["boxmot"]
 opencv = ["imutils"]
 pose = ["rtmlib"]
 ocr = ["pytesseract", "pyocr", "easyocr"]
+video = [
+    "moviepy", # https://github.com/Zulko/moviepy
+]
 
 [tool.rye]
 dev-dependencies = ["pytest>=8.2.1"]

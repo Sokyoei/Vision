@@ -18,6 +18,8 @@
 #include <string>
 #include <vector>
 
+#include "Vision.hpp"
+
 #ifdef __NVCC__
 #include <NvInfer.h>
 #include <NvInferPlugin.h>
@@ -26,6 +28,9 @@
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 #include <fmt/std.h>
+#ifdef USE_OPENCV
+#include <opencv2/opencv.hpp>
+#endif
 
 #include "Ahri.cuh"
 #include "Ceceilia/utils/logger_utils.hpp"
@@ -250,8 +255,11 @@ public:
         }
         _engine_path = _onnx_path;
         _engine_path.replace_extension(ENGINE_EXTENSION);
+
+        cudaStreamCreate(&_stream);
     }
-    ~TensorRTModel() {}
+
+    ~TensorRTModel() { cudaStreamDestroy(_stream); }
 
     bool build() {
         // initLibNvInferPlugins(&trtlogger, "samples");
@@ -340,9 +348,6 @@ public:
 
         fmt::println("input_size: {}, output_size: {}", input_size, output_size);
 
-        cudaStream_t stream;
-        cudaStreamCreate(&stream);
-
         // alloc cpu and gpu memory
         // std::vector<float> input_host(input_size, 1.0);
         std::vector<float> input_host{
@@ -364,20 +369,19 @@ public:
         fmt::println("Input: {}", input_host);
 
         CUDA_CHECK(cudaMemcpyAsync(input_device, input_host.data(), input_size * sizeof(float), cudaMemcpyHostToDevice,
-                                   stream));
+                                   _stream));
 
         // void* bindings[] = {input_device, output_device};
         // context->enqueueV2(bindings, 0, nullptr);
-        context->enqueueV3(stream);
+        context->enqueueV3(_stream);
         // cudaStreamSynchronize(stream);
 
         CUDA_CHECK(cudaMemcpyAsync(output_host.data(), output_device, output_size * sizeof(float),
-                                   cudaMemcpyDeviceToHost, stream));
-        cudaStreamSynchronize(stream);
+                                   cudaMemcpyDeviceToHost, _stream));
+        cudaStreamSynchronize(_stream);
 
         fmt::println("Output: {}", output_host);
 
-        cudaStreamDestroy(stream);
         CUDA_CHECK(cudaFree(input_device));
         CUDA_CHECK(cudaFree(output_device));
         input_device = nullptr;
@@ -385,6 +389,10 @@ public:
 
         return true;
     }
+
+#ifdef USE_OPENCV
+    std::vector<float> inference(const cv::Mat& image) {}
+#endif  // USE_OPENCV
 
     bool run() {
         int ret = true;
@@ -451,6 +459,7 @@ private:
 private:
     std::filesystem::path _onnx_path;
     std::filesystem::path _engine_path;
+    cudaStream_t _stream;
     nvinfer1::Dims _input_dims;
     nvinfer1::Dims _output_dims;
     std::shared_ptr<nvinfer1::ICudaEngine> _engine;
