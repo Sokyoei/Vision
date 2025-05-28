@@ -1,0 +1,10 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="GenerateConfig" BeforeTargets="ClCompile">
+        <Message Text="Generating config.h from config.h.msbuild" Importance="high"/>
+        <PropertyGroup>
+            <ConfigHIn>$(SolutionDir)config.h.msbuild</ConfigHIn>
+            <ConfigHOut>$(SolutionDir)config.h</ConfigHOut>
+        </PropertyGroup>
+        <Exec Command="python $(SolutionDir)config.h.msbuild.py $(ConfigHIn) $(ConfigHOut) $(SolutionDir)"/>
+    </Target>
+</Project>

@@ -1,0 +1,8 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define VISION_ROOT @@VISION_ROOT@@
+
+// libraries
+
+#endif  // !CONFIG_H
