@@ -13,7 +13,12 @@
 #include <filesystem>
 #include <memory>
 
+#include "Vision.hpp"
+
 #include <openvino/openvino.hpp>
+#ifdef USE_OPENCV
+#include <opencv2/opencv.hpp>
+#endif
 
 #include "Ceceilia/utils/fmt.hpp"
 #include "Ceceilia/utils/logger_utils.hpp"

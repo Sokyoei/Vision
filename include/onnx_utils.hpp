@@ -18,18 +18,22 @@
 #include <string>
 #include <vector>
 
+#include "Vision.hpp"
+
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 #include <fmt/std.h>
 #include <onnxruntime_cxx_api.h>
+#ifdef USE_OPENCV
 #include <opencv2/opencv.hpp>
+#endif
 
 #include "Ceceilia/utils/logger_utils.hpp"
 
 namespace Ahri::ONNX {
-class ONNXModel {
+class ONNXRuntimeModel {
 public:
-    ONNXModel(std::filesystem::path onnx_path) : _onnx_path(onnx_path) {
+    ONNXRuntimeModel(std::filesystem::path onnx_path) : _onnx_path(onnx_path) {
         _env = Ort::Env{ORT_LOGGING_LEVEL_WARNING, "default"};
         _session_options.SetIntraOpNumThreads(1);
         _session_options.SetGraphOptimizationLevel(ORT_ENABLE_ALL);
@@ -69,9 +73,10 @@ public:
         }
     }
 
-    std::vector<Ort::Value> inference(cv::Mat& input_image) {
-        std::vector<float> input_data(
-            std::accumulate(_input_shapes[0].begin(), _input_shapes[0].end(), 1, std::multiplies<int64_t>()), 0.5f);
+    std::vector<Ort::Value> inference(std::vector<float>& input_data) {
+        // int data_length = static_cast<int>(
+        //     std::accumulate(_input_shapes[0].begin(), _input_shapes[0].end(), 1, std::multiplies<int64_t>()));
+        // std::vector<float> input_data(data_length, 0.5f);
         auto memory_info = Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeDefault);
         Ort::Value input_tensor = Ort::Value::CreateTensor<float>(memory_info, input_data.data(), input_data.size(),
                                                                   _input_shapes[0].data(), _input_shapes[0].size());
@@ -80,11 +85,23 @@ public:
         return outputs;
     }
 
+#ifdef USE_OPENCV
+    std::vector<Ort::Value> inference(cv::Mat& image) {
+        auto memory_info = Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeDefault);
+        Ort::Value input_tensor =
+            Ort::Value::CreateTensor<uint8_t>(memory_info, image.data, image.total() * image.channels(),
+                                              _input_shapes[0].data(), _input_shapes[0].size());
+        std::vector<Ort::Value> outputs =
+            _session.Run(Ort::RunOptions{nullptr}, _input_names.data(), &input_tensor, 1, _output_names.data(), 1);
+        return outputs;
+    }
+#endif  // USE_OPENCV
+
     // virtual int preprocess(cv::Mat& input_image) = 0;
 
     // virtual int postprocess(std::vector<Ort::Value>& outputs) = 0;
 
-    ~ONNXModel() {
+    ~ONNXRuntimeModel() {
         _env.release();
         _session.release();
     }
@@ -100,10 +117,16 @@ private:
     std::vector<std::vector<int64_t>> _output_shapes;
 };
 
-using Model = ONNXModel;
+using Model = ONNXRuntimeModel;
 
 namespace Samples {
-class AhriNet : public Model {};
+struct AhriNetResult {};
+
+class AhriNet : public ONNXRuntimeModel {
+    cv::Mat& preprocess(cv::Mat& input_image) {}
+
+    std::vector<AhriNetResult> postprocess(std::vector<Ort::Value>& outputs) {}
+};
 }  // namespace Samples
 }  // namespace Ahri::ONNX
 

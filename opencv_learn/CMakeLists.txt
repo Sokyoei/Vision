@@ -24,6 +24,7 @@ target_link_libraries(moving_detection PRIVATE fmt::fmt-header-only)
 
 add_executable(transform transform.cpp)
 target_link_libraries(transform PRIVATE opencv_core opencv_imgproc opencv_highgui)
+target_link_libraries(transform PRIVATE fmt::fmt-header-only)
 
 add_executable(opencv_main main.cpp)
 target_link_libraries(opencv_main PRIVATE fmt::fmt-header-only)

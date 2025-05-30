@@ -4,5 +4,16 @@
 #define VISION_ROOT @@VISION_ROOT@@
 
 // libraries
+#define USE_FMT
+#define USE_SPDLOG
+#define USE_OPENCV
+#define USE_ONNXRUNTIME
+#define USE_TENSORRT
+#define USE_OPENVINO
+#define USE_REALSENSE2
+#define USE_FFMPEG
+#define USE_GLAD
+#define USE_GLFW3
+#define USE_IMGUI
 
 #endif  // !CONFIG_H
