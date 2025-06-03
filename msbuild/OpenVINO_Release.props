@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <ExternalIncludePath>D:\openvino_toolkit_windows_2025.0.0.17942.1f68be9f594_x86_64\runtime\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>D:\openvino_toolkit_windows_2025.0.0.17942.1f68be9f594_x86_64\runtime\3rdparty\tbb\lib;D:\openvino_toolkit_windows_2025.0.0.17942.1f68be9f594_x86_64\runtime\lib\intel64\Release;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>tbb12.lib;tbbbind_2_5.lib;tbbmalloc.lib;tbbmalloc_proxy.lib;openvino_c.lib;openvino_onnx_frontend.lib;openvino_paddle_frontend.lib;openvino_pytorch_frontend.lib;openvino_tensorflow_frontend.lib;openvino_tensorflow_lite_frontend.lib;openvino.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
