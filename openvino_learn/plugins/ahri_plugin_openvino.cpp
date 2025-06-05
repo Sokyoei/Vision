@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include <openvino/core/extension.hpp>
 #include <openvino/core/op_extension.hpp>
 #include <openvino/frontend/extension.hpp>

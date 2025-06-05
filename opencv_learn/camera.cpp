@@ -2,7 +2,8 @@
 
 #include <opencv2/opencv.hpp>
 
-int main(int argc, char const* argv[]) {
+namespace Ahri {
+void open_camera() {
     auto video = cv::VideoCapture(0);
     auto fps = video.get(cv::CAP_PROP_FPS);
 
@@ -21,6 +22,11 @@ int main(int argc, char const* argv[]) {
             break;
         }
     }
+}
+}  // namespace Ahri
+
+int main(int argc, char const* argv[]) {
+    Ahri::open_camera();
 
     return 0;
 }
