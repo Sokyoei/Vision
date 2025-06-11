@@ -1,6 +1,25 @@
 """
 使用大华摄像头 SDK 进行视频流采集
 SDK 下载地址：https://support.dahuatech.com/sdkindex/sdkExploit
+
+## ARM 版 NetSDK
+
+ARM 版的需要下载设备网络SDK和播放SDK, 将 linux x64 平台的 python 包里的 so 替换为这两个包的 so,
+然后按照下面注释掉 NetSDK.py/NetClient/_load_library() 函数内的两行，再重新打包一下
+
+```python
+    @classmethod
+    def _load_library(cls):
+        try:
+            cls.sdk = load_library(netsdkdllpath)
+            cls.config_sdk = load_library(configdllpath)
+            cls.render_sdk = load_library(rendersdkdllpath)
+            # cls.infra_sdk = load_library(infrasdkdllpath)  # 注释掉
+            # cls.image_alg = load_library(imagealgdllpath)  # 注释掉
+            cls.play_sdk = load_library(playsdkdllpath)
+        except OSError as e:
+            print('动态库加载失败')
+```
 """
 
 import datetime
@@ -14,6 +33,8 @@ from ctypes import CDLL, POINTER, Structure, c_char_p, c_int, c_long, c_ubyte, c
 # ```shell
 # export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:~/miniconda3/envs/health/lib/python3.10/site-packages/NetSDK/Libs/linux64
 # ```
+#
+# VVV 无效 VVV
 if platform.system() == "Linux":
     os.environ["LD_LIBRARY_PATH"] += f":{site.getsitepackages()[0]}/NetSDK/Libs/linux64"
     print(os.environ["LD_LIBRARY_PATH"])
@@ -77,6 +98,9 @@ class DahuaCamera(object):
         self.port = port
         self.username = username
         self.password = password
+
+        # config variable
+        self.log_file = VISION_ROOT / "logs/dahua_camera.log"
 
         # SDK return value
         self.login_id = C_LLONG()
@@ -216,10 +240,13 @@ class DahuaCamera(object):
         )
 
     def init_log(self):
+        # 每次只记录当前的日志
+        if self.log_file.exists():
+            self.log_file.unlink()
         log_info = LOG_SET_PRINT_INFO()
         log_info.dwSize = sizeof(LOG_SET_PRINT_INFO)
         log_info.bSetFilePath = 1
-        log_info.szLogFilePath = str(VISION_ROOT / "logs/dahua_camera.log").encode('gbk')
+        log_info.szLogFilePath = str(self.log_file).encode('gbk')
         self.sdk.LogOpen(log_info)
 
     def init_login(self):
@@ -248,7 +275,7 @@ class DahuaCamera(object):
 
 def main():
     n = 0
-    camera = DahuaCamera("192.168.8.171", 37777, "admin", "L23C0A16")
+    camera = DahuaCamera("192.168.8.97", 37777, "admin", "L23C0A16")
     camera.update()
 
     while True:
