@@ -26,7 +26,8 @@ import datetime
 import os
 import platform
 import site
-from ctypes import CDLL, POINTER, Structure, c_char_p, c_int, c_long, c_ubyte, cast, sizeof
+import threading
+from ctypes import CDLL, POINTER, c_char_p, c_int, c_long, c_ubyte, cast, sizeof
 
 # Linux 需要将 SDK 的动态库路径加入到 LD_LIBRARY_PATH 环境变量，Python 的 os.environ 不起作用
 #
@@ -91,9 +92,10 @@ def decode_frame_to_bgr(frame_info):
     return bgr_img
 
 
-class DahuaCamera(object):
+class DahuaCamera(threading.Thread):
 
     def __init__(self, ip: str, port: int, username: str, password: str):
+        super().__init__()
         self.ip = ip
         self.port = port
         self.username = username
@@ -127,8 +129,20 @@ class DahuaCamera(object):
         # frame variable
         self.frame = None
 
-    def update(self):
+        # thread variable
+        self.name = f"{self.__class__.__name__}Thread"
+        self.frame_lock = threading.Lock()
+        self.flow_cond = threading.Condition()
+
+    def open_stream(self) -> bool:
+        """打开视频流
+
+        Returns:
+            bool: True is successed, False is failed.
+        """
         result, self.freeport = self.sdk.GetFreePort()
+        if result == 0:
+            return False
 
         # self.sdk.SetDecCallBackEx(self.m_DecodingCallBackEx, 0, NET_VIDEOSTREAM_TYPE.VIDEOSTREAM_NORMAL, 0)
         ret = self.sdk.SetDecCallBackEx(self.m_DecodingCallBackEx, 0, NET_VIDEOSTREAM_TYPE.VIDEOSTREAM_NORMAL, 0)
@@ -148,6 +162,12 @@ class DahuaCamera(object):
         # ret = self.sdk.SetDecCallBackEx(self.m_DecodingCallBackEx, 0, NET_VIDEOSTREAM_TYPE.VIDEOSTREAM_NORMAL, 0)
         # logger.info(f"SetDecCallBackEx result: {ret}")
         logger.info("Dahua camera updated.")
+        return True
+
+    def run(self):
+        while True:
+            if not self.open_stream():
+                self.wait()
 
     def release(self):
         if self.play_id:
@@ -276,7 +296,9 @@ class DahuaCamera(object):
 def main():
     n = 0
     camera = DahuaCamera("192.168.8.97", 37777, "admin", "L23C0A16")
-    camera.update()
+    camera.start()
+
+    cv2.namedWindow("Dahua Camera", cv2.WINDOW_FREERATIO)
 
     while True:
         if camera.frame is not None:
