@@ -132,7 +132,8 @@ class DahuaCamera(threading.Thread):
         # thread variable
         self.name = f"{self.__class__.__name__}Thread"
         self.frame_lock = threading.Lock()
-        self.flow_cond = threading.Condition()
+        self.open_stream_cond = threading.Condition()
+        self.running = True
 
     def open_stream(self) -> bool:
         """打开视频流
@@ -165,11 +166,15 @@ class DahuaCamera(threading.Thread):
         return True
 
     def run(self):
-        while True:
-            if not self.open_stream():
-                self.wait()
+        while self.running:
+            with self.open_stream_cond:
+                if self.open_stream():
+                    self.open_stream_cond.wait()
 
     def release(self):
+        with self.open_stream_cond:
+            self.running = False
+            self.open_stream_cond.notify()
         if self.play_id:
             self.sdk.StopRealPlayEx(self.play_id)
             self.play_id = 0
@@ -236,7 +241,7 @@ class DahuaCamera(threading.Thread):
         # logger.info(f"DecodingCallBack: {nPort=} {pBuf=} {nSize=} {pFrameInfo=} {pUserData=} {nReserved2=}")
         # 帧信息结构体
         # here get YUV data, pBuf is YUV data IYUV/YUV420 ,size is nSize, pFrameInfo is frame info with height, width.
-        # 对于planar 的YUV格式，先连续存储所有相速度的Y，紧接着存储所有像素点的U，随后是V
+        # 对于planar 的YUV格式，先连续存储所有像素点的Y，紧接着存储所有像素点的U，随后是V
         # 对于packed 的YUV格式，每个像素点的Y,U,V是连续交叉存储的
         # uv 的排列格式分为p、sp ，错误会导致颜色不对
         data = cast(pBuf, POINTER(c_ubyte * nSize)).contents
@@ -247,9 +252,9 @@ class DahuaCamera(threading.Thread):
         if info.nType == 3:
             # # 使用 numpy.frombuffer 将 c_ubyte_Array 对象转换为 numpy 数组
             yuv = np.frombuffer(data, dtype=np.uint8).reshape(int(info.nHeight * 1.5), info.nWidth)
-            rgb = cv2.cvtColor(yuv, cv2.COLOR_YUV2BGR_I420)
+            bgr = cv2.cvtColor(yuv, cv2.COLOR_YUV2BGR_I420)
             # # 如果需要显示图像，可以使用以下代码
-            self.frame = rgb
+            self.frame = bgr
 
     def parse_frame_time(self, time_struct: NET_TIME_EX) -> str:
         """将NET_TIME_EX转换为可读时间字符串"""

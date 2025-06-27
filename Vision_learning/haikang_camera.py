@@ -7,7 +7,7 @@
 
 import threading
 import time
-from ctypes import POINTER, byref, c_ubyte, cast, create_string_buffer
+from ctypes import POINTER, byref, c_char, c_long, c_ubyte, cast, create_string_buffer
 from types import NoneType
 
 import cv2
@@ -24,6 +24,7 @@ from HCNetSDK.HCNetSDK import (
     NET_DVR_USER_LOGIN_INFO,
     NET_SDK_INIT_CFG_TYPE,
     REALDATACALLBACK,
+    fun_ctype,
     hcnetsdk_path,
     load_library,
     netsdkdllpath,
@@ -33,6 +34,9 @@ from HCNetSDK.HCNetSDK import (
 from loguru import logger
 
 from Vision import VISION_ROOT
+
+# void (CALLBACK* DisplayCBFun)(long nPort,char * pBuf,long nSize,long nWidth,long nHeight,long nStamp,long nType,long nReserved)
+DisplayCBFun = fun_ctype(None, c_long, POINTER(c_char), c_long, c_long, c_long, c_long, c_long, c_long)
 
 
 class HaikangCamera(threading.Thread):
@@ -53,13 +57,21 @@ class HaikangCamera(threading.Thread):
         # self.wincv = None  # windows环境下的参数
         # self.win = None  # 预览窗口
         self.FuncDecCB = None  # 解码回调
+        self.FunDisPlayCB = None
         self.PlayCtrlPort = C_LONG(-1)  # 播放通道号
-        self.basePath = ""  # 基础路径
-        self.preview_file = ""  # linux预览取流保存路径
+        # self.basePath = ""  # 基础路径
+        # self.preview_file = ""  # linux预览取流保存路径
         self.funcRealDataCallBack_V30 = REALDATACALLBACK(self.RealDataCallBack_V30)  # 预览回调函数
         # self.msg_callback_func = MSGCallBack_V31(self.g_fMessageCallBack_Alarm)  # 注册回调函数实现
 
+        # frame variable
         self.frame: MatLike | NoneType = None
+
+        # thread variable
+        self.name = f"{self.__class__.__name__}Thread"
+        self.frame_lock = threading.Lock()
+        self.open_stream_cond = threading.Condition()
+        self.running = True
 
     def run(self):
         self.update()
@@ -165,8 +177,17 @@ class HaikangCamera(threading.Thread):
 
         if info.nType == 3:
             yuv = np.frombuffer(data, dtype=np.uint8).reshape(int(info.nHeight * 1.5), info.nWidth)
-            rgb = cv2.cvtColor(yuv, cv2.COLOR_YUV2BGR_YV12)
-            self.frame = rgb
+            bgr = cv2.cvtColor(yuv, cv2.COLOR_YUV2BGR_YV12)
+            self.frame = bgr
+
+    def DisplayCBFun(self, nPort, pBuf, nSize, nWidth, nHeight, nStamp, nType, nReserved):
+        """
+        void (CALLBACK* DisplayCBFun)(long nPort,char * pBuf,long nSize,long nWidth,long nHeight,long nStamp,long nType,long nReserved)
+        """
+        data = cast(pBuf, POINTER(c_ubyte * nSize)).contents
+        yuv = np.frombuffer(data, dtype=np.uint8).reshape(int(nHeight * 1.5), nWidth)
+        bgr = cv2.cvtColor(yuv, cv2.COLOR_YUV2BGR_YV12)
+        self.frame = bgr
 
     def RealDataCallBack_V30(self, lPlayHandle, dwDataType, pBuffer, dwBufSize, pUser):
         # 码流回调函数
@@ -190,8 +211,12 @@ class HaikangCamera(threading.Thread):
             # 打开码流，送入40字节系统头数据
             if self.playM4SDK.PlayM4_OpenStream(self.PlayCtrlPort, pBuffer, dwBufSize, 1024 * 1024):
                 # 设置解码回调，可以返回解码后YUV视频数据
-                self.FuncDecCB = DECCBFUNWIN(self.DecCBFun)
-                self.playM4SDK.PlayM4_SetDecCallBackExMend(self.PlayCtrlPort, self.FuncDecCB, None, 0, None)
+                # BUG: Windows 可以解码，但是 Linux 上 FRAME_INFO 内的数据都是错误
+                # self.FuncDecCB = DECCBFUNWIN(self.DecCBFun)
+                # self.playM4SDK.PlayM4_SetDecCallBackExMend(self.PlayCtrlPort, self.FuncDecCB, None, 0, None)
+                # NOTE: Windows/Linux 都可以解码
+                self.FunDisPlayCB = DisplayCBFun(self.DisplayCBFun)
+                self.playM4SDK.PlayM4_SetDisplayCallBack(self.PlayCtrlPort, self.FunDisPlayCB)
                 # 开始解码播放
                 if self.playM4SDK.PlayM4_Play(self.PlayCtrlPort, 0):
                     logger.info("播放库播放成功")
@@ -245,7 +270,8 @@ class HaikangCamera(threading.Thread):
 
 
 def main():
-    camera = HaikangCamera("192.168.30.111", 8000, "admin", "linxin789")
+    # camera = HaikangCamera("192.168.30.111", 8000, "admin", "linxin789")
+    camera = HaikangCamera("192.168.8.68", 8000, "admin", "linxin789")
     camera.start()
 
     cv2.namedWindow("Haikang Camera", cv2.WINDOW_FREERATIO)
