@@ -11,26 +11,13 @@
 #include <NvInferVersion.h>
 #include <fmt/core.h>
 
-#include "tensorrt_utils.cuh"
+#include "kernels/swish.cuh"
+#include "tensorrt_utils.hpp"
 
 namespace Ahri::TensorRT::Plugin {
 static constexpr const char* swish_plugin_name{"AhriSwish"};
 static constexpr const char* swish_plugin_namespace{""};
 static constexpr const char* swish_plugin_version{"1"};
-
-__global__ void swish_kernel(const float* inputs, float* outputs, const int elements) {
-    const int index = blockIdx.x * blockDim.x + threadIdx.x;
-    if (index >= elements) {
-        return;
-    }
-    outputs[index] = inputs[index] * (1.0f / (1.0f + std::exp(-inputs[index])));
-}
-
-void swish(const float* inputs, float* outputs, const int elements, cudaStream_t stream) {
-    dim3 block_size(256, 1, 1);
-    dim3 grid_size(std::ceil(float(elements) / 256), 1, 1);
-    swish_kernel<<<grid_size, block_size, 0, stream>>>(inputs, outputs, elements);
-}
 
 namespace V3 {
 class AHRI_TENSORRT_API AhriSwishPlugin : public nvinfer1::IPluginV3,

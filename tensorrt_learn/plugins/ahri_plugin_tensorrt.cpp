@@ -1,5 +1,5 @@
-#include "ahri_leakyrelu_tensorrt.cuh"
-#include "ahri_swish_tensorrt.cuh"
+#include "ahri_leakyrelu_tensorrt.hpp"
+#include "ahri_swish_tensorrt.hpp"
 
 // namespace Ahri::TensorRT::Plugin {
 // namespace V3 {

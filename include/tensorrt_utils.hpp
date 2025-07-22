@@ -7,8 +7,8 @@
  */
 
 #pragma once
-#ifndef TENSORRT_UTILS_CUH
-#define TENSORRT_UTILS_CUH
+#ifndef TENSORRT_UTILS_HPP
+#define TENSORRT_UTILS_HPP
 
 #include <filesystem>
 #include <fstream>
@@ -20,7 +20,7 @@
 
 #include "Vision.hpp"
 
-#ifdef __NVCC__
+// #ifdef __NVCC__
 #include <NvInfer.h>
 #include <NvInferPlugin.h>
 #include <NvInferVersion.h>
@@ -39,7 +39,7 @@
 #error "requires compiler has C++17 or later."
 #endif
 
-#define BUILD_SAMPLES
+// #define BUILD_SAMPLES
 
 namespace Ahri::TensorRT {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,7 +100,7 @@ inline TensorRTLogger trtlogger;
  * @param engine_path engine model path
  * @param build_flag @see nvinfer1::BuilderFlag
  */
-void onnx_to_engine(std::string onnx_path, std::string engine_path, nvinfer1::BuilderFlag build_flag) {
+inline void onnx_to_engine(std::string onnx_path, std::string engine_path, nvinfer1::BuilderFlag build_flag) {
     auto builder = std::unique_ptr<nvinfer1::IBuilder>(nvinfer1::createInferBuilder(trtlogger));
     const auto explicit_batch = 1U << static_cast<uint32_t>(nvinfer1::NetworkDefinitionCreationFlag::kEXPLICIT_BATCH);
     auto network = std::unique_ptr<nvinfer1::INetworkDefinition>(builder->createNetworkV2(explicit_batch));
@@ -133,9 +133,9 @@ void onnx_to_engine(std::string onnx_path, std::string engine_path, nvinfer1::Bu
  * @param engine
  * @param context
  */
-void load_engine(const std::string& engine_path,
-                 std::unique_ptr<nvinfer1::ICudaEngine>& engine,
-                 std::unique_ptr<nvinfer1::IExecutionContext>& context) {
+inline void load_engine(const std::string& engine_path,
+                        std::unique_ptr<nvinfer1::ICudaEngine>& engine,
+                        std::unique_ptr<nvinfer1::IExecutionContext>& context) {
     std::ifstream file{engine_path, std::ios::binary};
     std::vector<char> data;
 
@@ -469,7 +469,7 @@ private:
 using Model = TensorRTModel;
 
 namespace examples {
-bool build_weights(nvinfer1::INetworkDefinition& network, std::map<std::string, nvinfer1::Weights> weights) {
+inline bool build_weights(nvinfer1::INetworkDefinition& network, std::map<std::string, nvinfer1::Weights> weights) {
     auto data = network.addInput("input0", nvinfer1::DataType::kFLOAT, nvinfer1::Dims4{1, 1, 1, 5});
 #if NV_TENSORRT_MAJOR >= 10
     auto linear_weight = network.addConstant(nvinfer1::Dims{}, weights["linear.weight"]);
@@ -489,7 +489,7 @@ bool build_weights(nvinfer1::INetworkDefinition& network, std::map<std::string, 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Print helper
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-std::string tensor_shape(nvinfer1::ITensor* tensor) {
+inline std::string tensor_shape(nvinfer1::ITensor* tensor) {
     std::string shape;
     auto dims = tensor->getDimensions();
     for (int i = 0; i < dims.nbDims; i++) {
@@ -502,7 +502,7 @@ std::string tensor_shape(nvinfer1::ITensor* tensor) {
     return shape;
 }
 
-void print_network(nvinfer1::INetworkDefinition& network, nvinfer1::ICudaEngine& engine, bool optimized) {
+inline void print_network(nvinfer1::INetworkDefinition& network, nvinfer1::ICudaEngine& engine, bool optimized) {
     int input_count = network.getNbInputs();
     int output_count = network.getNbOutputs();
     std::string layer_info;
@@ -793,5 +793,5 @@ REGISTER_TENSORRT_PLUGIN(CustomScalarPluginCreator);
 // }  // namespace samples
 #endif  // BUILD_SAMPLES
 
-#endif  // __NVCC__
-#endif  // !TENSORRT_UTILS_CUH
+// #endif  // __NVCC__
+#endif  // !TENSORRT_UTILS_HPP

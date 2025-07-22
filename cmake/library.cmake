@@ -49,6 +49,11 @@ if(OpenCV_FOUND)
     set(USE_OPENCV true)
 endif(OpenCV_FOUND)
 
+if(CMAKE_CUDA_COMPILER)
+    find_package(CUDAToolkit REQUIRED)
+endif(CMAKE_CUDA_COMPILER)
+
+
 # WARNING: if default, the onnxruntime.dll first well load in C:\Windows\System32\onnxruntime.dll
 if(ONNXRuntime)
     if(ONNXRuntime_CMAKE_DIR)
