@@ -11,8 +11,8 @@
 #include <NvInferVersion.h>
 #include <fmt/core.h>
 
+#include "Ahri/Vision/tensorrt_utils.hpp"
 #include "kernels/swish.cuh"
-#include "tensorrt_utils.hpp"
 
 namespace Ahri::TensorRT::Plugin {
 static constexpr const char* swish_plugin_name{"AhriSwish"};

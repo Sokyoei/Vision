@@ -14,7 +14,7 @@
 
 // #include "tensorrt_learn/plugins/ahri_leakyrelu_tensorrt.cuh"
 // #include "tensorrt_learn/plugins/ahri_swish_tensorrt.cuh"
-#include "tensorrt_utils.hpp"
+#include "Ahri/Vision/tensorrt_utils.hpp"
 
 #include "Vision.h"
 
