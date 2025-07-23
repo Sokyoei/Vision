@@ -7,15 +7,15 @@
  */
 
 #pragma once
-#ifndef YOLO_HPP
-#define YOLO_HPP
+#ifndef AHRI_VISION_YOLO_HPP
+#define AHRI_VISION_YOLO_HPP
 
 #include <string>
 #include <vector>
 
 #include <opencv2/opencv.hpp>
 
-#include "color.hpp"
+#include "Ahri/Vision/opencv_color.hpp"
 
 namespace Ahri {
 struct YOLOResult {
@@ -46,11 +46,11 @@ std::vector<std::string> coco80{
 
 std::vector<YOLOResult> nms(std::vector<YOLOResult> results, float threshold);
 
-void plot(cv::Mat& img, std::vector<YOLOResult> results) {
+inline void plot(cv::Mat& img, std::vector<YOLOResult> results) {
     for (auto&& result : results) {
         cv::rectangle(img, result.box, GREEN);
     }
 }
 }  // namespace Ahri
 
-#endif  // !YOLO_HPP
+#endif  // !AHRI_VISION_YOLO_HPP

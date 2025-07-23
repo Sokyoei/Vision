@@ -7,19 +7,19 @@
  */
 
 #pragma once
-#ifndef NCNN_UTILS_HPP
-#define NCNN_UTILS_HPP
+#ifndef AHRI_VISION_NCNN_UTILS_HPP
+#define AHRI_VISION_NCNN_UTILS_HPP
 
 namespace Ahri {
 namespace NCNN {
-class AbstractNCNNInference {
+class NCNNModel {
 private:
     /* data */
 public:
-    AbstractNCNNInference(/* args */) {}
-    ~AbstractNCNNInference() {}
+    NCNNModel(/* args */) {}
+    ~NCNNModel() {}
 };
 }  // namespace NCNN
 }  // namespace Ahri
 
-#endif  // !NCNN_UTILS_HPP
+#endif  // !AHRI_VISION_NCNN_UTILS_HPP

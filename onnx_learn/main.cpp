@@ -8,7 +8,7 @@
 #include <unistd.h>
 #endif
 
-#include "onnx_utils.hpp"
+#include "Ahri/Vision/onnx_utils.hpp"
 
 namespace Ahri::ONNX {
 class YOLOV5ONNXRuntimeModel : public ONNXRuntimeModel {};

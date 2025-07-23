@@ -7,8 +7,8 @@
  */
 
 #pragma once
-#ifndef TENSORRT_UTILS_HPP
-#define TENSORRT_UTILS_HPP
+#ifndef AHRI_VISION_TENSORRT_UTILS_HPP
+#define AHRI_VISION_TENSORRT_UTILS_HPP
 
 #include <filesystem>
 #include <fstream>
@@ -794,4 +794,4 @@ REGISTER_TENSORRT_PLUGIN(CustomScalarPluginCreator);
 #endif  // BUILD_SAMPLES
 
 // #endif  // __NVCC__
-#endif  // !TENSORRT_UTILS_HPP
+#endif  // !AHRI_VISION_TENSORRT_UTILS_HPP

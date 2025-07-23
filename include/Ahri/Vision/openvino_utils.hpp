@@ -7,8 +7,8 @@
  */
 
 #pragma once
-#ifndef OPENVINO_UTILS_HPP
-#define OPENVINO_UTILS_HPP
+#ifndef AHRI_VISION_OPENVINO_UTILS_HPP
+#define AHRI_VISION_OPENVINO_UTILS_HPP
 
 #include <filesystem>
 #include <memory>
@@ -100,4 +100,4 @@ namespace Samples {}  // namespace Samples
 
 AHRI_FMT_FORMATTER_OSTREAM(ov::Version);
 
-#endif  // !OPENVINO_UTILS_HPP
+#endif  // !AHRI_VISION_OPENVINO_UTILS_HPP

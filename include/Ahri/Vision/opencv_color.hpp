@@ -7,11 +7,12 @@
  */
 
 #pragma once
-#ifndef COLOR_HPP
-#define COLOR_HPP
+#ifndef AHRI_VISION_OPENCV_COLOR_HPP
+#define AHRI_VISION_OPENCV_COLOR_HPP
 
 #include <opencv2/opencv.hpp>
 
+namespace Ahri::OpenCV {
 #define RED cv::Scalar(0, 0, 255)
 #define GREEN cv::Scalar(0, 255, 0)
 #define BLUE cv::Scalar(255, 0, 0)
@@ -25,5 +26,6 @@
 #define SKYBLUE cv::Scalar(230, 216, 173)
 #define GOLD cv::Scalar(10, 215, 255)
 #define DARKGRAY cv::Scalar(169, 169, 169)
+}  // namespace Ahri::OpenCV
 
-#endif  // !COLOR_HPP
+#endif  // !AHRI_VISION_OPENCV_COLOR_HPP

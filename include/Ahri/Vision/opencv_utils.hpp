@@ -7,17 +7,17 @@
  */
 
 #pragma once
-#ifndef OPENCV_UTILS_HPP
-#define OPENCV_UTILS_HPP
+#ifndef AHRI_VISION_OPENCV_UTILS_HPP
+#define AHRI_VISION_OPENCV_UTILS_HPP
 
 #include <opencv2/opencv.hpp>
 
-namespace Ahri {
+namespace Ahri::OpenCV {
 #define IMG_SHOW(img, winname, flag) \
     cv::namedWindow(winname, flag);  \
     cv::imshow(winname, img);        \
     cv::waitKey();                   \
     cv::destroyAllWindows();
-}  // namespace Ahri
+}  // namespace Ahri::OpenCV
 
-#endif  // !OPENCV_UTILS_HPP
+#endif  // !AHRI_VISION_OPENCV_UTILS_HPP

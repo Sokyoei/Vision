@@ -2,7 +2,7 @@
 
 #include "Vision.hpp"
 
-#include "openvino_utils.hpp"
+#include "Ahri/Vision/openvino_utils.hpp"
 
 int main(int argc, char const* argv[]) {
     fmt::println("OpenVINO Version: {}", ov::get_openvino_version());

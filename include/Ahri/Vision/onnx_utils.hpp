@@ -7,8 +7,8 @@
  */
 
 #pragma once
-#ifndef ONNX_UTILS_HPP
-#define ONNX_UTILS_HPP
+#ifndef AHRI_VISION_ONNX_UTILS_HPP
+#define AHRI_VISION_ONNX_UTILS_HPP
 
 #include <algorithm>
 #include <filesystem>
@@ -130,4 +130,4 @@ class AhriNet : public ONNXRuntimeModel {
 }  // namespace Samples
 }  // namespace Ahri::ONNX
 
-#endif  // !ONNX_UTILS_HPP
+#endif  // !AHRI_VISION_ONNX_UTILS_HPP

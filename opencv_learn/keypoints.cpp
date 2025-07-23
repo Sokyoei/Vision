@@ -10,11 +10,12 @@
 #include <iostream>
 #include <vector>
 
+#include "Vision.hpp"
+
 #include <opencv2/features2d.hpp>
 #include <opencv2/opencv.hpp>
 
-#include "Vision.hpp"
-#include "color.hpp"
+#include "Ahri/Vision/opencv_color.hpp"
 
 namespace Ahri {
 enum class KeyPointsType {

@@ -1,8 +1,12 @@
+#pragma once
+#ifndef AHRI_VISION_REALSENSE2_UTILS_HPP
+#define AHRI_VISION_REALSENSE2_UTILS_HPP
+
 #include <fmt/core.h>
 #include <librealsense2/rs.hpp>
 
 namespace Ahri::RealSense2 {
-int check_device() {
+inline int check_device() {
     rs2::context ctx;
     rs2::device_list devices = ctx.query_devices();
     if (devices.size() == 0) {
@@ -27,3 +31,5 @@ int check_device() {
     }
 }
 }  // namespace Ahri::RealSense2
+
+#endif  // !AHRI_VISION_REALSENSE2_UTILS_HPP
