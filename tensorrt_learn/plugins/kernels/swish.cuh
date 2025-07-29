@@ -4,7 +4,7 @@
 
 #include <cuda_runtime.h>
 
-#include "Ahri/Vision/tensorrt_utils.hpp"
+#include "Ahri/Vision/tensorrt_macro.hpp"
 
 #ifdef __cplusplus
 extern "C" {
