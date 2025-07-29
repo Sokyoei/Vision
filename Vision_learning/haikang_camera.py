@@ -74,16 +74,25 @@ class HaikangCamera(threading.Thread):
         self.running = True
 
     def run(self):
-        self.update()
+        while self.running:
+            with self.open_stream_cond:
+                if self.open_stream():
+                    self.open_stream_cond.wait()
 
-    def update(self):
+    def open_stream(self):
         self.SetSDKInitCfg()  # 设置SDK初始化依赖库路径
         self.hikSDK.NET_DVR_Init()  # 初始化sdk
         self.GeneralSetting()  # 通用设置，日志，回调函数等
-        self.LoginDev()  # 登录设备
-        self.startPlay(playTime=5)  # playTime用于linux环境控制预览时长，windows环境无效
+        if not self.LoginDev():  # 登录设备
+            return False
+        if not self.startPlay(playTime=5):  # playTime用于linux环境控制预览时长，windows环境无效
+            return False
+        return True
 
     def release(self):
+        with self.open_stream_cond:
+            self.running = False
+            self.open_stream_cond.notify()
         self.stopPlay()
         self.LogoutDev()
         # 释放资源
@@ -161,8 +170,10 @@ class HaikangCamera(threading.Thread):
         if self.iUserID < 0:
             logger.error("Login failed, error code: %d" % self.hikSDK.NET_DVR_GetLastError())
             self.hikSDK.NET_DVR_Cleanup()
+            return False
         else:
             logger.info(f"登录成功，设备序列号：{str(struDeviceInfoV40.struDeviceV30.sSerialNumber, encoding='utf8')}")
+            return True
 
     def LogoutDev(self):
         # 登出设备
@@ -233,6 +244,7 @@ class HaikangCamera(threading.Thread):
         # 获取一个播放句柄
         if not self.playM4SDK.PlayM4_GetPort(byref(self.PlayCtrlPort)):
             logger.info(f"获取播放库句柄失败, 错误码：{self.playM4SDK.PlayM4_GetLastError(self.PlayCtrlPort)}")
+            return False
 
         # 开始预览
         preview_info = NET_DVR_PREVIEWINFO()
@@ -252,10 +264,12 @@ class HaikangCamera(threading.Thread):
             self.hikSDK.NET_DVR_Logout(self.iUserID)
             # 释放资源
             self.hikSDK.NET_DVR_Cleanup()
-            exit()
+            return False
 
         if sys_platform == "linux":
             time.sleep(playTime)
+
+        return True
 
     def stopPlay(self):
         # 关闭预览
@@ -270,8 +284,8 @@ class HaikangCamera(threading.Thread):
 
 
 def main():
-    # camera = HaikangCamera("192.168.30.111", 8000, "admin", "linxin789")
-    camera = HaikangCamera("192.168.8.68", 8000, "admin", "linxin789")
+    camera = HaikangCamera("192.168.30.111", 8000, "admin", "linxin789")
+    # camera = HaikangCamera("192.168.8.68", 8000, "admin", "linxin789")
     camera.start()
 
     cv2.namedWindow("Haikang Camera", cv2.WINDOW_FREERATIO)
