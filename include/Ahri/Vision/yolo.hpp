@@ -141,6 +141,11 @@ inline std::vector<Result> nms(std::vector<Result> results, float conf_threshold
     return nms_result;
 }
 
+/**
+ * @brief 预处理，将图像由 BGR 转换为 RGB，缩放到 640x640，并将像素值归一化到 (0, 1) 区间
+ * @param image 输入图像
+ * @return cv::Mat
+ */
 inline cv::Mat preprocess(cv::Mat& image) {
     return cv::dnn::blobFromImage(image, 1.0f / 255.0f, cv::Size(640, 640), cv::Scalar(), true, false, CV_32F);
 }
@@ -197,6 +202,56 @@ inline std::vector<Result> postprocess(std::vector<float> output,
     return nms(detections, conf_threshold, nms_threshold);
 }
 
+/**
+ * @brief 适用于 ultralytics 框架训练出的 YOLOv5
+ * @param output
+ * @param original_width
+ * @param original_height
+ * @param num_classes
+ * @param conf_threshold
+ * @param nms_threshold
+ * @param enable_nms
+ * @return std::vector<Result>
+ */
+inline std::vector<Result> postprocess_yolov5u(std::vector<float> output,
+                                               int original_width,
+                                               int original_height,
+                                               int num_classes = 80,
+                                               float conf_threshold = 0.25f,
+                                               float nms_threshold = 0.7f,
+                                               bool enable_nms = false) {
+    // const int elements_per_box = 4 + num_classes;
+    // std::vector<Result> detections;
+    // for (size_t i = 0; i < output.size(); i += elements_per_box) {
+    // }
+
+    constexpr int elements_per_box = 6;
+    std::vector<Result> detections;
+    for (size_t i = 0; i < output.size(); i += elements_per_box) {
+        float x = output[i];
+        float y = output[i + 1];
+        float w = output[i + 2];
+        float h = output[i + 3];
+
+        detections.push_back(Result{
+            .class_id = static_cast<int>(output[i + 5]),
+            .score = output[i + 4],
+            .normalized_box = cv::Rect2f(x, y, w, h),
+            .mapped_box = cv::Rect(static_cast<int>(x / input_width * original_width),
+                                   static_cast<int>(y / input_height * original_height),
+                                   static_cast<int>(w / input_width * original_height),
+                                   static_cast<int>(h / input_height * original_height)),
+        });
+    }
+
+    return detections;
+}
+
+/**
+ * @brief 绘制检测结果
+ * @param[in, out] img 需要绘制到的图像
+ * @param[in] results
+ */
 inline void plot(cv::Mat& img, std::vector<Result> results) {
     AHRI_LOGGER_DEBUG("Result size: {}", results.size());
     for (auto&& result : results) {
