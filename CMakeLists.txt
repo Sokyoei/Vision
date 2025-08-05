@@ -22,7 +22,7 @@ option(ONNXRuntime "enable ONNXRuntime" OFF)
 option(TensorRT "enable TensorRT" OFF)
 option(OpenVINO "enable Intel OpenVINO" OFF)
 option(IntelRealSense "enable Intel IntelRealSense" OFF)
-option(Application "enable Application" OFF)
+option(VisionModule "build Vision for C++20 module" OFF)
 
 ########################################################################################################################
 # CMAKE_PREFIX_PATH/CMAKE_MODULE_PATH set
@@ -56,6 +56,36 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/../Ceceilia/include
 )
 
+########################################################################################################################
+# Ahri::Vision and Ahri::Vision-Header-Only
+########################################################################################################################
+file(
+    GLOB_RECURSE
+    VISION_SOURCE_FILES
+    "src/*.cpp"
+    "include/*.hpp"
+)
+add_library(ahri_vision SHARED ${VISION_SOURCE_FILES})
+target_link_libraries(ahri_vision PUBLIC $<$<BOOL:${USE_FMT}>:fmt::fmt>)
+target_link_libraries(ahri_vision PUBLIC $<$<BOOL:${USE_SPDLOG}>:spdlog::spdlog>)
+target_link_libraries(ahri_vision PUBLIC $<$<BOOL:${USE_TENSORRT}>:TensorRT::TensorRT>)
+target_link_libraries(ahri_vision PUBLIC $<$<BOOL:${USE_ONNXRUNTIME}>:ONNXRuntime::ONNXRuntime>)
+target_link_libraries(ahri_vision PUBLIC $<$<BOOL:${USE_OPENVINO}>:openvino::runtime;openvino::frontend::onnx;openvino::threading>)
+target_link_libraries(ahri_vision PUBLIC $<$<BOOL:${USE_OPENCV}>:opencv_core;opencv_imgproc;opencv_highgui;opencv_dnn>)
+target_link_options(ahri_vision PUBLIC $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/OPT:NOREF>)
+target_compile_definitions(ahri_vision PUBLIC AHRI_VISION_BUILD_SHARED_LIBRARY)
+add_library(Ahri::Vision ALIAS ahri_vision)
+
+add_library(ahri_vision_header_only INTERFACE)
+target_include_directories(ahri_vision_header_only INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+add_library(Ahri::Vision-Header-Only ALIAS ahri_vision_header_only)
+
+########################################################################################################################
+# Learning projects
+########################################################################################################################
 if(OpenCV_FOUND)
     add_subdirectory(opencv_learn)
 endif(OpenCV_FOUND)
