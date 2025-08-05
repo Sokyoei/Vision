@@ -7,7 +7,8 @@ target_link_libraries(builder PRIVATE fmt::fmt-header-only spdlog::spdlog_header
 
 file(GLOB_RECURSE KERNEL_FILES plugins/kernels/*.cu)
 add_library(ahri_plugin_tensorrt SHARED plugins/ahri_plugin_tensorrt.cpp ${KERNEL_FILES})
-target_link_libraries(ahri_plugin_tensorrt PRIVATE fmt::fmt-header-only spdlog::spdlog_header_only)
+target_link_libraries(ahri_plugin_tensorrt PRIVATE fmt::fmt-header-only)
+target_link_libraries(ahri_plugin_tensorrt PRIVATE spdlog::spdlog)
 target_link_libraries(ahri_plugin_tensorrt PRIVATE opencv_core opencv_imgproc opencv_highgui)
 target_link_libraries(ahri_plugin_tensorrt PRIVATE TensorRT::TensorRT)
 target_link_libraries(ahri_plugin_tensorrt PRIVATE CUDA::cudart)
@@ -22,7 +23,8 @@ target_link_libraries(inference PRIVATE TensorRT::TensorRT opencv_core opencv_im
 
 add_executable(tensorrt_main main.cpp)
 target_link_libraries(tensorrt_main PRIVATE ahri_plugin_tensorrt)
-target_link_libraries(tensorrt_main PRIVATE fmt::fmt-header-only spdlog::spdlog_header_only)
+target_link_libraries(tensorrt_main PRIVATE spdlog::spdlog_header_only)
+target_link_libraries(tensorrt_main PRIVATE fmt::fmt-header-only)
 target_link_libraries(tensorrt_main PRIVATE opencv_core opencv_imgproc opencv_highgui)
 target_link_libraries(tensorrt_main PRIVATE TensorRT::TensorRT)
 target_link_libraries(tensorrt_main PRIVATE CUDA::cudart)

@@ -3,12 +3,12 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <ExternalIncludePath>D:\TensorRT\include;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>D:\TensorRT\lib;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>D:\TensorRT-10.6.0.26.Windows.win10.cuda-12.6\TensorRT-10.6.0.26\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>D:\TensorRT-10.6.0.26.Windows.win10.cuda-12.6\TensorRT-10.6.0.26\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>onnxruntime.lib;onnxruntime_providers_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nvinfer_10.lib;nvinfer_dispatch_10.lib;nvinfer_lean_10.lib;nvinfer_plugin_10.lib;nvinfer_vc_plugin_10.lib;nvonnxparser_10.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />
