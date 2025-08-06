@@ -18,7 +18,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "Ahri/Vision/opencv_color.hpp"
-#include "Ceceilia/utils/logger_utils.hpp"
+#include "Ahri/Ceceilia/utils/logger_utils.hpp"
 
 namespace Ahri::YOLO {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -233,6 +233,10 @@ inline std::vector<Result> postprocess_yolov5u(std::vector<float> output,
         float w = output[i + 2];
         float h = output[i + 3];
 
+        if (x == 0 && y == 0 && w == 0 && h == 0) {
+            continue;
+        }
+
         detections.push_back(Result{
             .class_id = static_cast<int>(output[i + 5]),
             .score = output[i + 4],
@@ -255,13 +259,14 @@ inline std::vector<Result> postprocess_yolov5u(std::vector<float> output,
 inline void plot(cv::Mat& img, std::vector<Result> results) {
     AHRI_LOGGER_DEBUG("Result size: {}", results.size());
     for (auto&& result : results) {
-        cv::rectangle(img, result.mapped_box, GREEN, 2);
+        cv::Scalar color = Ahri::OpenCV::random_color();
+        cv::rectangle(img, result.mapped_box, color, 2);
 
         std::string label = fmt::format("{}: {:.2f}", coco80[result.class_id], result.score);
         int baseline;
         cv::Size labelsize = cv::getTextSize(label, cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseline);
         cv::rectangle(img, cv::Point(result.mapped_box.x, result.mapped_box.y - labelsize.height - baseline),
-                      cv::Point(result.mapped_box.x + labelsize.width, result.mapped_box.y), GREEN, cv::FILLED);
+                      cv::Point(result.mapped_box.x + labelsize.width, result.mapped_box.y), color, cv::FILLED);
         cv::putText(img, label, cv::Point(result.mapped_box.x, result.mapped_box.y - baseline),
                     cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0), 1);
     }

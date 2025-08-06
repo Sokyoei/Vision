@@ -20,8 +20,8 @@
 #include <opencv2/opencv.hpp>
 #endif
 
-#include "Ceceilia/utils/fmt.hpp"
-#include "Ceceilia/utils/logger_utils.hpp"
+#include "Ahri/Ceceilia/utils/fmt.hpp"
+#include "Ahri/Ceceilia/utils/logger_utils.hpp"
 
 namespace Ahri::OpenVINO {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

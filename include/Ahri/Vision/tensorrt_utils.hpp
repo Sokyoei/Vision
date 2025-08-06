@@ -32,9 +32,9 @@
 #include <opencv2/opencv.hpp>
 #endif
 
-#include "Ahri.cuh"
+#include "Ahri/Ahri.cuh"
+#include "Ahri/Ceceilia/utils/logger_utils.hpp"
 #include "Ahri/Vision/tensorrt_macro.hpp"
-#include "Ceceilia/utils/logger_utils.hpp"
 
 #ifndef AHRI_CXX17
 #error "requires compiler has C++17 or later."

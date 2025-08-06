@@ -2,7 +2,7 @@
 #ifndef AHRI_VISION_TENSORRT_MACRO_HPP
 #define AHRI_VISION_TENSORRT_MACRO_HPP
 
-#include "Ahri.cuh"
+#include "Ahri/Ahri.cuh"
 
 namespace Ahri::TensorRT {
 #define ENGINE_EXTENSION ".engine"

@@ -51,6 +51,7 @@ endif(OpenCV_FOUND)
 
 if(CMAKE_CUDA_COMPILER)
     find_package(CUDAToolkit REQUIRED)
+    set(USE_CUDATOOLKIT true)
 endif(CMAKE_CUDA_COMPILER)
 
 

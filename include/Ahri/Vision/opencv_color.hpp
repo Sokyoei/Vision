@@ -10,6 +10,8 @@
 #ifndef AHRI_VISION_OPENCV_COLOR_HPP
 #define AHRI_VISION_OPENCV_COLOR_HPP
 
+#include <random>
+
 #include <opencv2/opencv.hpp>
 
 namespace Ahri::OpenCV {
@@ -26,6 +28,27 @@ namespace Ahri::OpenCV {
 #define SKYBLUE cv::Scalar(230, 216, 173)
 #define GOLD cv::Scalar(10, 215, 255)
 #define DARKGRAY cv::Scalar(169, 169, 169)
+
+/**
+ * @brief 生成随机的OpenCV Scalar颜色
+ * @return cv::Scalar 随机颜色值(RGB)
+ * @note 在 header-only 项目中确保随机数生成器只初始化一次(在单个编译单元内，跨 DLL 调用不行)
+ */
+inline cv::Scalar random_color() {
+    struct RandomGenerator {
+        std::random_device rd;
+        std::mt19937 gen;
+        std::uniform_int_distribution<int> dis;
+
+        RandomGenerator() : gen(rd()), dis(0, 255) {}
+    };
+
+    // 局部静态变量，在第一次调用时初始化，且仅初始化一次
+    static RandomGenerator rng;
+
+    return cv::Scalar(rng.dis(rng.gen), rng.dis(rng.gen), rng.dis(rng.gen));
+}
+
 }  // namespace Ahri::OpenCV
 
 #endif  // !AHRI_VISION_OPENCV_COLOR_HPP

@@ -21,7 +21,7 @@
 #include <fmt/std.h>
 #include <opencv2/opencv.hpp>
 
-#include "Ceceilia/utils/logger_utils.hpp"
+#include "Ahri/Ceceilia/utils/logger_utils.hpp"
 
 namespace Ahri::OpenCV {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

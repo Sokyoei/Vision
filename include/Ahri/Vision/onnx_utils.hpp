@@ -28,7 +28,7 @@
 #include <opencv2/opencv.hpp>
 #endif
 
-#include "Ceceilia/utils/logger_utils.hpp"
+#include "Ahri/Ceceilia/utils/logger_utils.hpp"
 
 namespace Ahri::ONNX {
 class ONNXRuntimeModel {
