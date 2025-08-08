@@ -4,7 +4,7 @@ Edge Detection 边缘检测
 
 import cv2
 
-from Vision import SOKYOEI_DATA_DIR
+from Ahri.Vision import SOKYOEI_DATA_DIR
 
 WIN_NAME = "Canny"
 

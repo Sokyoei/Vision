@@ -7,7 +7,7 @@ import onnx
 import onnxruntime as ort
 
 
-class AbstractONNXRuntimeInference(ABC):
+class ONNXRuntimeModel(ABC):
 
     def __init__(self, onnx_path: str | os.PathLike) -> None:
         """ONNX 模型加载器

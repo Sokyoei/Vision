@@ -3,7 +3,8 @@ from cv2.typing import MatLike
 from ultralytics import YOLO
 from ultralytics.engine.results import Results
 
-from Vision.utils.cv2_utils import PopstarAhri, img_show
+from Ahri.Vision import VISION_ROOT
+from Ahri.Vision.utils.cv2_utils import PopstarAhri, img_show
 
 model = YOLO("yolov8n-pose.pt")
 model.info()

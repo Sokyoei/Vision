@@ -1,5 +1,9 @@
 """
-opencv 人脸检测
+cascade 级联检测器
+
+HARR(Harr-like)
+HOG(Histogram of Oriented Gradient)
+LBP(Local Binary Pattern)
 """
 
 from pathlib import Path
@@ -8,7 +12,8 @@ import cv2
 from cv2.data import haarcascades
 from cv2.typing import MatLike
 
-from Vision.utils.cv2_utils import PopstarAhri, img_show
+from Ahri.Vision import VISION_ROOT
+from Ahri.Vision.utils.cv2_utils import PopstarAhri, img_show
 
 
 @img_show("cascade")

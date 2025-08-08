@@ -1,6 +1,6 @@
 import cv2
 
-from Vision import SOKYOEI_DATA_DIR
+from Ahri.Vision import SOKYOEI_DATA_DIR
 
 
 def main():

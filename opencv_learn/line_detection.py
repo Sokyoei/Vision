@@ -5,7 +5,7 @@
 import cv2
 from cv2.typing import MatLike
 
-from Vision.utils.cv2_utils import GREEN, img_show
+from Ahri.Vision.utils.cv2_utils import GREEN, img_show
 
 
 @img_show("FLD")

@@ -1,7 +1,7 @@
 import numpy as np
 
-from Vision import VISION_ROOT
-from Vision.utils.tensorrt_utils import AbstractTensorRTInference
+from Ahri.Vision import VISION_ROOT
+from Ahri.Vision.utils.tensorrt_utils import AbstractTensorRTInference
 
 
 def main():

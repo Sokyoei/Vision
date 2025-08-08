@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-VISION_ROOT = Path(__file__).resolve().parent.parent
+VISION_ROOT = Path(__file__).resolve().parent.parent.parent
 
 sokyoei_data_dir = os.environ.get('SOKYOEI_DATA_DIR')
 if sokyoei_data_dir:

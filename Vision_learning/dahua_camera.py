@@ -58,7 +58,7 @@ from NetSDK.SDK_Struct import (
     NET_TIME_EX,
 )
 
-from Vision import VISION_ROOT
+from Ahri.Vision import VISION_ROOT
 
 
 def decode_frame_to_bgr(frame_info):
@@ -300,7 +300,8 @@ class DahuaCamera(threading.Thread):
 
 def main():
     n = 0
-    camera = DahuaCamera("192.168.8.97", 37777, "admin", "L23C0A16")
+    # camera = DahuaCamera("192.168.8.97", 37777, "admin", "L23C0A16")
+    camera = DahuaCamera("192.168.1.108", 37777, "admin", "linxin789")
     camera.start()
 
     cv2.namedWindow("Dahua Camera", cv2.WINDOW_FREERATIO)

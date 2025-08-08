@@ -33,7 +33,7 @@ from HCNetSDK.HCNetSDK import (
 )
 from loguru import logger
 
-from Vision import VISION_ROOT
+from Ahri.Vision import VISION_ROOT
 
 # void (CALLBACK* DisplayCBFun)(long nPort,char * pBuf,long nSize,long nWidth,long nHeight,long nStamp,long nType,long nReserved)
 DisplayCBFun = fun_ctype(None, c_long, POINTER(c_char), c_long, c_long, c_long, c_long, c_long, c_long)

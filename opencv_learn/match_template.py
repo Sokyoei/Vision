@@ -4,8 +4,8 @@
 
 import cv2
 
-from Vision import VISION_ROOT
-from Vision.utils.cv2_utils import img_show
+from Ahri.Vision import VISION_ROOT
+from Ahri.Vision.utils.cv2_utils import img_show
 
 
 @img_show("match template")
