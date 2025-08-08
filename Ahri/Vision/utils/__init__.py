@@ -1,35 +1,28 @@
-"""
-Dataset bbox:
+from Vision.check import check_package_installed
 
-    pascal voc:       [x_min, y_min, x_max, y_max]
-    coco:             [x_min, y_min, width, height]
-    yolo(normalized): [x_center, y_center, width, height]
-"""
+__all__ = []
 
-import numpy as np
-from numpy.typing import NDArray
+if check_package_installed("onnxruntime"):
+    from .onnx_utils import ONNXRuntimeModel
 
-from .nms import nms
-from .onnx_utils import AbstractONNXRuntimeInference
-from .plots import plot_image
-from .torch_utils import DEVICE, AbstractTorchDataset
+    __all__ += ["ONNXRuntimeModel"]
 
+if check_package_installed("tensorrt"):
+    from .tensorrt_utils import TensorRTModel
 
-def xywh_to_xyxy(x) -> NDArray:
-    """(x,y,w,h) -> (x1,y1,x2,y2)
+    __all__ += ["TensorRTModel"]
 
-    Args:
-        x (_type_): _description_
+if check_package_installed("openvino"):
+    from .openvino_utils import OpenVINOModel
 
-    Returns:
-        _type_: _description_
-    """
-    y = np.copy(x)
-    y[:, 0] = x[:, 0] - x[:, 2] / 2
-    y[:, 1] = x[:, 1] - x[:, 3] / 2
-    y[:, 2] = x[:, 0] + x[:, 2] / 2
-    y[:, 3] = x[:, 1] + x[:, 3] / 2
-    return y
+    __all__ += ["OpenVINOModel"]
+
+if check_package_installed("torch"):
+    from .torch_utils import DEVICE, AbstractTorchDataset
+
+    __all__ += ["DEVICE", "AbstractTorchDataset"]
 
 
-__all__ = ["AbstractONNXRuntimeInference", "AbstractTorchDataset", "nms", "DEVICE", "xywh_to_xyxy", "plot_image"]
+from .yolo_utils import nms, plot_image, xywh_to_xyxy
+
+__all__ += ["nms", "plot_image", "xywh_to_xyxy"]

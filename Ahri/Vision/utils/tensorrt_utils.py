@@ -7,7 +7,7 @@ import tensorrt as trt
 from numpy.typing import NDArray
 
 
-class AbstractTensorRTInference(ABC):
+class TensorRTModel(ABC):
 
     def __init__(self, model_path: str, in_thread: bool = False):
         """初始化并加载 TensorRT 模型"""
