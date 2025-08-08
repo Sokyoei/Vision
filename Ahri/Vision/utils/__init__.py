@@ -1,4 +1,4 @@
-from Vision.check import check_package_installed
+from Ahri.Vision.check import check_package_installed
 
 __all__ = []
 

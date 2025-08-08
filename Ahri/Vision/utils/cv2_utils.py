@@ -30,15 +30,33 @@ GOLD = [10, 215, 255]
 DARKGRAY = [169, 169, 169]
 
 
+def show_image(image: MatLike, winname: str, flags: int = cv2.WINDOW_FREERATIO) -> MatLike:
+    """显示图像"""
+    cv2.namedWindow(winname, flags)
+    cv2.imshow(winname, image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    return image
+
+
 def img_show(winname: str, flags: int = cv2.WINDOW_FREERATIO):
+    """装饰器工厂函数，用于显示图像处理结果。
+
+    该函数创建一个装饰器，该装饰器包装图像处理函数并在执行后显示结果图像.
+
+    Args:
+        winname (str): 显示窗口的名称
+        flags (int, optional): 窗口属性标志. Defaults to cv2.WINDOW_FREERATIO.
+
+    Returns:
+        function: 装饰器函数
+    """
+
     def wrapper(func):
         @wraps(func)
         def inner(*args, **kwargs):
             dst = func(*args, **kwargs)
-            cv2.namedWindow(winname, flags)
-            cv2.imshow(winname, dst)
-            cv2.waitKey()
-            cv2.destroyAllWindows()
+            show_image(dst, winname, flags)
 
         return inner
 
