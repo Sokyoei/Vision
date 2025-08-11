@@ -7,7 +7,7 @@ name = "Vision"
 version = "0.0.1"
 authors = [{ name = "Sokyoei" }]
 license = { text = "MIT" }
-dependencies = ["numpy", "opencv-contrib-python"]
+dependencies = ["numpy", "opencv-contrib-python", "loguru"]
 
 [project.optional-dependencies]
 dev = ["isort", "ruff", "black"]
@@ -44,7 +44,7 @@ dev-dependencies = ["pytest>=8.2.1"]
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["LVM", "opencv_learn", "SAM", "Vision", "YOLO"]
+packages = ["Ahri"]
 
 [tool.isort]
 line_length = 120
