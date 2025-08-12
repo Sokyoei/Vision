@@ -15,6 +15,11 @@
  * limitations under the License.
  */
 
+/**
+ * @file
+ */
+
+#pragma once
 #ifndef TENSORRT_BUFFERS_CUH
 #define TENSORRT_BUFFERS_CUH
 
@@ -31,7 +36,7 @@
 #include <NvInfer.h>
 #include <cuda_runtime_api.h>
 
-#include "Ahri.cuh"
+#include "Ahri/Ahri.cuh"
 // #include "common.h"
 // #include "half.h"
 

@@ -17,6 +17,9 @@
 # ignore onnxruntime profile
 onnxruntime_profile__*.json
 
+# ignore TensorRT timing cache file
+*.timing_cache
+
 # ignore generate config.h
 config.h
 

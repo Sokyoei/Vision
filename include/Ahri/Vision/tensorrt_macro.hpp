@@ -6,6 +6,7 @@
 
 namespace Ahri::TensorRT {
 #define ENGINE_EXTENSION ".engine"
+#define TIMING_CACHE_EXTENSION ".timing_cache"
 #define AHRI_TENSORRT_API AHRI_API
 }  // namespace Ahri::TensorRT
 
