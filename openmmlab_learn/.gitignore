@@ -1,0 +1,5 @@
+# ignore openmmlab projects for git clone
+mm*/
+
+# ignore openmmlab model config file(*.py)
+*-*.py

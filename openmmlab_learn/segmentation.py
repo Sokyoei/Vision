@@ -2,7 +2,7 @@ import subprocess
 
 from mmseg.apis import inference_model, init_model, show_result_pyplot
 
-from Vision import SOKYOEI_DATA_DIR
+from Ahri.Vision import SOKYOEI_DATA_DIR
 
 
 def main():
