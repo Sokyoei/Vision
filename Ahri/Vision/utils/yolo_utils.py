@@ -12,6 +12,56 @@ import cv2
 import numpy as np
 from numpy.typing import NDArray
 
+# fmt:off
+COCO_CLASSES = [
+    "person",           "bicycle",      "car",              "motorcycle",       "airplane",
+    "bus",              "train",        "truck",            "boat",             "traffic light",
+    "fire hydrant",     "stop sign",    "parking meter",    "bench",            "bird",
+    "cat",              "dog",          "horse",            "sheep",            "cow",
+    "elephant",         "bear",         "zebra",            "giraffe",          "backpack",
+    "umbrella",         "handbag",      "tie",              "suitcase",         "frisbee",
+    "skis",             "snowboard",    "sports ball",      "kite",             "baseball bat",
+    "baseball glove",   "skateboard",   "surfboard",        "tennis racket",    "bottle",
+    "wine glass",       "cup",          "fork",             "knife",            "spoon",
+    "bowl",             "banana",       "apple",            "sandwich",         "orange",
+    "broccoli",         "carrot",       "hot dog",          "pizza",            "donut",
+    "cake",             "chair",        "couch",            "potted plant",     "bed",
+    "dining table",     "toilet",       "tv",               "laptop",           "mouse",
+    "remote",           "keyboard",     "cell phone",       "microwave",        "oven",
+    "toaster",          "sink",         "refrigerator",     "book",             "clock",
+    "vase",             "scissors",     "teddy bear",       "hair drier",       "toothbrush",
+]
+# fmt:on
+INPUT_WIDTH = 640
+INPUT_HEIGHT = 640
+
+
+def preprocess(image: NDArray) -> NDArray:
+    return cv2.dnn.blobFromImage(image, 1 / 255.0, (640, 640), swapRB=True, crop=False)
+
+
+def postprocess():
+    pass
+
+
+def postprocess_ultralytics(
+    yolo_results: NDArray,
+    original_width: int,
+    original_height: int,
+    conf_threshold: float = 0.5,
+    nms_threshold: float = 0.45,
+):
+    dets = np.array([])
+    dets = np.squeeze(yolo_results)
+    dets = dets[np.any(dets != 0, axis=1)]
+
+    dets[:, 0] = dets[:, 0] / INPUT_WIDTH * original_width
+    dets[:, 1] = dets[:, 1] / INPUT_HEIGHT * original_height
+    dets[:, 2] = (dets[:, 0] + dets[:, 2]) / INPUT_WIDTH * original_width
+    dets[:, 3] = (dets[:, 1] + dets[:, 3]) / INPUT_HEIGHT * original_height
+
+    return dets
+
 
 def xywh_to_xyxy(x) -> NDArray:
     """(x,y,w,h) -> (x1,y1,x2,y2)
