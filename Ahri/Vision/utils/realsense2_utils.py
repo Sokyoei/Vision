@@ -3,6 +3,9 @@ import pyrealsense2 as rs
 from loguru import logger
 
 
+########################################################################################################################
+# functions
+########################################################################################################################
 def check_device():
     ctx = rs.context()
     if len(ctx.devices) > 0:
@@ -25,14 +28,12 @@ class RealSenseDeepCamera(object):
         self.config = rs.config()
         self.config.enable_stream(rs.stream.color, self.width, self.height, rs.format.bgr8, fps)
         self.config.enable_stream(rs.stream.depth, self.width, self.height, rs.format.z16, fps)
-        # self.align = rs.align(rs.stream.color) # depth2rgb
+        self.align = rs.align(rs.stream.color)
 
     def get_frame(self):
         self.pipeline.start(self.config)
         frames = self.pipeline.wait_for_frames()
-        align_to = rs.stream.color
-        align = rs.align(align_to)
-        aligned_frames = align.process(frames)
+        aligned_frames = self.align.process(frames)
         aligned_depth_frame = aligned_frames.get_depth_frame()
         color_frame = aligned_frames.get_color_frame()
         colorizer = rs.colorizer()

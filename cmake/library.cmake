@@ -20,6 +20,7 @@ if(FFMPEG_FOUND)
     set(USE_FFMPEG true)
 endif(FFMPEG_FOUND)
 
+find_package(lz4 CONFIG)
 find_package(realsense2 CONFIG)
 # target_link_libraries(main PRIVATE realsense2::fw realsense2::rsutils realsense2::realsense2 realsense2::realsense-file)
 if(realsense2_FOUND)

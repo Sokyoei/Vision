@@ -5,7 +5,7 @@ filter 滤波
 import cv2
 from cv2.typing import MatLike
 
-from Vision.utils.cv2_utils import PopstarAhri, img_show
+from Ahri.Vision.utils.cv2_utils import PopstarAhri, img_show
 
 
 @img_show("mean_blur")

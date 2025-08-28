@@ -30,7 +30,10 @@ vit = [
 ]
 mediapipe = ["mediapipe"]
 tracking = ["boxmot"]
-opencv = ["imutils"]
+opencv = [
+    "imutils",               # https://github.com/PyImageSearch/imutils
+    "cv2_enumerate_cameras", # https://github.com/chinaheyu/cv2_enumerate_cameras
+]
 pose = ["rtmlib"]
 ocr = ["pytesseract", "pyocr", "easyocr"]
 video = [

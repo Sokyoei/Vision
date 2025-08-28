@@ -44,7 +44,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 ########################################################################################################################
 include(${PROJECT_SOURCE_DIR}/cmake/compiler.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/library.cmake)
-include(${PROJECT_SOURCE_DIR}/cmake/install.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/utils.cmake)
 
 set(VISION_ROOT ${PROJECT_SOURCE_DIR})
 
@@ -115,4 +115,5 @@ configure_file(
     ${PROJECT_SOURCE_DIR}/config.h
 )
 
+include(${PROJECT_SOURCE_DIR}/cmake/install.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/package.cmake)

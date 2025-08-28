@@ -1,0 +1,43 @@
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "Installation Directory")
+set(ALL_INSTALL_EXECUTABLES "" CACHE INTERNAL "List of all executables to install")
+# set(GLOBAL_DEPENDS_LIBRARIES "" CACHE INTERNAL "List of all global dependencies libraries")
+
+macro(install_exe exe)
+    list(APPEND ALL_INSTALL_EXECUTABLES ${exe})
+    set(ALL_INSTALL_EXECUTABLES ${ALL_INSTALL_EXECUTABLES} CACHE INTERNAL "List of all executables to install" FORCE)
+    message(STATUS "install_exe: Adding ${exe} to ALL_INSTALL_EXECUTABLES")
+endmacro(install_exe)
+
+# @brief: install a shared library and its dependencies
+# BUG: install_shared_library doesn't install the library's dependencies
+function(install_shared_library target_name)
+    get_target_property(lib_path ${target_name} LOCATION)
+    get_target_property(lib_type ${target_name} TYPE)
+    # just install the shared library
+    if(lib_type STREQUAL "IMPORTED_SHARED_LIBRARY")
+        # install the library
+        get_filename_component(lib_name ${lib_path} NAME)
+        if(WIN32)
+            install(FILES ${lib_path} DESTINATION bin)
+            message(STATUS "Installing ${lib_name} to bin directory")
+        else()
+            install(FILES ${lib_path} DESTINATION lib)
+            message(STATUS "Installing ${lib_name} to lib directory")
+        endif(WIN32)
+        # install the library's dependencies
+        # get_target_property(lib_deps ${target_name} INTERFACE_LINK_LIBRARIES)
+        # message(STATUS "${lib_name} deps: ${lib_deps}")
+        # if(lib_deps)
+        #     foreach(lib_dep ${lib_deps})
+        #         if(TARGET ${lib_dep})
+        #             get_target_property(lib_dep_type ${lib_dep} TYPE)
+        #             if(lib_dep_type STREQUAL "SHARED_LIBRARY")
+        #                 install_shared_library(${lib_dep})
+        #             endif()
+        #         endif()
+        #     endforeach()
+        # endif()
+    else()
+        message(WARNING "install_shared_library: ${target_name} is not a shared library")
+    endif()
+endfunction(install_shared_library target_name)
