@@ -49,7 +49,13 @@ inline void video_show(bool screen, Args&&... args) {
     if (screen) {
         auto now = std::chrono::system_clock::now();
         std::time_t t = std::chrono::system_clock::to_time_t(now);
+
+        // fmt library remove fmt::localtime in version 12.0.0 ??
+#ifdef FMT_VERSION >= 120000
+        std::tm tm = *std::localtime(&t);
+#else
         std::tm tm = fmt::localtime(t);
+#endif
         std::string filename = fmt::format("screen_{:%Y%m%d_%H%M%S}.mp4", tm);
 
         writer.open(filename, cv::VideoWriter::fourcc('m', 'p', '4', 'v'), fps, cv::Size(width, height));

@@ -63,6 +63,11 @@ def img_show(winname: str, flags: int = cv2.WINDOW_FREERATIO):
     return wrapper
 
 
+def imread(path: str, flags=cv2.IMREAD_COLOR):
+    """imread for CJK paths"""
+    return cv2.imdecode(np.fromfile(path, dtype=np.uint8), flags)
+
+
 PopstarAhri = cv2.imread(str(SOKYOEI_DATA_DIR / "Ahri/Popstar Ahri.jpg"))
 
 
