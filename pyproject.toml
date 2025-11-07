@@ -40,9 +40,6 @@ video = [
     "moviepy", # https://github.com/Zulko/moviepy
 ]
 
-[tool.rye]
-dev-dependencies = ["pytest>=8.2.1"]
-
 [tool.hatch.metadata]
 allow-direct-references = true
 
