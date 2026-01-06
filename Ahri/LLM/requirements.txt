@@ -1,0 +1,23 @@
+# download
+modelscope
+
+# dataset
+datasets
+
+# model
+transformers
+openai
+dashscope  # alibaba qwen
+
+# langchain
+langchain
+langchain_openai
+langchain-community
+
+# web app
+gradio
+streamlit
+
+# Fine-Tuned
+peft
+trl
