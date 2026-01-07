@@ -1,6 +1,6 @@
 #pragma once
-#ifndef AHRI_VISION_TENSORRT_MACRO_HPP
-#define AHRI_VISION_TENSORRT_MACRO_HPP
+#ifndef AHRI_ASUKA_TENSORRT_MACRO_HPP
+#define AHRI_ASUKA_TENSORRT_MACRO_HPP
 
 #include "Ahri/Ahri.cuh"
 
@@ -10,4 +10,4 @@ namespace Ahri::TensorRT {
 #define AHRI_TENSORRT_API AHRI_API
 }  // namespace Ahri::TensorRT
 
-#endif  // !AHRI_VISION_TENSORRT_MACRO_HPP
+#endif  // !AHRI_ASUKA_TENSORRT_MACRO_HPP

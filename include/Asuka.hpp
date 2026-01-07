@@ -1,5 +1,5 @@
 /**
- * @file Vision.hpp
+ * @file Asuka.hpp
  * @date 2024/07/15
  * @author Sokyoei
  *
@@ -7,8 +7,8 @@
  */
 
 #pragma once
-#ifndef VISION_HPP
-#define VISION_HPP
+#ifndef ASUKA_HPP
+#define ASUKA_HPP
 
 #include <cstdlib>
 #include <iostream>
@@ -32,4 +32,4 @@ static auto const SOKYOEI_DATA_DIR = _get_sokyoei_data_dir();
 
 #define SOKYOEI_DATA_DIR Ahri::SOKYOEI_DATA_DIR
 
-#endif  // !VISION_HPP
+#endif  // !ASUKA_HPP

@@ -1,13 +1,13 @@
 #include <filesystem>
 
-#include "Vision.hpp"
+#include "Asuka.hpp"
 
 #include <fmt/ranges.h>
 #include <opencv2/opencv.hpp>
 
-#include "Ahri/Vision/opencv_utils.hpp"
-#include "Ahri/Vision/openvino_utils.hpp"
-#include "Ahri/Vision/yolo.hpp"
+#include "Ahri/Asuka/opencv_utils.hpp"
+#include "Ahri/Asuka/openvino_utils.hpp"
+#include "Ahri/Asuka/yolo.hpp"
 
 namespace Ahri::OpenVINO::Samples {
 void yolov5_example() {

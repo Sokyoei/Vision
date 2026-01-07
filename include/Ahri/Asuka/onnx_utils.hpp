@@ -7,8 +7,8 @@
  */
 
 #pragma once
-#ifndef AHRI_VISION_ONNX_UTILS_HPP
-#define AHRI_VISION_ONNX_UTILS_HPP
+#ifndef AHRI_ASUKA_ONNX_UTILS_HPP
+#define AHRI_ASUKA_ONNX_UTILS_HPP
 
 #include <algorithm>
 #include <filesystem>
@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-#include "Vision.hpp"
+#include "Asuka.hpp"
 
 #include <fmt/core.h>
 #include <fmt/ranges.h>
@@ -137,4 +137,4 @@ class AhriNet : public ONNXRuntimeModel {
 }  // namespace Samples
 }  // namespace Ahri::ONNX
 
-#endif  // !AHRI_VISION_ONNX_UTILS_HPP
+#endif  // !AHRI_ASUKA_ONNX_UTILS_HPP

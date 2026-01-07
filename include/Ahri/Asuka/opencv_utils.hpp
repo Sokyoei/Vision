@@ -7,14 +7,14 @@
  */
 
 #pragma once
-#ifndef AHRI_VISION_OPENCV_UTILS_HPP
-#define AHRI_VISION_OPENCV_UTILS_HPP
+#ifndef AHRI_ASUKA_OPENCV_UTILS_HPP
+#define AHRI_ASUKA_OPENCV_UTILS_HPP
 
 #include <algorithm>
 #include <chrono>
 #include <cstdlib>
 
-#include "Vision.hpp"
+#include "Asuka.hpp"
 
 #include <fmt/chrono.h>
 #include <fmt/core.h>
@@ -136,4 +136,4 @@ private:
 using Model = OpenCVDNNModel;
 }  // namespace Ahri::OpenCV
 
-#endif  // !AHRI_VISION_OPENCV_UTILS_HPP
+#endif  // !AHRI_ASUKA_OPENCV_UTILS_HPP

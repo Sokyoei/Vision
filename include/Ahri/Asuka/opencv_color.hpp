@@ -7,8 +7,8 @@
  */
 
 #pragma once
-#ifndef AHRI_VISION_OPENCV_COLOR_HPP
-#define AHRI_VISION_OPENCV_COLOR_HPP
+#ifndef AHRI_ASUKA_OPENCV_COLOR_HPP
+#define AHRI_ASUKA_OPENCV_COLOR_HPP
 
 #include <random>
 
@@ -51,4 +51,4 @@ inline cv::Scalar random_color() {
 
 }  // namespace Ahri::OpenCV
 
-#endif  // !AHRI_VISION_OPENCV_COLOR_HPP
+#endif  // !AHRI_ASUKA_OPENCV_COLOR_HPP

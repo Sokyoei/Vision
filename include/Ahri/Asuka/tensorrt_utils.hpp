@@ -7,8 +7,8 @@
  */
 
 #pragma once
-#ifndef AHRI_VISION_TENSORRT_UTILS_HPP
-#define AHRI_VISION_TENSORRT_UTILS_HPP
+#ifndef AHRI_ASUKA_TENSORRT_UTILS_HPP
+#define AHRI_ASUKA_TENSORRT_UTILS_HPP
 
 #include <filesystem>
 #include <fstream>
@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-#include "Vision.hpp"
+#include "Asuka.hpp"
 
 // #ifdef __NVCC__
 #include <NvInfer.h>
@@ -34,7 +34,7 @@
 
 #include "Ahri/Ahri.cuh"
 #include "Ahri/Ceceilia/utils/logger_utils.hpp"
-#include "Ahri/Vision/tensorrt_macro.hpp"
+#include "Ahri/Asuka/tensorrt_macro.hpp"
 
 #ifndef AHRI_CXX17
 #error "requires compiler has C++17 or later."
@@ -509,4 +509,4 @@ inline void print_network(nvinfer1::INetworkDefinition& network, nvinfer1::ICuda
 }  // namespace Ahri::TensorRT
 
 // #endif  // __NVCC__
-#endif  // !AHRI_VISION_TENSORRT_UTILS_HPP
+#endif  // !AHRI_ASUKA_TENSORRT_UTILS_HPP

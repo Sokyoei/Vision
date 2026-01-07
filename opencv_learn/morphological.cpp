@@ -11,7 +11,7 @@
 
 #include <opencv2/opencv.hpp>
 
-#include "Vision.hpp"
+#include "Asuka.hpp"
 #include "opencv_utils.hpp"
 
 namespace Ahri {

@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-#include "Vision.hpp"
+#include "Asuka.hpp"
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -21,9 +21,9 @@
 #endif
 
 #include "Ahri/Ceceilia/utils/loadlibrary.hpp"
-#include "Ahri/Vision/opencv_utils.hpp"
-#include "Ahri/Vision/tensorrt_utils.hpp"
-#include "Ahri/Vision/yolo.hpp"
+#include "Ahri/Asuka/opencv_utils.hpp"
+#include "Ahri/Asuka/tensorrt_utils.hpp"
+#include "Ahri/Asuka/yolo.hpp"
 
 void yolov5_example() {
     auto model = Ahri::TensorRT::TensorRTModel(std::filesystem::path(VISION_ROOT) / "models/yolov5su.onnx");

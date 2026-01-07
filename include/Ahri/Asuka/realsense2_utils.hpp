@@ -1,6 +1,6 @@
 #pragma once
-#ifndef AHRI_VISION_REALSENSE2_UTILS_HPP
-#define AHRI_VISION_REALSENSE2_UTILS_HPP
+#ifndef AHRI_ASUKA_REALSENSE2_UTILS_HPP
+#define AHRI_ASUKA_REALSENSE2_UTILS_HPP
 
 #include <fmt/core.h>
 #include <librealsense2/rs.hpp>
@@ -32,4 +32,4 @@ inline int check_device() {
 }
 }  // namespace Ahri::RealSense2
 
-#endif  // !AHRI_VISION_REALSENSE2_UTILS_HPP
+#endif  // !AHRI_ASUKA_REALSENSE2_UTILS_HPP

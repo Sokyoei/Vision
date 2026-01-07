@@ -1,6 +1,6 @@
 #include <filesystem>
 
-#include "Vision.hpp"
+#include "Asuka.hpp"
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -8,9 +8,9 @@
 #include <unistd.h>
 #endif
 
-#include "Ahri/Vision/onnx_utils.hpp"
-#include "Ahri/Vision/opencv_utils.hpp"
-#include "Ahri/Vision/yolo.hpp"
+#include "Ahri/Asuka/onnx_utils.hpp"
+#include "Ahri/Asuka/opencv_utils.hpp"
+#include "Ahri/Asuka/yolo.hpp"
 
 namespace Ahri::ONNX {
 void yolov5su_example() {

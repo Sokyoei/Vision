@@ -1,6 +1,6 @@
 #pragma once
-#ifndef AHRI_VISION_TENSOR_QUANT_HPP
-#define AHRI_VISION_TENSOR_QUANT_HPP
+#ifndef AHRI_ASUKA_TENSOR_QUANT_HPP
+#define AHRI_ASUKA_TENSOR_QUANT_HPP
 
 #include <NvInfer.h>
 
@@ -22,4 +22,4 @@ public:
 };
 }  // namespace Ahri::TensorRT
 
-#endif  // !AHRI_VISION_TENSOR_QUANT_HPP
+#endif  // !AHRI_ASUKA_TENSOR_QUANT_HPP

@@ -7,8 +7,8 @@
  */
 
 #pragma once
-#ifndef AHRI_VISION_YOLO_HPP
-#define AHRI_VISION_YOLO_HPP
+#ifndef AHRI_ASUKA_YOLO_HPP
+#define AHRI_ASUKA_YOLO_HPP
 
 #include <cmath>
 
@@ -17,7 +17,7 @@
 
 #include <opencv2/opencv.hpp>
 
-#include "Ahri/Vision/opencv_color.hpp"
+#include "Ahri/Asuka/opencv_color.hpp"
 #include "Ahri/Ceceilia/utils/logger_utils.hpp"
 
 namespace Ahri::YOLO {
@@ -288,4 +288,4 @@ private:
 };
 }  // namespace Ahri::YOLO
 
-#endif  // !AHRI_VISION_YOLO_HPP
+#endif  // !AHRI_ASUKA_YOLO_HPP

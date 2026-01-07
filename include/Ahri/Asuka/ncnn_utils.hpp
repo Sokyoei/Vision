@@ -7,8 +7,8 @@
  */
 
 #pragma once
-#ifndef AHRI_VISION_NCNN_UTILS_HPP
-#define AHRI_VISION_NCNN_UTILS_HPP
+#ifndef AHRI_ASUKA_NCNN_UTILS_HPP
+#define AHRI_ASUKA_NCNN_UTILS_HPP
 
 namespace Ahri {
 namespace NCNN {
@@ -22,4 +22,4 @@ public:
 }  // namespace NCNN
 }  // namespace Ahri
 
-#endif  // !AHRI_VISION_NCNN_UTILS_HPP
+#endif  // !AHRI_ASUKA_NCNN_UTILS_HPP

@@ -7,13 +7,13 @@
  */
 
 #pragma once
-#ifndef AHRI_VISION_OPENVINO_UTILS_HPP
-#define AHRI_VISION_OPENVINO_UTILS_HPP
+#ifndef AHRI_ASUKA_OPENVINO_UTILS_HPP
+#define AHRI_ASUKA_OPENVINO_UTILS_HPP
 
 #include <filesystem>
 #include <memory>
 
-#include "Vision.hpp"
+#include "Asuka.hpp"
 
 #include <openvino/openvino.hpp>
 #ifdef USE_OPENCV
@@ -147,4 +147,4 @@ namespace Samples {}  // namespace Samples
 
 AHRI_FMT_FORMATTER_OSTREAM(ov::Version);
 
-#endif  // !AHRI_VISION_OPENVINO_UTILS_HPP
+#endif  // !AHRI_ASUKA_OPENVINO_UTILS_HPP
