@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(Vision VERSION 0.0.1)
+project(Asuka VERSION 0.0.1)
 
 ########################################################################################################################
 # languages
@@ -20,11 +20,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 ########################################################################################################################
 # options
 ########################################################################################################################
-option(ONNXRuntime "enable ONNXRuntime" OFF)
-option(TensorRT "enable TensorRT" OFF)
-option(OpenVINO "enable Intel OpenVINO" OFF)
-option(IntelRealSense "enable Intel IntelRealSense" OFF)
-option(VisionModule "build Vision for C++20 module" OFF)
+option(ONNXRuntime          "enable ONNXRuntime"                OFF)
+option(TensorRT             "enable TensorRT"                   OFF)
+option(OpenVINO             "enable Intel OpenVINO"             OFF)
+option(IntelRealSense       "enable Intel IntelRealSense"       OFF)
+option(AsukaModule          "build Asuka for C++20 module"      OFF)
 
 ########################################################################################################################
 # CMAKE_PREFIX_PATH/CMAKE_MODULE_PATH set
@@ -48,7 +48,7 @@ include(${PROJECT_SOURCE_DIR}/cmake/compiler.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/library.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/utils.cmake)
 
-set(VISION_ROOT ${PROJECT_SOURCE_DIR})
+set(Asuka_ROOT ${PROJECT_SOURCE_DIR})
 
 include_directories(
     ${PROJECT_SOURCE_DIR}
@@ -59,32 +59,32 @@ include_directories(
 )
 
 ########################################################################################################################
-# Ahri::Vision and Ahri::Vision-Header-Only
+# Ahri::Asuka and Ahri::Asuka-Header-Only
 ########################################################################################################################
 file(
     GLOB_RECURSE
-    VISION_SOURCE_FILES
+    ASUKA_SOURCE_FILES
     "src/*.cpp"
     "include/*.hpp"
 )
-add_library(ahri_vision SHARED ${VISION_SOURCE_FILES})
-target_link_libraries(ahri_vision PUBLIC $<$<BOOL:${USE_FMT}>:fmt::fmt>)
-target_link_libraries(ahri_vision PUBLIC $<$<BOOL:${USE_SPDLOG}>:spdlog::spdlog>)
-target_link_libraries(ahri_vision PUBLIC $<$<BOOL:${USE_TENSORRT}>:TensorRT::TensorRT>)
-target_include_directories(ahri_vision PUBLIC $<$<BOOL:${USE_TENSORRT}>:${CUDAToolkit_INCLUDE_DIRS}>)
-target_link_libraries(ahri_vision PUBLIC $<$<BOOL:${USE_ONNXRUNTIME}>:ONNXRuntime::ONNXRuntime>)
-target_link_libraries(ahri_vision PUBLIC $<$<BOOL:${USE_OPENVINO}>:openvino::runtime;openvino::frontend::onnx;openvino::threading>)
-target_link_libraries(ahri_vision PUBLIC $<$<BOOL:${USE_OPENCV}>:opencv_core;opencv_imgproc;opencv_highgui;opencv_dnn>)
-target_link_options(ahri_vision PUBLIC $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/OPT:NOREF>)
-target_compile_definitions(ahri_vision PUBLIC AHRI_VISION_BUILD_SHARED_LIBRARY)
-add_library(Ahri::Vision ALIAS ahri_vision)
+add_library(ahri_asuka SHARED ${ASUKA_SOURCE_FILES})
+target_link_libraries(ahri_asuka PUBLIC $<$<BOOL:${USE_FMT}>:fmt::fmt>)
+target_link_libraries(ahri_asuka PUBLIC $<$<BOOL:${USE_SPDLOG}>:spdlog::spdlog>)
+target_link_libraries(ahri_asuka PUBLIC $<$<BOOL:${USE_TENSORRT}>:TensorRT::TensorRT>)
+target_include_directories(ahri_asuka PUBLIC $<$<BOOL:${USE_TENSORRT}>:${CUDAToolkit_INCLUDE_DIRS}>)
+target_link_libraries(ahri_asuka PUBLIC $<$<BOOL:${USE_ONNXRUNTIME}>:ONNXRuntime::ONNXRuntime>)
+target_link_libraries(ahri_asuka PUBLIC $<$<BOOL:${USE_OPENVINO}>:openvino::runtime;openvino::frontend::onnx;openvino::threading>)
+target_link_libraries(ahri_asuka PUBLIC $<$<BOOL:${USE_OPENCV}>:opencv_core;opencv_imgproc;opencv_highgui;opencv_dnn>)
+target_link_options(ahri_asuka PUBLIC $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/OPT:NOREF>)
+target_compile_definitions(ahri_asuka PUBLIC AHRI_ASUKA_BUILD_SHARED_LIBRARY)
+add_library(Ahri::Asuka ALIAS ahri_asuka)
 
-add_library(ahri_vision_header_only INTERFACE)
-target_include_directories(ahri_vision_header_only INTERFACE
+add_library(ahri_asuka_header_only INTERFACE)
+target_include_directories(ahri_asuka_header_only INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
-add_library(Ahri::Vision-Header-Only ALIAS ahri_vision_header_only)
+add_library(Ahri::Asuka-Header-Only ALIAS ahri_asuka_header_only)
 
 ########################################################################################################################
 # Learning projects

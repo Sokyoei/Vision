@@ -1,6 +1,6 @@
 set_xmakever("2.3.0")
 
-set_project("Vision")
+set_project("Asuka")
 set_version("0.0.1")
 
 add_rules("mode.debug", "mode.release")
