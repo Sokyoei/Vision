@@ -33,7 +33,7 @@ public:
         cv::Mat dst;
         cv::cvtColor(img, dst, cv::COLOR_BGR2RGB);
     }
-    std::vector<YOLOResult> inference(cv::Mat& img) {
+    std::vector<Ahri::YOLO::Result> inference(cv::Mat& img) {
         auto memory_info =
             Ort::MemoryInfo::CreateCpu(OrtAllocatorType::OrtArenaAllocator, OrtMemType::OrtMemTypeDefault);
         // auto output_tensors = _session->Run(Ort::RunOptions{nullptr}, , , 1, , 1);

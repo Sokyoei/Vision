@@ -48,7 +48,7 @@ include(${PROJECT_SOURCE_DIR}/cmake/compiler.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/library.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/utils.cmake)
 
-set(Asuka_ROOT ${PROJECT_SOURCE_DIR})
+set(ASUKA_ROOT ${PROJECT_SOURCE_DIR})
 
 include_directories(
     ${PROJECT_SOURCE_DIR}

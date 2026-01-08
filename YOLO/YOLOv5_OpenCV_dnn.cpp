@@ -5,7 +5,7 @@
 
 #include <opencv2/opencv.hpp>
 
-#include "yolo.hpp"
+#include "Ahri/Asuka/yolo.hpp"
 
 namespace Ahri {
 class YOLOv5 {
@@ -17,7 +17,7 @@ public:
     ~YOLOv5() {}
 
     void preprocess() {}
-    std::vector<YOLOResult> inference(cv::Mat& frame, std::vector<YOLOResult>& results) {
+    std::vector<YOLO::Result> inference(cv::Mat& frame, std::vector<YOLO::Result>& results) {
         int width = frame.cols;
         int height = frame.rows;
         int max_ = std::max(width, height);
