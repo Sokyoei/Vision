@@ -6,7 +6,7 @@ from pprint import pprint
 from PIL import Image
 from PIL.ExifTags import TAGS
 
-from Vision import SOKYOEI_DATA_DIR
+from Ahri.Asuka import SOKYOEI_DATA_DIR
 
 
 class EXIF(object):

@@ -11,7 +11,7 @@
 #include <NvInferVersion.h>
 #include <fmt/core.h>
 
-#include "Ahri/Vision/tensorrt_utils.hpp"
+#include "Ahri/Asuka/tensorrt_utils.hpp"
 #include "kernels/leakyrelu.cuh"
 
 namespace Ahri::TensorRT::Plugin {

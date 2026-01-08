@@ -50,6 +50,6 @@ private:
 }  // namespace Ahri
 
 int main(int argc, char const* argv[]) {
-    Ahri::YOLOv5 yolov5{std::filesystem::path(VISION_ROOT) / "models/yolov5s.onnx"};
+    Ahri::YOLOv5 yolov5{std::filesystem::path(ASUKA_ROOT) / "models/yolov5s.onnx"};
     return 0;
 }

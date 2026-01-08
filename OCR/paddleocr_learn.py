@@ -2,7 +2,7 @@ import cv2
 from paddleocr import PaddleOCR, draw_ocr
 from PIL import Image
 
-IMG_PATH = r"D:\Andromeda\Sokyoei\Vision\videos\running_start\00003.jpg"
+IMG_PATH = r"D:\Andromeda\Sokyoei\Asuka\videos\running_start\00003.jpg"
 
 
 def main():

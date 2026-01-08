@@ -15,8 +15,8 @@
 namespace Ahri::ONNX {
 void yolov5su_example() {
     try {
-        auto model = Ahri::ONNX::ONNXRuntimeModel(std::filesystem::path(VISION_ROOT) / "models/yolov5su.onnx");
-        cv::Mat img = cv::imread((std::filesystem::path(VISION_ROOT) / "images/bus.jpg").string());
+        auto model = Ahri::ONNX::ONNXRuntimeModel(std::filesystem::path(ASUKA_ROOT) / "models/yolov5su.onnx");
+        cv::Mat img = cv::imread((std::filesystem::path(ASUKA_ROOT) / "images/bus.jpg").string());
         auto preprocess_img = Ahri::YOLO::preprocess(img);
         std::vector<float> outputs = model.inference(preprocess_img);
         auto results = Ahri::YOLO::postprocess_yolov5u(outputs, img.cols, img.rows, 80, 0.25f, 0.7f);

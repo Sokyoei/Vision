@@ -5,10 +5,10 @@ https://github.com/sml2h3/ddddocr
 import cv2
 import ddddocr
 
-from Vision import VISION_ROOT
-from Vision.utils.cv2_utils import opencv_to_pillow
+from Ahri.Asuka import ASUKA_ROOT
+from Ahri.Asuka.utils.cv2_utils import opencv_to_pillow
 
-IMG_PATH = VISION_ROOT / "images/9.jpg"
+IMG_PATH = ASUKA_ROOT / "images/9.jpg"
 
 
 def main():

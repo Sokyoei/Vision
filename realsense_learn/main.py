@@ -1,4 +1,4 @@
-from Vision.utils.realsense2_utils import check_device
+from Ahri.Asuka.utils.realsense2_utils import check_device
 
 
 def main():

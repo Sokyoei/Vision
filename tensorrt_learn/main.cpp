@@ -26,8 +26,8 @@
 #include "Ahri/Asuka/yolo.hpp"
 
 void yolov5_example() {
-    auto model = Ahri::TensorRT::TensorRTModel(std::filesystem::path(VISION_ROOT) / "models/yolov5su.onnx");
-    cv::Mat img = cv::imread((std::filesystem::path(VISION_ROOT) / "images/bus.jpg").string());
+    auto model = Ahri::TensorRT::TensorRTModel(std::filesystem::path(ASUKA_ROOT) / "models/yolov5su.onnx");
+    cv::Mat img = cv::imread((std::filesystem::path(ASUKA_ROOT) / "images/bus.jpg").string());
     auto preprocess_img = Ahri::YOLO::preprocess(img);
     model.build();
     // std::exit(1);
@@ -56,7 +56,7 @@ void ahrinet_example() {
     };
     fmt::println("Input: {}", input_host);
 
-    auto model = Ahri::TensorRT::TensorRTModel(std::filesystem::path(VISION_ROOT) / "tensorrt_learn/ahrinet.onnx");
+    auto model = Ahri::TensorRT::TensorRTModel(std::filesystem::path(ASUKA_ROOT) / "tensorrt_learn/ahrinet.onnx");
     model.build();
     std::vector<float> result = model.infer(input_host);
 

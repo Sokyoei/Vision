@@ -33,7 +33,7 @@ from HCNetSDK.HCNetSDK import (
 )
 from loguru import logger
 
-from Ahri.Vision import VISION_ROOT
+from Ahri.Asuka import ASUKA_ROOT
 
 # void (CALLBACK* DisplayCBFun)(long nPort,char * pBuf,long nSize,long nWidth,long nHeight,long nStamp,long nType,long nReserved)
 DisplayCBFun = fun_ctype(None, c_long, POINTER(c_char), c_long, c_long, c_long, c_long, c_long, c_long)
@@ -48,7 +48,7 @@ class HaikangCamera(threading.Thread):
         self.username = username
         self.password = password
 
-        self.log_dir = VISION_ROOT / "logs"
+        self.log_dir = ASUKA_ROOT / "logs"
 
         # SDK
         self.hikSDK, self.playM4SDK = self.LoadSDK()  # 加载sdk库

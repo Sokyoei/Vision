@@ -18,8 +18,8 @@ import onnx
 import onnxruntime as ort
 from numpy.typing import NDArray
 
-from Vision import VISION_ROOT
-from Vision.utils import nms, plot_image, xywh_to_xyxy
+from Ahri.Asuka import ASUKA_ROOT
+from Ahri.Asuka.utils import nms, plot_image, xywh_to_xyxy
 
 # fmt:off
 CLASSES = [
@@ -83,8 +83,8 @@ class YOLOv5ONNX(object):
 
 
 def main():
-    yolov5 = YOLOv5ONNX(VISION_ROOT / "models/yolov5s.onnx", 0.5, 0.7)
-    preds, img = yolov5.inference(VISION_ROOT / "images/bus.jpg")
+    yolov5 = YOLOv5ONNX(ASUKA_ROOT / "models/yolov5s.onnx", 0.5, 0.7)
+    preds, img = yolov5.inference(ASUKA_ROOT / "images/bus.jpg")
     result = yolov5.postprocess(preds)
     img = img.squeeze().transpose(1, 2, 0)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)

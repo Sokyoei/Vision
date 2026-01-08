@@ -3,7 +3,7 @@ from torch import Tensor, nn
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
-from Vision.utils import DEVICE
+from Ahri.Asuka.utils import DEVICE
 
 EPOCHS = 10
 BATCH_SIZE = 64

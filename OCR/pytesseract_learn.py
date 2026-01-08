@@ -1,9 +1,9 @@
 import pytesseract
 from PIL import Image
 
-from Vision import VISION_ROOT
+from Ahri.Asuka import ASUKA_ROOT
 
-IMG_PATH = VISION_ROOT / 'images/10.jpg'
+IMG_PATH = ASUKA_ROOT / 'images/10.jpg'
 TESSERACT_CONFIG = " ".join(
     [
         # "--psm",

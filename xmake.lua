@@ -51,7 +51,7 @@ add_includedirs("$(projectdir)/include")
 -- config.h
 set_configdir("$(projectdir)")
 add_configfiles("config.h.xmake", { filename = "config.h" })
-set_configvar("VISION_ROOT", (function()
+set_configvar("ASUKA_ROOT", (function()
     projectdir, count = string.gsub(os.projectdir(), "\\", "/")
     return projectdir
 end)())

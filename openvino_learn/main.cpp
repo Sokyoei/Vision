@@ -11,11 +11,11 @@
 
 namespace Ahri::OpenVINO::Samples {
 void yolov5_example() {
-    auto model_path = std::filesystem::path{VISION_ROOT} / "models/yolov5s.xml";
+    auto model_path = std::filesystem::path{ASUKA_ROOT} / "models/yolov5s.xml";
     auto model = Ahri::OpenVINO::OpenVINOModel{model_path};
 
     // cv::Mat img = cv::imread((std::filesystem::path{SOKYOEI_DATA_DIR} / "Ahri/Popstar Ahri.jpg").string());
-    cv::Mat img = cv::imread((std::filesystem::path{VISION_ROOT} / "images/zidane.jpg").string());
+    cv::Mat img = cv::imread((std::filesystem::path{ASUKA_ROOT} / "images/zidane.jpg").string());
 
     cv::Mat preprocess_img = Ahri::YOLO::preprocess(img);
     auto result = model.inference(preprocess_img);

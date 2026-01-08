@@ -1,6 +1,6 @@
 import cv2
 
-from Ahri.Vision.utils.mediapipe_utils import MediaPipeHand
+from Ahri.Asuka.utils.mediapipe_utils import MediaPipeHand
 
 
 def test_MediaPipeHand(index):

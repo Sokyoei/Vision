@@ -5,7 +5,7 @@
 import cv2
 from cv2.typing import MatLike
 
-from Ahri.Vision.utils.cv2_utils import GREEN, img_show
+from Ahri.Asuka.utils.cv2_utils import GREEN, img_show
 
 
 @img_show("FLD")
@@ -48,7 +48,7 @@ def EDlines(img: MatLike):
 
 
 def main():
-    img = cv2.imread(r"D:\Andromeda\Sokyoei\Vision\images\wx_20241120152605.jpg")
+    img = cv2.imread(r"D:\Andromeda\Sokyoei\Asuka\images\wx_20241120152605.jpg")
     FLD(img)
     LSD(img)
     EDlines(img)

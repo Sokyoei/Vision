@@ -2,9 +2,9 @@ import pyocr
 import pyocr.builders
 from PIL import Image
 
-from Vision import VISION_ROOT
+from Ahri.Asuka import ASUKA_ROOT
 
-IMG_PATH = VISION_ROOT / 'images/README.jpg'
+IMG_PATH = ASUKA_ROOT / 'images/README.jpg'
 
 
 def main():

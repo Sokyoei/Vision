@@ -58,7 +58,7 @@ from NetSDK.SDK_Struct import (
     NET_TIME_EX,
 )
 
-from Ahri.Vision import VISION_ROOT
+from Ahri.Asuka import ASUKA_ROOT
 
 
 def decode_frame_to_bgr(frame_info):
@@ -102,7 +102,7 @@ class DahuaCamera(threading.Thread):
         self.password = password
 
         # config variable
-        self.log_file = VISION_ROOT / "logs/dahua_camera.log"
+        self.log_file = ASUKA_ROOT / "logs/dahua_camera.log"
 
         # SDK return value
         self.login_id = C_LLONG()

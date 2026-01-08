@@ -8,7 +8,7 @@ from torch.nn import functional as F
 from torch.utils.data import DataLoader
 from torchvision import datasets, models, transforms
 
-from Vision.utils import DEVICE
+from Ahri.Asuka.utils import DEVICE
 
 
 class PreNorm(nn.Module):

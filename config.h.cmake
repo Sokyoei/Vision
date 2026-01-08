@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#cmakedefine VISION_ROOT "@VISION_ROOT@"
+#cmakedefine ASUKA_ROOT "@ASUKA_ROOT@"
 
 // third libraries
 #cmakedefine USE_FMT

@@ -1,12 +1,12 @@
 import numpy as np
 
-from Ahri.Vision import VISION_ROOT
-from Ahri.Vision.utils.tensorrt_utils import TensorRTModel
+from Ahri.Asuka import ASUKA_ROOT
+from Ahri.Asuka.utils.tensorrt_utils import TensorRTModel
 
 
 def main():
     # 加载并初始化模型
-    model_path = str(VISION_ROOT / "models/your_model.trtmodel")  # 替换为您的 .trtmodel 路径
+    model_path = str(ASUKA_ROOT / "models/your_model.trtmodel")  # 替换为您的 .trtmodel 路径
     model = TensorRTModel(model_path)
 
     # 生成随机输入数据进行测试 (根据模型的输入形状调整)

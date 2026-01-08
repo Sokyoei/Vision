@@ -2,7 +2,7 @@ import cv2
 import streamlit as st
 from cv2.typing import MatLike
 
-from Vision import SOKYOEI_DATA_DIR
+from Ahri.Asuka import SOKYOEI_DATA_DIR
 
 MORPHOLOGYTPYE = {
     "open": cv2.MORPH_OPEN,

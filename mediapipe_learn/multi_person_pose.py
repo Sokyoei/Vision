@@ -9,7 +9,7 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from numpy.typing import NDArray
 
-from Ahri.Vision import VISION_ROOT
+from Ahri.Asuka import ASUKA_ROOT
 
 MARGIN = 20  # pixels
 ROW_SIZE = 20  # pixels
@@ -89,7 +89,7 @@ def inference(image_path):
 
 
 def main():
-    inference(str(VISION_ROOT / r"data\Ahri\Popstar Ahri.jpg"))
+    inference(str(ASUKA_ROOT / r"data\Ahri\Popstar Ahri.jpg"))
 
 
 if __name__ == "__main__":

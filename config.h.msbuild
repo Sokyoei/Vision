@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define VISION_ROOT @@VISION_ROOT@@
+#define ASUKA_ROOT @@ASUKA_ROOT@@
 
 // libraries
 #define USE_FMT

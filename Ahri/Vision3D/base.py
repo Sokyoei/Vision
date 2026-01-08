@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 import open3d as o3d
-from Paladin.utils import download_file
+from Ahri.Paladin.utils import download_file
 
 
 def read_write_pcl():

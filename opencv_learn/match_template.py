@@ -4,13 +4,13 @@
 
 import cv2
 
-from Ahri.Vision import VISION_ROOT
-from Ahri.Vision.utils.cv2_utils import img_show
+from Ahri.Asuka import ASUKA_ROOT
+from Ahri.Asuka.utils.cv2_utils import img_show
 
 
 @img_show("match template")
 def match_template():
-    img = cv2.imread(str(VISION_ROOT / r"data\Ahri\Popstar Ahri.jpg"))
+    img = cv2.imread(str(ASUKA_ROOT / r"data\Ahri\Popstar Ahri.jpg"))
     templ = cv2.imread(r"D:\Antares\Ahri\Popstar Ahri\Popstar Ahri-1024x1024.png")
     tw, th, tz = templ.shape
 

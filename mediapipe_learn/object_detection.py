@@ -8,7 +8,7 @@ import numpy as np
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
-from Ahri.Vision import VISION_ROOT
+from Ahri.Asuka import ASUKA_ROOT
 
 MARGIN = 20  # pixels
 ROW_SIZE = 20  # pixels
@@ -66,7 +66,7 @@ def object_detection(img_path: str):
 
 
 def main():
-    object_detection(str(VISION_ROOT / r"data\Ahri\Popstar Ahri.jpg"))
+    object_detection(str(ASUKA_ROOT / r"data\Ahri\Popstar Ahri.jpg"))
 
 
 if __name__ == "__main__":

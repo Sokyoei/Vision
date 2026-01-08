@@ -3,14 +3,14 @@ import tensorrt as trt
 from cv2.typing import MatLike
 from loguru import logger
 
-from Ahri.Vision import VISION_ROOT
-from Ahri.Vision.utils.tensorrt_utils import TensorRTModel
-from Ahri.Vision.utils.yolo_utils import COCO_CLASSES, plot_image, postprocess_ultralytics, preprocess
+from Ahri.Asuka import ASUKA_ROOT
+from Ahri.Asuka.utils.tensorrt_utils import TensorRTModel
+from Ahri.Asuka.utils.yolo_utils import COCO_CLASSES, plot_image, postprocess_ultralytics, preprocess
 
 
 def yolov5su_example():
-    model = TensorRTModel(VISION_ROOT / "models/yolov5su.engine")
-    image: MatLike = cv2.imread(VISION_ROOT / "images/bus.jpg")
+    model = TensorRTModel(ASUKA_ROOT / "models/yolov5su.engine")
+    image: MatLike = cv2.imread(ASUKA_ROOT / "images/bus.jpg")
     height, width, _ = image.shape
     process_image = preprocess(image)
     result = model.inference(process_image)

@@ -10,7 +10,7 @@ import numpy as np
 from cv2.typing import MatLike
 from PIL import Image
 
-from Ahri.Vision import SOKYOEI_DATA_DIR
+from Ahri.Asuka import SOKYOEI_DATA_DIR
 
 ColorType = Literal["red", "green", "blue", "yellow"]
 
