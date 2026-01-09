@@ -4,4 +4,4 @@
 
 from modelscope import snapshot_download
 
-snapshot_download("LLM-Research/Meta-Llama-3-8B-Instruct-GGUF", cache_dir=".")
+snapshot_download("your_model_repo_name", cache_dir=".")

@@ -1,4 +1,5 @@
-from openai import AsyncOpenAI, OpenAI
+from openai import AsyncOpenAI, AsyncStream, OpenAI, Stream
+from openai.types.chat import ChatCompletionChunk
 
 
 def get_messages(message: str):
@@ -18,7 +19,9 @@ class OpenAIProvider(object):
         return completion.choices[0].message.content
 
     def text_stream(self, message: str):
-        completion = self.client.chat.completions.create(model=self.model, messages=get_messages(message), stream=True)
+        completion: Stream[ChatCompletionChunk] = self.client.chat.completions.create(
+            model=self.model, messages=get_messages(message), stream=True
+        )
         for chunk in completion:
             if chunk.choices and chunk.choices[0].delta.content:
                 content = chunk.choices[0].delta.content
@@ -38,7 +41,7 @@ class AsyncOpenAIProvider(object):
         return completion.choices[0].message.content
 
     async def text_stream(self, message: str):
-        completion = await self.client.chat.completions.create(
+        completion: AsyncStream[ChatCompletionChunk] = await self.client.chat.completions.create(
             model=self.model, messages=get_messages(message), stream=True
         )
         async for chunk in completion:
