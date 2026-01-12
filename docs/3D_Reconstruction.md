@@ -1,4 +1,28 @@
-# 3DGS
+# 三维重建
+
+## 三维几何表示
+
+- 顶点表示
+- 多边形网格表示
+- 参数曲面表示
+- 体素表示
+
+## NeRF
+
+Neural Radiance Fields 神经辐射场
+
+- [awesome-NeRF](https://github.com/awesome-NeRF/awesome-NeRF)
+- [nerf](https://github.com/bmild/nerf)
+- [paper](https://arxiv.org/abs/2003.08934)
+- [website](https://www.matthewtancik.com/nerf)
+- [nerf-pytorch](https://github.com/yenchenlin/nerf-pytorch)
+
+### ?
+
+- 输入 5D 向量（）
+- 输出 4D 向量（密度 颜色（RGB））
+
+## 3DGS
 
 3D Gaussian Splatting 3D 高斯飞溅
 
@@ -8,7 +32,7 @@
 
 特点：机器学习、CG、线性代数
 
-## 渲染
+### 渲染
 
 - Ray-casting(NeRF), 被动，计算出每个像素点受到的发光粒子的影响生成图像
 - Splatting(3DGS), 主动，计算每个发光粒子如何影响像素点
@@ -21,7 +45,7 @@ e^{-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)}
 $$
 $\Sigma$ 是协方差矩阵，半正定，$\begin{vmatrix}\Sigma\end{vmatrix}$是其行列式
 
-## 使用
+### 使用
 
 数据集结构
 
@@ -39,7 +63,7 @@ data
 
 下载 [colmap](https://github.com/colmap/colmap)，用于特征提取和重建稀疏点云
 
-## tools
+### tools
 
 - [SIBR_viewer](https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/binaries/viewers.zip)
 - [SuperSplat](https://playcanvas.com/supersplat/editor/)
