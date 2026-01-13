@@ -2,7 +2,7 @@
 
 #include <opencv2/opencv.hpp>
 
-#include "Asuka.hpp"
+#include "Ahri/Asuka.hpp"
 #include "Ahri/Asuka/opencv_utils.hpp"
 
 namespace Ahri {

@@ -11,7 +11,7 @@
 #define ASUKA_H
 
 #ifdef __cplusplus
-#include "Asuka.hpp"
+#include "Ahri/Asuka.hpp"
 #endif  // __cplusplus
 
 #endif  // !ASUKA_H

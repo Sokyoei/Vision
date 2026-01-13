@@ -6,7 +6,7 @@
 #include <onnxruntime_cxx_api.h>
 #include <opencv2/opencv.hpp>
 
-#include "Asuka.hpp"
+#include "Ahri/Asuka.hpp"
 #include "Ahri/Asuka/yolo.hpp"
 
 namespace Ahri {

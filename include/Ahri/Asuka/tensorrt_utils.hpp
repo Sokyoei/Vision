@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-#include "Asuka.hpp"
+#include "Ahri/Asuka.hpp"
 
 // #ifdef __NVCC__
 #include <NvInfer.h>

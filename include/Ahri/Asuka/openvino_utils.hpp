@@ -13,7 +13,7 @@
 #include <filesystem>
 #include <memory>
 
-#include "Asuka.hpp"
+#include "Ahri/Asuka.hpp"
 
 #include <openvino/openvino.hpp>
 #ifdef USE_OPENCV

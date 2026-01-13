@@ -14,7 +14,7 @@
 #include <chrono>
 #include <cstdlib>
 
-#include "Asuka.hpp"
+#include "Ahri/Asuka.hpp"
 
 #include <fmt/chrono.h>
 #include <fmt/core.h>
