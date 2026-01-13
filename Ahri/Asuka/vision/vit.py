@@ -3,11 +3,13 @@ Vision Transformer
 """
 
 import torch
+from loguru import logger
 from torch import Tensor, nn
 from torch.nn import functional as F
 from torch.utils.data import DataLoader
 from torchvision import datasets, models, transforms
 
+from Ahri.Asuka import ASUKA_ROOT
 from Ahri.Asuka.utils import DEVICE
 
 
@@ -44,7 +46,7 @@ class PatchEmbedding(nn.Module):
     def forward(self, x: Tensor):
         cls_token = self.cls_token.expand(x.shape[0], -1, -1)
         x = self.patcher(x).permute(0, 2, 1)
-        x = torch.cat([cls_token, x], dim=2)
+        x = torch.cat([cls_token, x], dim=1)
         x = x + self.position_embedding
         x = self.dropout(x)
         return x
@@ -71,18 +73,31 @@ class Vit(nn.Module):
 
 def torch_vit():
     test = datasets.CIFAR10(
-        "./", False, transforms.Compose([transforms.ToTensor(), transforms.Resize(224)]), download=True
+        ASUKA_ROOT / "models", False, transforms.Compose([transforms.ToTensor(), transforms.Resize(224)]), download=True
     )
     test_data = DataLoader(test, 64)
 
-    vit = models.vit_b_16(weights=models.ViT_B_16_Weights.DEFAULT)
+    vit = models.vit_b_16(weights=models.ViT_B_16_Weights.DEFAULT).to(DEVICE)
     vit.eval()
 
-    for x_test, y_test in test_data:
-        x_test = x_test.to(DEVICE)
-        y_test = y_test.to(DEVICE)
-        y_pred: Tensor = vit(x_test)
-    print()
+    with torch.no_grad():  # 关闭梯度计算，节省显存并提升速度
+        total_correct = 0
+        total_samples = 0
+
+        for x_test, y_test in test_data:
+            x_test = x_test.to(DEVICE)
+            y_test = y_test.to(DEVICE)
+            y_pred: Tensor = vit(x_test)
+
+            pred_labels = torch.argmax(y_pred, dim=1)
+            batch_correct = (pred_labels == y_test).sum().item()
+            batch_samples = x_test.shape[0]
+
+            total_correct += batch_correct
+            total_samples += batch_samples
+
+        accuracy = total_correct / total_samples
+        logger.info(f"total: {total_samples}, correct: {total_correct}, accuracy: {accuracy:.4f}")
 
 
 def main():

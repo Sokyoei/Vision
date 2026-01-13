@@ -80,7 +80,7 @@ ignore = [
     "RUF003", # ambiguous-unicode-character-comment
     "RUF012", # mutable-class-default
 ]
-ignore-init-module-imports = true
+# ignore-init-module-imports = true
 
 [tool.ruff.isort]
 
