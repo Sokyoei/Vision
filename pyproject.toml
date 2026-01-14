@@ -39,8 +39,9 @@ ocr = ["pytesseract", "pyocr", "easyocr"]
 video = [
     "moviepy", # https://github.com/Zulko/moviepy
 ]
-llm = ["modelscope", "openai", "transformers", "peft", "langchain"]
+llm = ["modelscope", "openai", "transformers", "peft"]
 mcp = ["mcp[cli]", "httpx"]
+agent = ["langchain", "langchain-community", "langchain-openai", "langchain-text-splitters"]
 
 [tool.hatch.metadata]
 allow-direct-references = true

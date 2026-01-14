@@ -6,10 +6,7 @@ MODEL_DIR = "./Llama3-Chinese-8B-Instruct"
 messages = [{"role": "system", "content": ""}]
 
 pipeline = transformers.pipeline(
-    "text-generation",
-    model=MODEL_DIR,
-    model_kwargs={"torch_dtype": torch.float16},
-    device="cuda",
+    "text-generation", model=MODEL_DIR, model_kwargs={"torch_dtype": torch.float16}, device="cuda"
 )
 
 while True:

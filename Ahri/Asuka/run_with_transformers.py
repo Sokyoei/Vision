@@ -1,14 +1,9 @@
-import torch
-import transformers
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # 大模型文件夹路径
 MODEL_DIR = "./Llama3-Chinese-8B-Instruct"
 
-messages = [
-    {"role": "system", "content": ""},
-    {"role": "user", "content": "你好，请介绍下自己。"},
-]
+messages = [{"role": "system", "content": ""}, {"role": "user", "content": "你好，请介绍下自己。"}]
 
 # 加载因果语言模型
 model = AutoModelForCausalLM.from_pretrained(MODEL_DIR, torch_dtype="auto", device_map="auto")
