@@ -1,8 +1,8 @@
 from typing import List, Optional
 
-from langchain.memory import ConversationTokenBufferMemory
-from langchain.memory.chat_memory import BaseChatMemory
-from langchain.output_parsers import OutputFixingParser
+from langchain_classic.memory import ConversationTokenBufferMemory
+from langchain_classic.memory.chat_memory import BaseChatMemory
+from langchain_classic.output_parsers import OutputFixingParser
 from langchain_community.chat_message_histories.in_memory import ChatMessageHistory
 from langchain_core.language_models import BaseChatModel
 from langchain_core.output_parsers import PydanticOutputParser, StrOutputParser
@@ -11,8 +11,8 @@ from langchain_core.tools import BaseTool, render_text_description
 from langchain_openai import ChatOpenAI
 from pydantic import ValidationError
 
-from LLM.Agent.action import Action
-from LLM.Agent.utils import THOUGHT_COLOR, ColoredPrintHandler
+from Ahri.Asuka.agent.action import Action
+from Ahri.Asuka.agent.utils import THOUGHT_COLOR, ColoredPrintHandler
 
 
 class Agent(object):
@@ -93,7 +93,7 @@ class Agent(object):
             try:
                 observation = tool.run(action.args)
             except ValidationError as e:
-                observation = f"ERROR: ValidationError in args: {str(e)}, args: {action.args}"
+                observation = f"ERROR: ValidationError in args: {e!s}, args: {action.args}"
             except Exception as e:
                 observation = f"ERROR: {e=}, args: {action.args}"
         return observation

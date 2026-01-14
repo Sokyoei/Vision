@@ -4,9 +4,9 @@ import sys
 from typing import Any
 from uuid import UUID
 
+from colorama import Fore, Style
 from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.outputs import ChatGenerationChunk, GenerationChunk, LLMResult
-from colorama import Fore, Style
 
 THOUGHT_COLOR = Fore.GREEN
 OBSERVATION_COLOR = Fore.YELLOW

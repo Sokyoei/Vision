@@ -76,8 +76,10 @@ select = [
     "RUF", # ruff specific rules
 ]
 ignore = [
-    "E501",   # line too long
-    "RUF003", # ambiguous-unicode-character-comment
+    "E501",   # https://docs.astral.sh/ruff/rules/line-too-long/
+    "RUF001", # https://docs.astral.sh/ruff/rules/ambiguous-unicode-character-string/
+    "RUF002", # https://docs.astral.sh/ruff/rules/ambiguous-unicode-character-docstring/
+    "RUF003", # https://docs.astral.sh/ruff/rules/ambiguous-unicode-character-comment/
     "RUF012", # mutable-class-default
 ]
 # ignore-init-module-imports = true

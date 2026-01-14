@@ -2,16 +2,14 @@ import os
 from typing import List
 
 import pandas as pd
-from langchain.chains.retrieval_qa.base import RetrievalQA
-from langchain.document_loaders import PyPDFLoader
-from langchain.document_loaders.word_document import UnstructuredWordDocumentLoader
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.llms import OpenAI
-from langchain.schema import Document
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
-
-# from langchain.chains import RetrievalQA
+from langchain_classic.chains.retrieval_qa.base import RetrievalQA
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders.word_document import UnstructuredWordDocumentLoader
+from langchain_community.vectorstores import Chroma
+from langchain_core.documents import Document
+from langchain_openai.embeddings import OpenAIEmbeddings
+from langchain_openai.llms import OpenAI
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
 class FileLoadFactory(object):
